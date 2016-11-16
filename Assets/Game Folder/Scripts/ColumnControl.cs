@@ -6,82 +6,109 @@ public class ColumnControl : MonoBehaviour
     [SerializeField]
     private GameObject unmovingColumn;
 
-    private GameObject selectedColumn;
-    private float yDeltaValue; 
+    [SerializeField]
+    private float yDeltaValue;
+
+    [SerializeField]
     private float yIncrementor;
-    private float baseYValue; 
-    private bool columnMoving;
+
+    [SerializeField]
+    private float baseYValue;
+
+    private GameObject selectedColumn;
+    private bool columnRising;
+    private bool columnLowering;
+    private bool columnMoving; //is the column moving at all
+
     // Use this for initialization
     void Start()
     {
-        yDeltaValue = 100.0f;
-        yIncrementor = 0.5f;
-        baseYValue = 0.0f;
+        columnRising = false;
+        columnLowering = false;
         columnMoving = false;
     }
 
     // Update is called once per frame
     void Update()
-    {/*
-        if (selectedColumn == null)
-        {
-           // Debug.Log("Selected Column is null");
-        }
-        if (selectedColumn != null && selectedColumn.transform.position.y == unmovingColumn.transform.position.y)
-        {
-            //Debug.Log("EQUAL");
-        }*/
+    {
+        raycasting();
+        detectColumnControlInput();
+        updateColumnPosition();
+        isColumnMoving();
+    }
+
+    //handles the raycast selecting the right column
+    private void raycasting()
+    {
         RaycastHit raycastHit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        Debug.Log("Good to fucking know this is:" + columnMoving);
         if (Physics.Raycast(ray, out raycastHit) && columnMoving == false)
         {
-            Debug.Log("Has selected a column");
             selectedColumn = raycastHit.collider.gameObject;
-        }
-
-        //Debug.Log("selected column y: " + selectedColumn.transform.position.y);
-
-        if (Input.GetMouseButtonDown(0) && selectedColumn != null)
-        {
-            //Debug.Log("You clicked.");
-            if (selectedColumn.transform.position.y < unmovingColumn.transform.position.y + yDeltaValue)
-            {
-                //Debug.Log("Should be moving.");
-                columnMoving = true;
-                moveColumn(1.0f);
-                
-            }
-        }
-        if (Input.GetMouseButtonDown(1) && selectedColumn != null)
-        {
-            //Debug.Log("You clicked.");
-            if (selectedColumn.transform.position.y > unmovingColumn.transform.position.y - yDeltaValue)
-            {
-                //Debug.Log("Should be moving.");
-                columnMoving = true;
-                moveColumn(-1.0f);
-
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.W)) 
-        {
-            unmovingColumn.transform.Translate(0, yIncrementor, 0);
         }
     }
 
+    //wait for imput from lowering / raising column buttons
+    private void detectColumnControlInput()
+    {
+        if (InputManager.RaiseColumn() > 0 && selectedColumn != null && columnMoving == false)
+        {
+            columnRising = true;
+        }
+        if (InputManager.LowerColumn() > 0 && selectedColumn != null && columnMoving == false)
+        {
+            columnLowering = true;
+        }
+    }
+
+    //if columnLowering or columnRising has been turned on, start moving the column
+    private void updateColumnPosition()
+    {
+        if (columnRising == true)
+        {
+            moveColumn(1.0f);
+        }
+        if (columnLowering == true)
+        {
+            moveColumn(-1.0f);
+        }
+    }
+
+    private void isColumnMoving()
+    {
+        //if the column is moving in any direction mark it as moving
+        if (columnRising == true || columnLowering == true)
+        {
+            columnMoving = true;
+        }
+        else
+        {
+            columnMoving = false;
+        }
+
+        //if the column gets called to stop, make sure both bools also stop
+        if (columnMoving == false)
+        {
+            columnRising = false;
+            columnLowering = false;
+        }
+    }
+
+    //actually move the column
     private void moveColumn(float pPolarity)
     {
-        do
+        //if column is not yet at the height of it's end position
+        if (selectedColumn.transform.position.y < unmovingColumn.transform.position.y + (pPolarity * yDeltaValue))
         {
             selectedColumn.transform.Translate(0, pPolarity * yIncrementor, 0);
             Debug.Log("MOVING " + yIncrementor + " amount(" + pPolarity + " / " + pPolarity * yIncrementor + ")");
             Debug.Log("selected column y: " + selectedColumn.transform.position.y);
         }
-        while (selectedColumn.transform.position.y < unmovingColumn.transform.position.y + (pPolarity * yDeltaValue));
-        columnMoving = false;
-        Debug.Log("FINAL POS y: " + selectedColumn.transform.position.y);
+        else
+        {
+            //stop the column moving, which should deactive both columnRising and columnLowering
+            columnMoving = false;
+        }
     }
 }
