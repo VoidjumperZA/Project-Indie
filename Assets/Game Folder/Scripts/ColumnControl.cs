@@ -7,15 +7,13 @@ public class ColumnControl : MonoBehaviour
     private GameObject unmovingColumn;
 
     [SerializeField]
-    private float yDeltaValue;
+    private float columnDisplacementSize;
 
     [SerializeField]
-    private float yIncrementor;
-
-    [SerializeField]
-    private float baseYValue;
+    private float columnMovementSpeed;
 
     private GameObject selectedColumn;
+    private float baseYValue;
     private bool columnRising;
     private bool columnLowering;
     private bool columnMoving; //is the column moving at all
@@ -26,6 +24,8 @@ public class ColumnControl : MonoBehaviour
         columnRising = false;
         columnLowering = false;
         columnMoving = false;
+
+        baseYValue = unmovingColumn.transform.position.y;
     }
 
     // Update is called once per frame
@@ -99,10 +99,10 @@ public class ColumnControl : MonoBehaviour
     private void moveColumn(float pPolarity)
     {
         //if column is not yet at the height of it's end position
-        if (selectedColumn.transform.position.y < unmovingColumn.transform.position.y + (pPolarity * yDeltaValue))
+        if (selectedColumn.transform.position.y < unmovingColumn.transform.position.y + (pPolarity * columnDisplacementSize))
         {
-            selectedColumn.transform.Translate(0, pPolarity * yIncrementor, 0);
-            Debug.Log("MOVING " + yIncrementor + " amount(" + pPolarity + " / " + pPolarity * yIncrementor + ")");
+            selectedColumn.transform.Translate(0, pPolarity * columnMovementSpeed, 0);
+            Debug.Log("MOVING " + columnMovementSpeed + " amount(" + pPolarity + " / " + pPolarity * columnMovementSpeed + ")");
             Debug.Log("selected column y: " + selectedColumn.transform.position.y);
         }
         else
