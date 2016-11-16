@@ -1,0 +1,30 @@
+# Ignore everything
+/*
+/*/
+
+# Inverse ignore some stuff
+!/Assets/
+!/ProjectSettings/
+!/Design/
+!/Documents/
+!/Build/
+!/SprintMeeting Build/
+!.gitignore
+!*.txt
+!*.png
+!*.jpg
+!*.doc
+!*.dll
+!*.json
+
+# OS Stuff
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+$RECYCLE.BIN/
+Desktop.ini
+Assets/Materials.meta
+Assets/Models.meta
