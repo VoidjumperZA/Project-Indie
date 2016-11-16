@@ -7,16 +7,16 @@ public static class InputManager
     public static float MovementHorizontal()
     {
         float result = 0.0f;
-        result += Input.GetAxis("J_MovmentHorizontal");
-        result += Input.GetAxis("K_MovmentHorizontal");
+        result += Input.GetAxis("J_MovementHorizontal");
+        result += Input.GetAxis("K_MovementHorizontal");
         return Mathf.Clamp(result, -1.0f, 1.0f);
     }
 
     public static float MovementVertical()
     {
         float result = 0.0f;
-        result += Input.GetAxis("J_MovmentVertical");
-        result += Input.GetAxis("K_MovmentVertical");
+        result += Input.GetAxis("J_MovementVertical");
+        result += Input.GetAxis("K_MovementVertical");
         return Mathf.Clamp(result, -1.0f, 1.0f);
     }
 

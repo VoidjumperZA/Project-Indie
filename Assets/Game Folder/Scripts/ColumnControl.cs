@@ -10,12 +10,19 @@ public class ColumnControl : MonoBehaviour
     private float columnDisplacementSize;
 
     [SerializeField]
+    private float columnMovementAccelerationSpeed;
+
+    [SerializeField]
     private float columnMovementMaxSpeed;
+
+    [SerializeField]
+    private float columnResettingSpeed;
 
     private GameObject selectedColumn;
     private float baseYValue;
     private bool columnRising;
     private bool columnLowering;
+    private float columnSpeed;
 
     // Use this for initialization
     void Start()
@@ -33,7 +40,7 @@ public class ColumnControl : MonoBehaviour
         detectColumnControlInput();
         updateColumnPosition();
         isColumnMoving();
-        Debug.Log("columnMoving: " + isColumnMoving() + ", columnRising: " + columnRising + ", columnLowering: " + columnLowering);
+        //Debug.Log("columnMoving: " + isColumnMoving() + ", columnRising: " + columnRising + ", columnLowering: " + columnLowering);
     }
 
     //handles the raycast selecting the right column
@@ -97,14 +104,22 @@ public class ColumnControl : MonoBehaviour
     private void moveColumn(float pPolarity)
     {
         //if column is not yet at the height of it's end position
-        if (selectedColumn.transform.position.y < pPolarity * (unmovingColumn.transform.position.y + (pPolarity * columnDisplacementSize)) && isColumnMoving() == true)
+        //if (selectedColumn.transform.position.y < pPolarity * (baseYValue + (pPolarity * columnDisplacementSize)) && isColumnMoving() == true)
+        if(baseYValue + Mathf.Abs(selectedColumn.transform.position.y) + (selectedColumn.transform.localScale.y / 2) < columnDisplacementSize && isColumnMoving() == true) 
         {
-            selectedColumn.transform.Translate(0, pPolarity * columnMovementMaxSpeed, 0);
+            columnSpeed += columnMovementAccelerationSpeed;
+            if (columnSpeed >= columnMovementMaxSpeed)
+            {
+                columnSpeed = columnMovementMaxSpeed;
+            }
+            selectedColumn.transform.Translate(0, pPolarity * columnSpeed, 0);
+            Debug.Log("Speed: " + columnSpeed + "lossyScale: " + selectedColumn.transform.lossyScale.y + ", localScale: " + selectedColumn.transform.localScale.y);
         }
         else
         {
             //stop the column moving, which should deactive both columnRising and columnLowering
             columnHalted();
+            columnSpeed = 0.0f;
         }
     }
 }
