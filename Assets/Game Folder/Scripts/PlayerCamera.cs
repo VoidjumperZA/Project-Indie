@@ -12,9 +12,13 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField]
     private Vector3 _relativeCameraLookAt;
     [SerializeField]
-    private bool _smoothFollowment = true;
+    private float _horizontalCameraRotationSpeed;
     [SerializeField]
-    private float _smoothFollowmentSpeed;
+    private float _verticalCameraRotionSpeed;
+    [SerializeField]
+    private bool _smoothFollow = true;
+    [SerializeField]
+    private float _smoothFollowSpeed;
 
     private Transform _targetCameraHelper;
     private Vector3 _finalCameraPosition;
@@ -24,7 +28,7 @@ public class PlayerCamera : MonoBehaviour
     private void Start()
     {
         //DESIGNER Little trick so the Designers can work with integers
-        _smoothFollowmentSpeed /= 100;
+        _smoothFollowSpeed /= 100;
         _targetCameraHelper = _target.GetChild(0).GetComponent<Transform>();
     }
 
@@ -39,13 +43,13 @@ public class PlayerCamera : MonoBehaviour
         _finalCameraPosition = _targetCameraHelper.TransformPoint(_relativeCameraPosition);
         _finalCameraLookAt = _target.TransformPoint(_relativeCameraLookAt);
         //DESIGNER If statement so they can swap between smooth followment and snappy followment through the inspector
-        if (!_smoothFollowment)
+        if (!_smoothFollow)
         {
             transform.position = _finalCameraPosition;
         }
         else
         {
-            transform.position = Vector3.Slerp(transform.position, _finalCameraPosition, _smoothFollowmentSpeed);
+            transform.position = Vector3.Slerp(transform.position, _finalCameraPosition, _smoothFollowSpeed);
         }
 
         transform.LookAt(_finalCameraLookAt);
@@ -53,8 +57,8 @@ public class PlayerCamera : MonoBehaviour
 
     public void MoveCamera(float pXRotation, float pYRotation)
     {
-        _target.transform.Rotate(0, pXRotation, 0);
-        _targetCameraHelper.transform.Rotate(-pYRotation, 0, 0);
+        _target.transform.Rotate(0, pXRotation * _horizontalCameraRotationSpeed, 0);
+        _targetCameraHelper.transform.Rotate(-pYRotation * _verticalCameraRotionSpeed, 0, 0);
         //BUGTEST
         Debug.DrawLine(transform.position, _finalCameraLookAt);
         print("X: " + pXRotation + "and Y: " + pYRotation);

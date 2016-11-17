@@ -47,7 +47,7 @@ public class ColumnControl : MonoBehaviour
     private void raycasting()
     {
         RaycastHit raycastHit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2.0f, Screen.height / 2.0f, 0));
 
         if (Physics.Raycast(ray, out raycastHit) && isColumnMoving() == false)
         {

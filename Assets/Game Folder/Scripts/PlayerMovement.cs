@@ -34,4 +34,9 @@ public class PlayerMovement : MonoBehaviour
 
         //print("velocity: " + _rigidBody.velocity.magnitude);
     }
+
+    public void Flash()
+    {
+
+    }
 }

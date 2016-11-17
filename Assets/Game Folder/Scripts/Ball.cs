@@ -1,15 +1,31 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Ball : MonoBehaviour {
+public class Ball : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    private void Start()
+    {
+
+    }
+
+    private void Update()
+    {
+
+    }
+
+    private void OnCollisionEnter(Collision pCollision)
+    {
+
+    }
+
+    private void changePlayerState(PlayerMovement pMovement)
+    {
+
+    }
+
+    private void score()
+    {
+
+    }
 }
