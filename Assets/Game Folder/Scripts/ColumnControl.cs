@@ -105,7 +105,7 @@ public class ColumnControl : MonoBehaviour
     {
         //if column is not yet at the height of it's end position
         //if (selectedColumn.transform.position.y < pPolarity * (baseYValue + (pPolarity * columnDisplacementSize)) && isColumnMoving() == true)
-        if(baseYValue + Mathf.Abs(selectedColumn.transform.position.y) + (selectedColumn.transform.localScale.y / 2) < columnDisplacementSize && isColumnMoving() == true) 
+        if(baseYValue + Mathf.Abs(selectedColumn.transform.position.y) + (unmovingColumn.transform.position.y / 2) < columnDisplacementSize && isColumnMoving() == true) 
         {
             columnSpeed += columnMovementAccelerationSpeed;
             if (columnSpeed >= columnMovementMaxSpeed)
@@ -120,6 +120,7 @@ public class ColumnControl : MonoBehaviour
             //stop the column moving, which should deactive both columnRising and columnLowering
             columnHalted();
             columnSpeed = 0.0f;
+            //selectedColumn.
         }
     }
 }
