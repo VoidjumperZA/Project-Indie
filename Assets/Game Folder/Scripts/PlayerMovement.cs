@@ -3,12 +3,16 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //DESIGNER Inspector values, once chosen a nice value, these can be replaced with "hard coded" values
     [SerializeField]
-    private float _movementSpeed;
+    private float _maxMovementSpeed;
+    [SerializeField]
+    private float _accelerationSpeed;
 
     //Could be changed for an enum later on, for now we can use a Boolean
     private bool _ballPosession = false;
 
+    //Need to test this (rigidBody)
     private Rigidbody _rigidBody;
 
     private void Start()
@@ -23,9 +27,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move()
     {
-        if(_rigidBody.velocity.magnitude < _movementSpeed)
+        if(_rigidBody.velocity.magnitude < _maxMovementSpeed)
         {
-            _rigidBody.AddForce(InputManager.Movement() * 10);
+            _rigidBody.AddRelativeForce(InputManager.Movement() * _accelerationSpeed);
         }
+
+        //print("velocity: " + _rigidBody.velocity.magnitude);
     }
 }
