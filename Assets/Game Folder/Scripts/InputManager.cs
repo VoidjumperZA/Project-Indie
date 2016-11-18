@@ -137,11 +137,11 @@ public static class InputManager
     //Buttons
     public static bool P2_FlashButton()
     {
-        return Input.GetButtonDown("2_FlashButton");
+        return Input.GetButtonDown("2_J_FlashButton");
     }
 
     public static bool P2_ThrowButton()
     {
-        return Input.GetButtonDown("2_ThrowButton");
+        return Input.GetButtonDown("2_J_ThrowButton");
     }
 }
