@@ -3,10 +3,11 @@ using System.Collections;
 
 public class Ball : MonoBehaviour
 {
+    private Rigidbody _rigidbody;
 
     private void Start()
     {
-
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     private void Update()
