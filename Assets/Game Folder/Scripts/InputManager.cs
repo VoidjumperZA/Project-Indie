@@ -75,6 +75,4 @@ public static class InputManager
     {
         return Input.GetButtonDown("ThrowButton");
     }
-
-    //https://www.facebook.com/PakaluPapitoOfficial/videos/1929920053902162/?hc_ref=NEWSFEED
 }

@@ -61,6 +61,6 @@ public class PlayerCamera : MonoBehaviour
         _targetCameraHelper.transform.Rotate(-pYRotation * _verticalCameraRotionSpeed, 0, 0);
         //BUGTEST
         Debug.DrawLine(transform.position, _finalCameraLookAt);
-        print("X: " + pXRotation + "and Y: " + pYRotation);
+        //print("X: " + pXRotation + "and Y: " + pYRotation);
     }
 }

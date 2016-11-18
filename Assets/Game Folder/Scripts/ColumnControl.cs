@@ -60,12 +60,15 @@ public class ColumnControl : MonoBehaviour
     //wait for imput from lowering / raising column buttons
     private void detectColumnControlInput()
     {
-        if (InputManager.RaiseColumn() > 0 && selectedColumn != null && isColumnMoving() == false)
+        //if we've pressed the button, we have a column selected, it isn't already being controlled and it isn't a Static type column
+        if (InputManager.RaiseColumn() > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
         {
+            Debug.Log("My pos before moving is: " + selectedColumn.transform.position + " while the baseY is: " + baseYValue);
             columnRising = true;
         }
-        if (InputManager.LowerColumn() > 0 && selectedColumn != null && isColumnMoving() == false)
+        if (InputManager.LowerColumn() > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
         {
+            Debug.Log("My pos before moving is: " + selectedColumn.transform.position + " while the baseY is: " + baseYValue);
             columnLowering = true;
         }
     }
@@ -106,23 +109,23 @@ public class ColumnControl : MonoBehaviour
     private void moveColumn(float pPolarity)
     {
         //if column is not yet at the height of it's end position
-        //if (selectedColumn.transform.position.y < pPolarity * (baseYValue + (pPolarity * columnDisplacementSize)) && isColumnMoving() == true)
         if(baseYValue + Mathf.Abs(selectedColumn.transform.position.y) + (baseYValue / 2) < columnDisplacementSize && isColumnMoving() == true) 
         {
+            //increase the speed of the column to give it natural acceleration
             columnSpeed += columnMovementAccelerationSpeed;
             if (columnSpeed >= columnMovementMaxSpeed)
             {
                 columnSpeed = columnMovementMaxSpeed;
             }
             selectedColumn.transform.Translate(0, pPolarity * columnSpeed, 0);
-            Debug.Log("Speed: " + columnSpeed + "lossyScale: " + selectedColumn.transform.lossyScale.y + ", localScale: " + selectedColumn.transform.localScale.y);
+            //Debug.Log("Speed: " + columnSpeed + "lossyScale: " + selectedColumn.transform.lossyScale.y + ", localScale: " + selectedColumn.transform.localScale.y);
         }
         else
         {
             //stop the column moving, which should deactive both columnRising and columnLowering
             columnHalted();
             columnSpeed = 0.0f;
-            columnProperties.GrindToArenaLevel(columnResettingSpeed, columnDisplacementSize, baseYValue);
+            columnProperties.ResetColumn(columnResettingSpeed, columnDisplacementSize, baseYValue, (pPolarity * -1));
         }
     }
 }
