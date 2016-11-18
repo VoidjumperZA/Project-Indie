@@ -24,8 +24,13 @@ public class ColumnProperties : MonoBehaviour
 
     }
 
-    public void GrindToArenaLevel()
+    public void GrindToArenaLevel(float pColumnResettingSpeed, float pColumnDisplacementSize, float pBaseYValue)
     {
 
+    }
+
+    public int GetColumnType()
+    {
+        return (int)columnType;
     }
 }
