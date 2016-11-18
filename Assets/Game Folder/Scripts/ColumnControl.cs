@@ -61,12 +61,12 @@ public class ColumnControl : MonoBehaviour
     private void detectColumnControlInput()
     {
         //if we've pressed the button, we have a column selected, it isn't already being controlled and it isn't a Static type column
-        if (InputManager.RaiseColumn() > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
+        if (InputManager.P1_RaiseColumn() > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
         {
             Debug.Log("My pos before moving is: " + selectedColumn.transform.position + " while the baseY is: " + baseYValue);
             columnRising = true;
         }
-        if (InputManager.LowerColumn() > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
+        if (InputManager.P1_LowerColumn() > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
         {
             Debug.Log("My pos before moving is: " + selectedColumn.transform.position + " while the baseY is: " + baseYValue);
             columnLowering = true;

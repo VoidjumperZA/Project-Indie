@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(_rigidBody.velocity.magnitude < _maxMovementSpeed)
         {
-            _rigidBody.AddRelativeForce(InputManager.Movement() * _accelerationSpeed);
+            _rigidBody.AddRelativeForce(InputManager.P1_Movement() * _accelerationSpeed);
         }
 
         //print("velocity: " + _rigidBody.velocity.magnitude);
