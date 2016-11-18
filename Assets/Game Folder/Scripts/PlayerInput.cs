@@ -24,7 +24,7 @@ public class PlayerInput : MonoBehaviour
 
     private void mouseHandler()
     {
-        _camera.MoveCamera(InputManager.P1_CameraHorizontal(), InputManager.P1_CameraVertical());
+        _camera.MoveCamera(InputManager.P2_CameraHorizontal(), InputManager.P2_CameraVertical());
     }
 
     private void movementHandler()

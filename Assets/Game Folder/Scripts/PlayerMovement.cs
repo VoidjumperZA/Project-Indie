@@ -20,6 +20,18 @@ public class PlayerMovement : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody>();
     }
 
+    private void Update()
+    {
+        if (InputManager.P1_FlashButton())
+        {
+            print("P1Flashing");
+        }
+        if (InputManager.P2_FlashButton())
+        {
+            print("P2Flashing");
+        }
+    }
+
     private void FixedUpdate()
     {
         Move();
@@ -27,9 +39,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move()
     {
-        if(_rigidBody.velocity.magnitude < _maxMovementSpeed)
+        if (_rigidBody.velocity.magnitude < _maxMovementSpeed)
         {
-            _rigidBody.AddRelativeForce(InputManager.P1_Movement() * _accelerationSpeed);
+            _rigidBody.AddRelativeForce(InputManager.P2_Movement() * _accelerationSpeed);
         }
 
         //print("velocity: " + _rigidBody.velocity.magnitude);
