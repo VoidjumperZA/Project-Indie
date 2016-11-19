@@ -17,6 +17,7 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter(Collider pCollider)
     {
+        print("Hit something");
         PlayerMovement movement = pCollider.gameObject.GetComponent<PlayerMovement>();
         if (movement != null)
         {
