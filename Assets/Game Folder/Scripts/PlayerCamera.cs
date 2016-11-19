@@ -59,8 +59,9 @@ public class PlayerCamera : MonoBehaviour
     {
         _target.transform.Rotate(0, pXRotation * _horizontalCameraRotationSpeed, 0);
         _targetCameraHelper.transform.Rotate(-pYRotation * _verticalCameraRotionSpeed, 0, 0);
-        //BUGTEST
+        //DESIGNER A Drawline to visualise where the camera looks at
         Debug.DrawLine(transform.position, _finalCameraLookAt);
-        //print("X: " + pXRotation + "and Y: " + pYRotation);
+        //BUGTEST
+        print("X: " + pXRotation + "and Y: " + pYRotation);
     }
 }

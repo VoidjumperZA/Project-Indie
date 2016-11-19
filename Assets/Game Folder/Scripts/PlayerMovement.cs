@@ -12,7 +12,6 @@ public class PlayerMovement : MonoBehaviour
     //Could be changed for an enum later on, for now we can use a Boolean
     private bool _ballPosession = false;
 
-    //Need to test this (rigidBody)
     private Rigidbody _rigidBody;
 
     private void Start()

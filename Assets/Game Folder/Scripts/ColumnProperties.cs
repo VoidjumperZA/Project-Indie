@@ -7,58 +7,56 @@ public class ColumnProperties : MonoBehaviour
     public enum ColumnStatus { Free, Locked };
 
     [SerializeField]
-    private ColumnType columnType;
+    private ColumnType _columnType;
 
     [HideInInspector]
     public ColumnStatus columnStatus;
 
-    private bool atBaseLevel = true;
-    private float columnResettingSpeed;
-    private float columnDisplacementSize;
-    private float baseYValue;
-    private float polarity;
-    private float movementDelta = 0.0f;
+    private bool _atBaseLevel = true;
+    private float _columnResettingSpeed;
+    private float _columnDisplacementSize;
+    private float _baseYValue;
+    private float _polarity;
+    private float _movementDelta = 0.0f;
 
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (atBaseLevel == false)
+        if (_atBaseLevel == false)
         {
-            GrindToArenaLevel();
+            grindToArenaLevel();
         }
     }
 
     public void ResetColumn(float pColumnResettingSpeed, float pColumnDisplacementSize, float pBaseYValue, float pPolarity)
     {
-        columnResettingSpeed = pColumnResettingSpeed;
-        columnDisplacementSize = pColumnDisplacementSize;
-        baseYValue = pBaseYValue;
-        polarity = pPolarity;
-        atBaseLevel = false;
+        _columnResettingSpeed = pColumnResettingSpeed;
+        _columnDisplacementSize = pColumnDisplacementSize;
+        _baseYValue = pBaseYValue;
+        _polarity = pPolarity;
+        _atBaseLevel = false;
     }
 
 
-    private void GrindToArenaLevel()
+    private void grindToArenaLevel()
     {
-        if(movementDelta < columnDisplacementSize)
+        if(_movementDelta < _columnDisplacementSize)
         //if (Mathf.Abs(gameObject.transform.position.y) + (columnDisplacementSize / 2) > baseYValue)
         {
-            gameObject.transform.Translate(0, polarity * columnResettingSpeed, 0);
-            movementDelta += columnResettingSpeed;
+            gameObject.transform.Translate(0, _polarity * _columnResettingSpeed, 0);
+            _movementDelta += _columnResettingSpeed;
         }
         else
         {
-            Debug.Log("My pos before .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + baseYValue);
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, baseYValue, gameObject.transform.position.z);                   
-            Debug.Log("My pos after .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + baseYValue);
-            movementDelta = 0.0f;
-            atBaseLevel = true;
+            Debug.Log("My pos before .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, _baseYValue, gameObject.transform.position.z);                   
+            Debug.Log("My pos after .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
+            _movementDelta = 0.0f;
+            _atBaseLevel = true;
             //Debug.Log("I actually reached here!");
         }
 
@@ -66,6 +64,6 @@ public class ColumnProperties : MonoBehaviour
 
     public int GetColumnType()
     {
-        return (int)columnType;
+        return (int)_columnType;
     }
 }
