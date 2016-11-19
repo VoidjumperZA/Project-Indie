@@ -10,7 +10,7 @@ public class PlayerInput : MonoBehaviour
     private GameObject columnControlManager;
 
     private delegate void InputUpdate();
-    private InputUpdate _update;
+    private event InputUpdate _update;
 
     private PlayerMovement _movement;  
     private ColumnControl columnControl;
