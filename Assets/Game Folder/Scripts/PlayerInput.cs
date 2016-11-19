@@ -6,9 +6,11 @@ public class PlayerInput : MonoBehaviour
     //Mandatory
     [SerializeField]
     private PlayerCamera _camera;
-
     [SerializeField]
     private GameObject columnControlManager;
+
+    private delegate void InputUpdate();
+    private InputUpdate _update;
 
     private PlayerMovement _movement;  
     private ColumnControl columnControl;
@@ -17,6 +19,11 @@ public class PlayerInput : MonoBehaviour
 
     private void Start()
     {
+        _update += mouseHandler;
+        _update += raiseLowerCheck;
+        _update += flashCheck;
+        _update += movementHandler;
+
         _movement = GetComponent<PlayerMovement>();
         columnControl = columnControlManager.GetComponent<ColumnControl>();
 
@@ -39,10 +46,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        mouseHandler();
-        raiseLowerCheck();
-        flashCheck();
-        movementHandler();
+        _update();
     }
 
     private void mouseHandler()

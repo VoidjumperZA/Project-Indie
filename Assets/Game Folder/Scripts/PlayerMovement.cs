@@ -25,9 +25,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if(pDirection.magnitude == 0)
         {
-            print("Not moving");
+            _actualSpeed = 0.0f;
         }
-        transform.Translate(pDirection * _accelerationSpeed * Time.deltaTime);
+        else
+        {
+            _actualSpeed += _accelerationSpeed;
+            _actualSpeed = Mathf.Min(_maxMovementSpeed, _actualSpeed);
+        }
+        transform.Translate(pDirection * _actualSpeed * Time.deltaTime);
     }
 
     public void Flash()
