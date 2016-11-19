@@ -38,7 +38,7 @@ public class ColumnControl : MonoBehaviour
     void Update()
     {
         raycasting();
-        detectColumnControlInput();
+        //detectColumnControlInput();
         updateColumnPosition();
         isColumnMoving();
         //Debug.Log("columnMoving: " + isColumnMoving() + ", columnRising: " + columnRising + ", columnLowering: " + columnLowering);
@@ -57,21 +57,39 @@ public class ColumnControl : MonoBehaviour
         }
     }
 
-    //wait for imput from lowering / raising column buttons
-    private void detectColumnControlInput()
+    public void AttemptRaise(int pPlayerID)
     {
-        //if we've pressed the button, we have a column selected, it isn't already being controlled and it isn't a Static type column
-        if (InputManager.P2_RaiseColumn() > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
+        if (selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
         {
             Debug.Log("My pos before moving is: " + selectedColumn.transform.position + " while the baseY is: " + baseYValue);
             columnRising = true;
         }
-        if (InputManager.P2_LowerColumn() > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
+    }
+
+    public void AttemptLower(int pPlayerID)
+    {
+        if (selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
         {
             Debug.Log("My pos before moving is: " + selectedColumn.transform.position + " while the baseY is: " + baseYValue);
             columnLowering = true;
         }
     }
+    /*
+    //wait for imput from lowering / raising column buttons
+    private void detectColumnControlInput()
+    {
+        //if we've pressed the button, we have a column selected, it isn't already being controlled and it isn't a Static type column
+        if (InputManager.RaiseColumn(1) > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
+        {
+            Debug.Log("My pos before moving is: " + selectedColumn.transform.position + " while the baseY is: " + baseYValue);
+            columnRising = true;
+        }
+        if (InputManager.LowerColumn(1) > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
+        {
+            Debug.Log("My pos before moving is: " + selectedColumn.transform.position + " while the baseY is: " + baseYValue);
+            columnLowering = true;
+        }
+    }*/
 
     //if columnLowering or columnRising has been turned on, start moving the column
     private void updateColumnPosition()

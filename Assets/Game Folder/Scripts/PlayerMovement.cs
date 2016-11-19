@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     //Need to test this (rigidBody)
     private Rigidbody _rigidBody;
 
+    private int playerID;
+
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody>();
@@ -41,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_rigidBody.velocity.magnitude < _maxMovementSpeed)
         {
-            _rigidBody.AddRelativeForce(InputManager.P2_Movement() * _accelerationSpeed);
+            _rigidBody.AddRelativeForce(InputManager.Movement(playerID) * _accelerationSpeed);
         }
 
         //print("velocity: " + _rigidBody.velocity.magnitude);
@@ -51,4 +53,10 @@ public class PlayerMovement : MonoBehaviour
     {
 
     }
+
+    public void SetPlayerID(int pPlayerID)
+    {
+        playerID = pPlayerID;
+    }
+
 }
