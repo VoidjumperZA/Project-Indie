@@ -42,7 +42,7 @@ public class PlayerCamera : MonoBehaviour
         //Converting the camera position from the player's local space to the world space position
         _finalCameraPosition = _targetCameraHelper.TransformPoint(_relativeCameraPosition);
         _finalCameraLookAt = _target.TransformPoint(_relativeCameraLookAt);
-        //DESIGNER If statement so they can swap between smooth followment and snappy followment through the inspector
+        //DESIGNER If statement so they can swap between following smoothly and following in a snappy manner through the inspector
         if (!_smoothFollow)
         {
             transform.position = _finalCameraPosition;

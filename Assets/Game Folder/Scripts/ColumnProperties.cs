@@ -21,7 +21,7 @@ public class ColumnProperties : MonoBehaviour
 
     private void Start()
     {
-
+        columnStatus = ColumnStatus.Free;
     }
 
     private void Update()
@@ -57,7 +57,7 @@ public class ColumnProperties : MonoBehaviour
             Debug.Log("My pos after .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
             _movementDelta = 0.0f;
             _atBaseLevel = true;
-            //Debug.Log("I actually reached here!");
+            columnStatus = ColumnStatus.Free;
         }
 
     }
@@ -65,5 +65,10 @@ public class ColumnProperties : MonoBehaviour
     public int GetColumnType()
     {
         return (int)_columnType;
+    }
+
+    public int GetColumnStatus()
+    {
+        return (int)columnStatus;
     }
 }

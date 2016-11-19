@@ -31,24 +31,22 @@ public class ColumnControl : MonoBehaviour
         _columnRising = false;
         _columnLowering = false;
 
-        _baseYValue = _unmovingColumn.transform.position.y;      
+        _baseYValue = _unmovingColumn.transform.position.y;              
     }
 
     // Update is called once per frame
     private void Update()
     {
         raycasting();
-        //detectColumnControlInput();
         updateColumnPosition();
         isColumnMoving();
-        //Debug.Log("columnMoving: " + isColumnMoving() + ", columnRising: " + columnRising + ", columnLowering: " + columnLowering);
     }
 
     //handles the raycast selecting the right column
     private void raycasting()
     {
         RaycastHit raycastHit;
-        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2.0f, Screen.height / 2.0f, 0));
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(/*Screen.width / 2.0f, Screen.height / 2.0f*/Input.mousePosition.x, Input.mousePosition.y, 0));
 
         if (Physics.Raycast(ray, out raycastHit) && isColumnMoving() == false)
         {
@@ -59,19 +57,21 @@ public class ColumnControl : MonoBehaviour
 
     public void AttemptRaise(int pPlayerID)
     {
-        if (_selectedColumn != null && isColumnMoving() == false && _columnProperties.GetColumnType() != 1)
+        if (_selectedColumn != null /*&& isColumnMoving() == false*/ && _columnProperties.GetColumnType() != 1 && _columnProperties.GetColumnStatus() == 0)
         {
             Debug.Log("My pos before moving is: " + _selectedColumn.transform.position + " while the baseY is: " + _baseYValue);
             _columnRising = true;
+            _columnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
         }
     }
 
     public void AttemptLower(int pPlayerID)
     {
-        if (_selectedColumn != null && isColumnMoving() == false && _columnProperties.GetColumnType() != 1)
+        if (_selectedColumn != null /*&& isColumnMoving() == false*/ && _columnProperties.GetColumnType() != 1 && _columnProperties.GetColumnStatus() == 0)
         {
             Debug.Log("My pos before moving is: " + _selectedColumn.transform.position + " while the baseY is: " + _baseYValue);
             _columnLowering = true;
+            _columnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
         }
     }
     /*
