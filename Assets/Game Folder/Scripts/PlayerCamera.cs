@@ -62,6 +62,6 @@ public class PlayerCamera : MonoBehaviour
         //DESIGNER A Drawline to visualise where the camera looks at
         Debug.DrawLine(transform.position, _finalCameraLookAt);
         //BUGTEST
-        print("X: " + pXRotation + "and Y: " + pYRotation);
+        //print("X: " + pXRotation + "and Y: " + pYRotation);
     }
 }

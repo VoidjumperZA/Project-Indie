@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float _accelerationSpeed;
 
+    private float _actualSpeed;
+
     //Could be changed for an enum later on, for now we can use a Boolean
     private bool _ballPosession = false;
 
@@ -21,10 +23,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector3 pDirection)
     {
-        if (_rigidBody.velocity.magnitude < _maxMovementSpeed)
+        if(pDirection.magnitude == 0)
         {
-            _rigidBody.AddRelativeForce(pDirection * _accelerationSpeed);
+            print("Not moving");
         }
+        transform.Translate(pDirection * _accelerationSpeed * Time.deltaTime);
     }
 
     public void Flash()
