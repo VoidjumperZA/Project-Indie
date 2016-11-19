@@ -15,48 +15,21 @@ public class PlayerMovement : MonoBehaviour
     //Need to test this (rigidBody)
     private Rigidbody _rigidBody;
 
-    private int playerID;
-
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody>();
     }
 
-    private void Update()
-    {
-        if (InputManager.P1_FlashButton())
-        {
-            print("P1Flashing");
-        }
-        if (InputManager.P2_FlashButton())
-        {
-            print("P2Flashing");
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        Move();
-    }
-
-    public void Move()
+    public void Move(Vector3 pDirection)
     {
         if (_rigidBody.velocity.magnitude < _maxMovementSpeed)
         {
-            _rigidBody.AddRelativeForce(InputManager.Movement(playerID) * _accelerationSpeed);
+            _rigidBody.AddRelativeForce(pDirection * _accelerationSpeed);
         }
-
-        //print("velocity: " + _rigidBody.velocity.magnitude);
     }
 
     public void Flash()
     {
 
     }
-
-    public void SetPlayerID(int pPlayerID)
-    {
-        playerID = pPlayerID;
-    }
-
 }

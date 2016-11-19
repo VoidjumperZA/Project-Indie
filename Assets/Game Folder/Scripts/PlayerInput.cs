@@ -35,15 +35,18 @@ public class PlayerInput : MonoBehaviour
                 playerID = 4;
                 break;
         }
-        _movement.SetPlayerID(playerID);
     }
 
     private void Update()
     {
         mouseHandler();
-        movementHandler();
         raiseLowerCheck();
         flashCheck();
+    }
+
+    private void FixedUpdate()
+    {
+        movementHandler();
     }
 
     private void mouseHandler()
@@ -53,12 +56,20 @@ public class PlayerInput : MonoBehaviour
 
     private void movementHandler()
     {
-
+        _movement.Move(InputManager.Movement(playerID));
     }
 
     private void flashCheck()
     {
-
+        //Just for testing
+        if (InputManager.P1_FlashButton())
+        {
+            print("P1Flashing");
+        }
+        if (InputManager.P2_FlashButton())
+        {
+            print("P2Flashing");
+        }
     }
 
     private void raiseLowerCheck()
