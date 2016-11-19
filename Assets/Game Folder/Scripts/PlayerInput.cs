@@ -42,10 +42,6 @@ public class PlayerInput : MonoBehaviour
         mouseHandler();
         raiseLowerCheck();
         flashCheck();
-    }
-
-    private void FixedUpdate()
-    {
         movementHandler();
     }
 

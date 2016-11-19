@@ -7,7 +7,7 @@ public class Ball : MonoBehaviour
 
     private void Start()
     {
-       // _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -15,14 +15,16 @@ public class Ball : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter(Collision pCollision)
+    private void OnTriggerEnter(Collider pCollider)
     {
-        PlayerMovement movement = pCollision.gameObject.GetComponent<PlayerMovement>();
-        if(movement != null)
+        PlayerMovement movement = pCollider.gameObject.GetComponent<PlayerMovement>();
+        if (movement != null)
         {
             transform.SetParent(movement.transform);
             changePlayerState(movement);
-            //_rigidbody.velocity = Vector3.zero;
+            _rigidbody.velocity = Vector3.zero;
+            //_rigidbody.useGravity = false;
+            //_rigidbody.freezeRotation = false;
             transform.localPosition = new Vector3(0, 1, 0);
 
         }
