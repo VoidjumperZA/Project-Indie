@@ -74,14 +74,11 @@ public class PlayerInput : MonoBehaviour
     private void flashCheck()
     {
         //Just for testing
-        if (InputManager.P1_FlashButton())
+        if (InputManager.FlashButton(playerID))
         {
-            print("P1Flashing");
+            print("P" + playerID + " is flashing.");
         }
-        if (InputManager.P2_FlashButton())
-        {
-            print("P2Flashing");
-        }
+
     }
 
     private void raycastingColumn()
@@ -95,7 +92,6 @@ public class PlayerInput : MonoBehaviour
         {
             if (raycastHit.collider.gameObject.tag == "Column")
             {
-                print("YEEHAWWW");
                 _selectedColumn = raycastHit.collider.gameObject;
                 _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
                 // columnControl.UpdateSelectedColumn(_selectedColumn, _columnProperties);

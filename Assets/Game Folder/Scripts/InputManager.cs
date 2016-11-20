@@ -113,6 +113,23 @@ public static class InputManager
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
+    public static bool FlashButton(int pPlayerID)
+    {
+        switch (pPlayerID)
+        {
+            case 1:
+                return Input.GetButtonDown("1_FlashButton");
+                break;
+            case 2:
+                return Input.GetButtonDown("2_J_FlashButton");
+                break;
+            default:
+                return Input.GetButtonDown("1_FlashButton");
+                break;
+        }
+
+    }
+    /*
     //Buttons
     public static bool P1_FlashButton()
     {
@@ -122,9 +139,9 @@ public static class InputManager
     public static bool P1_ThrowButton()
     {
         return Input.GetButtonDown("1_ThrowButton");
-    }
+    }*/
 
-    
+    /*
     //Buttons
     public static bool P2_FlashButton()
     {
@@ -134,7 +151,7 @@ public static class InputManager
     public static bool P2_ThrowButton()
     {
         return Input.GetButtonDown("2_J_ThrowButton");
-    }
+    }*/
 
     private static float returnClampedAxis(int pPlayerID, float pP1_Result, float pP2_Result, float pP3_Result, float pP4_Result)
     {
