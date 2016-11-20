@@ -15,14 +15,14 @@ public class Ball : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider pCollider)
+    private void OnCollisionEnter(Collision pCollision)
     {
-        print("Hit something");
-        PlayerMovement movement = pCollider.gameObject.GetComponent<PlayerMovement>();
+        PlayerMovement movement = pCollision.gameObject.GetComponent<PlayerMovement>();
         if (movement != null)
         {
             transform.SetParent(movement.transform);
             changePlayerState(movement);
+            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.useGravity = false;
             //_rigidbody.freezeRotation = false;
