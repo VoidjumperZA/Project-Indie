@@ -78,7 +78,7 @@ public class PlayerInput : MonoBehaviour
         {
             print("P" + playerID + " is flashing.");
         }
-        if (InputManager.FlashButton(playerID) > 0)
+        if (InputManager.ThrowButton(playerID) > 0)
         {
             print("P" + playerID + " is throwing.");
         }
