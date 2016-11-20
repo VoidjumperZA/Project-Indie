@@ -4,6 +4,11 @@ using System.Collections;
 public static class InputManager
 {
     //Joysticks and WASD movement
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
     public static float MovementHorizontal(int pPlayerID)
     {
         float p1_result = 0.0f;
@@ -21,6 +26,11 @@ public static class InputManager
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
     public static float MovementVertical(int pPlayerID)
     {
         float p1_result = 0.0f;
@@ -39,12 +49,22 @@ public static class InputManager
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);   
     }
 
+    /// <summary>
+    /// /// Vector3 float values for both the horizontal and vertical axes input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
     public static Vector3 Movement(int pPlayerID)
     {
         return new Vector3(MovementHorizontal(pPlayerID), 0, MovementVertical(pPlayerID));
     }
 
     //Mouse camera movement
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
     public static float CameraHorizontal(int pPlayerID)
     {
         float p1_result = 0.0f;
@@ -61,7 +81,11 @@ public static class InputManager
         
     }
 
-
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
     public static float CameraVertical(int pPlayerID)
     {
         float p1_result = 0.0f;
@@ -77,12 +101,22 @@ public static class InputManager
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
+    /// <summary>
+    /// Vector3 float values for both the horizontal and vertical axes input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
     public static Vector3 CameraMovement(int pPlayerID)
     {
         return new Vector3(CameraHorizontal(pPlayerID), 0, CameraVertical(pPlayerID));
     }
 
     //Triggers / ColumnControl
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
     public static float RaiseColumn(int pPlayerID)
     {
         float p1_result = 0.0f;
@@ -98,6 +132,11 @@ public static class InputManager
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
     public static float LowerColumn(int pPlayerID)
     {
         float p1_result = 0.0f;
@@ -113,6 +152,11 @@ public static class InputManager
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
     public static float FlashButton(int pPlayerID)
     {
         float p1_result = 0.0f;
@@ -128,6 +172,11 @@ public static class InputManager
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
     public static float ThrowButton(int pPlayerID)
     {
         float p1_result = 0.0f;
@@ -141,32 +190,10 @@ public static class InputManager
         float p4_result = 0.0f;
 
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
-
-    }
-    /*
-    //Buttons
-    public static bool P1_FlashButton()
-    {
-        return Input.GetButtonDown("1_FlashButton");
     }
 
-    public static bool P1_ThrowButton()
-    {
-        return Input.GetButtonDown("1_ThrowButton");
-    }*/
-
-    /*
-    //Buttons
-    public static bool P2_FlashButton()
-    {
-        return Input.GetButtonDown("2_J_FlashButton");
-    }
-
-    public static bool P2_ThrowButton()
-    {
-        return Input.GetButtonDown("2_J_ThrowButton");
-    }*/
-
+    //internal method for clamping axes to 1, in the case of both keyboard and joystick input simultaenously
+    //our axis value would become twice as large
     private static float returnClampedAxis(int pPlayerID, float pP1_Result, float pP2_Result, float pP3_Result, float pP4_Result)
     {
         switch (pPlayerID)

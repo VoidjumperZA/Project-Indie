@@ -23,6 +23,10 @@ public class PlayerMovement : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody>();
     }
 
+    /// <summary>
+    /// Move the player in a given direction while applying acceleration.
+    /// </summary>
+    /// <param name="pDirection"></param>
     public void Move(Vector3 pDirection)
     {
         if(pDirection.magnitude == 0)
@@ -37,6 +41,10 @@ public class PlayerMovement : MonoBehaviour
         transform.Translate(pDirection * _actualSpeed * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Release the ball in the direction aimed, putting the ball back into play.
+    /// </summary>
+    /// <param name="pDirection"></param>
     public void Throw(Vector3 pDirection)
     {
         print("movement throw");
@@ -47,6 +55,9 @@ public class PlayerMovement : MonoBehaviour
         ballRigidbody.AddForce(pDirection * _throwingForce);
     }
 
+    /// <summary>
+    /// Teleport the player forward a short amount while also throwing the ball ahead of them.
+    /// </summary>
     public void Flash()
     {
 

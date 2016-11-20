@@ -4,6 +4,7 @@ using System.Collections;
 public class Ball : MonoBehaviour
 {
     private Rigidbody _rigidbody;
+    private GameObject owner;
 
     private void Start()
     {
@@ -28,6 +29,8 @@ public class Ball : MonoBehaviour
             //_rigidbody.freezeRotation = false;
             transform.localPosition = new Vector3(0, 1, 0);
 
+            //VOID
+            owner = movement.gameObject;
         }
     }
 

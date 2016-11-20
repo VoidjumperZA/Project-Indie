@@ -41,6 +41,7 @@ public class PlayerInput : MonoBehaviour
         _cameraScript = playerCamera.GetComponent<PlayerCamera>();
         columnControl = columnControlManager.GetComponent<ColumnControl>();
 
+        //assign the player and ID based on his tag
         switch (gameObject.tag)
         {
             case "Player_1":
@@ -75,13 +76,12 @@ public class PlayerInput : MonoBehaviour
         _movement.Move(InputManager.Movement(playerID));
     }
 
+    //check if input is calling for the player to flash, then execute
     private void flashCheck()
     {
-        //Just for testing
         if (InputManager.FlashButton(playerID) > 0 && flashAxisLock == false)
         {
             lockAxis(ref flashAxisLock, true);
-            print("flash lock is " + flashAxisLock);
             print("P" + playerID + " is flashing.");
         }
         if (InputManager.FlashButton(playerID) == 0)
@@ -90,6 +90,7 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    //check if input is calling for the player to throw, then execute
     private void throwCheck()
     {
         if (InputManager.ThrowButton(playerID) > 0 && throwAxisLock == false)
@@ -104,11 +105,9 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-
+    //raycast gameobjects and if they're columns, set them as the selected column
     private void raycastingColumn()
     {
-        //handles the raycast selecting the right column
-
         RaycastHit raycastHit;
         Ray ray = playerCamera.ScreenPointToRay(_raycastPos); //Fixed it :D
 
@@ -118,12 +117,11 @@ public class PlayerInput : MonoBehaviour
             {
                 _selectedColumn = raycastHit.collider.gameObject;
                 _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
-                // columnControl.UpdateSelectedColumn(_selectedColumn, _columnProperties);
             }
         }
     }
 
-
+    //check if input is calling for the player to raise or lower a column, then execute
     private void raiseLowerCheck()
     {
         if (InputManager.RaiseColumn(playerID) > 0)

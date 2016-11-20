@@ -39,18 +39,26 @@ public class ColumnControl : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        //raycasting();
-        //updateColumnPosition();
-        //IsColumnMoving();
+
     }
 
-   
+   /// <summary>
+   /// Updates the selectedColumn and columnProperties for the give column.
+   /// </summary>
+   /// <param name="pSelectedColumn"></param>
+   /// <param name="pColumnProperties"></param>
     public void UpdateSelectedColumn(GameObject pSelectedColumn, ColumnProperties pColumnProperties)
     {
         _selectedColumn = pSelectedColumn;
         _columnProperties = pColumnProperties;
     }
 
+    /// <summary>
+    /// Will try to raise the targetted column, succeding if the conditions to allow such a raise are met.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <param name="pSelectedColumn"></param>
+    /// <param name="pColumnProperties"></param>
     public void AttemptRaise(int pPlayerID, GameObject pSelectedColumn, ColumnProperties pColumnProperties)
     {
         if (pSelectedColumn != null /*&& isColumnMoving() == false*/ && pColumnProperties.GetColumnType() != 1 && pColumnProperties.GetColumnStatus() == 0)
@@ -63,6 +71,12 @@ public class ColumnControl : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Will try to lower the targetted column, succeding if the conditions to allow such a lower are met.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <param name="pSelectedColumn"></param>
+    /// <param name="pColumnProperties"></param>
     public void AttemptLower(int pPlayerID, GameObject pSelectedColumn, ColumnProperties pColumnProperties)
     {
         if (pSelectedColumn != null /*&& isColumnMoving() == false*/ && pColumnProperties.GetColumnType() != 1 && pColumnProperties.GetColumnStatus() == 0)
