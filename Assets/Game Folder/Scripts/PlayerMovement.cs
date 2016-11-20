@@ -38,6 +38,11 @@ public class PlayerMovement : MonoBehaviour
     public void Throw(Vector3 pDirection)
     {
         print("movement throw");
+        Transform ball = transform.FindChild("Ball_Test");
+        ball.SetParent(GameObject.Find("Level").transform);
+        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
+        ballRigidbody.useGravity = true;
+        ballRigidbody.AddForce(pDirection);
     }
 
     public void Flash()
