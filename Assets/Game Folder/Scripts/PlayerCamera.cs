@@ -19,6 +19,8 @@ public class PlayerCamera : MonoBehaviour
     private bool _smoothFollow = true;
     [SerializeField]
     private float _smoothFollowSpeed;
+    [SerializeField]
+    private bool _raycasting = true;
 
     private Transform _targetCameraHelper;
     private Vector3 _finalCameraPosition;
@@ -51,7 +53,19 @@ public class PlayerCamera : MonoBehaviour
         {
             transform.position = Vector3.Slerp(transform.position, _finalCameraPosition, _smoothFollowSpeed);
         }
+        //DESIGNER If statement to enable or disable raycasting, have to look which one works better
+        if (_raycasting)
+        {
+            Vector3 cam2Player = _targetCameraHelper.position - _finalCameraPosition;
+            float rayLength = cam2Player.magnitude;
 
+            Ray ray = new Ray(_finalCameraPosition, cam2Player);
+            RaycastHit hitInfo;
+            if (Physics.Raycast(ray, out hitInfo, rayLength))
+            {
+                transform.position = hitInfo.point;
+            }
+        }
         transform.LookAt(_finalCameraLookAt);
     }
 
