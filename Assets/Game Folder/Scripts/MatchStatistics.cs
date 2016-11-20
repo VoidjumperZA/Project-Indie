@@ -6,12 +6,12 @@ public static class MatchStatistics
 {
     private static int T1_Score;
     private static int T2_Score;
-    private static Dictionary<int, int> matchGoals = new Dictionary<int, int>(); //team, goals
-    private static Dictionary<int, int> teamInfo = new Dictionary<int, int>(); //player, team
-    private static Dictionary<int, int> goalsScored = new Dictionary<int, int>(); //player, goals scored
-    private static Dictionary<int, int> playersSquished = new Dictionary<int, int>(); //player, number of enemies squished
-    private static Dictionary<int, int> playersDropped = new Dictionary<int, int>(); //player, number of enemies dropped
-    private static Dictionary<int, int> deaths = new Dictionary<int, int>(); //player, deaths
+    private static Dictionary<int, int> matchGoals = new Dictionary<int, int>();            //(Team, Goals)
+    private static Dictionary<int, int> teamInfo = new Dictionary<int, int>();              //(Player, Team)
+    private static Dictionary<int, int> goalsScored = new Dictionary<int, int>();           //(Player, Goals Scored)
+    private static Dictionary<int, int> playersSquished = new Dictionary<int, int>();       //(Player, Number of enemies squished)
+    private static Dictionary<int, int> playersDropped = new Dictionary<int, int>();        //(Player, Number of enemies dropped)
+    private static Dictionary<int, int> deaths = new Dictionary<int, int>();                //(Player, Deaths)
 
     //assigns a player to a team
     /// <summary>
