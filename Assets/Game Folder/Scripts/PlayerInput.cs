@@ -25,12 +25,16 @@ public class PlayerInput : MonoBehaviour
     private int playerID;
     private Vector3 _raycastPos;
 
+    private bool flashAxisLock = false;
+    private bool throwAxisLock = false;
+
     private void Start()
     {
         _update += mouseHandler;
         _update += raycastingColumn;
         _update += raiseLowerCheck;
         _update += flashCheck;
+        _update += throwCheck;
         _update += movementHandler;
 
         _movement = GetComponent<PlayerMovement>();
@@ -74,15 +78,32 @@ public class PlayerInput : MonoBehaviour
     private void flashCheck()
     {
         //Just for testing
-        if (InputManager.FlashButton(playerID) > 0)
+        if (InputManager.FlashButton(playerID) > 0 && flashAxisLock == false)
         {
+            lockAxis(ref flashAxisLock, true);
+            print("flash lock is " + flashAxisLock);
             print("P" + playerID + " is flashing.");
         }
-        if (InputManager.ThrowButton(playerID) > 0)
+        if (InputManager.FlashButton(playerID) == 0)
         {
-            print("P" + playerID + " is throwing.");
+            lockAxis(ref flashAxisLock, false);
         }
     }
+
+    private void throwCheck()
+    {
+        if (InputManager.ThrowButton(playerID) > 0)
+        {
+            lockAxis(ref throwAxisLock, true);
+            print("P" + playerID + " is throwing.");
+            _movement.Throw(_cameraScript.gameObject.transform.forward);
+        }
+        if (InputManager.ThrowButton(playerID) == 0)
+        {
+            lockAxis(ref throwAxisLock, false);
+        }
+    }
+
 
     private void raycastingColumn()
     {
@@ -114,4 +135,10 @@ public class PlayerInput : MonoBehaviour
             columnControl.AttemptLower(playerID, _selectedColumn, _columnProperties);
         }
     }
+
+    private void lockAxis(ref bool pAxisToLock, bool pState)
+    {
+        pAxisToLock = pState;
+    }
+
 }

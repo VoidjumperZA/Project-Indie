@@ -55,6 +55,7 @@ public class ColumnControl : MonoBehaviour
     {
         if (pSelectedColumn != null /*&& isColumnMoving() == false*/ && pColumnProperties.GetColumnType() != 1 && pColumnProperties.GetColumnStatus() == 0)
         {
+            Debug.Log("Column Type: " + pColumnProperties.GetColumnType());
             //Debug.Log("My pos before moving is: " + _selectedColumn.transform.position + " while the baseY is: " + _baseYValue);
             setSelectedColumnPropertiesDataValues(pColumnProperties);
             pColumnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
