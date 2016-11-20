@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 
 public class ColumnControl : MonoBehaviour
@@ -20,6 +21,7 @@ public class ColumnControl : MonoBehaviour
 
     private GameObject _selectedColumn;
     private ColumnProperties _columnProperties;
+
     private float _baseYValue;
     private bool _columnRising;
     private bool _columnLowering;
@@ -37,43 +39,45 @@ public class ColumnControl : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        raycasting();
-        updateColumnPosition();
-        isColumnMoving();
+        //raycasting();
+        //updateColumnPosition();
+        //IsColumnMoving();
     }
 
-    //handles the raycast selecting the right column
-    private void raycasting()
+   
+    public void UpdateSelectedColumn(GameObject pSelectedColumn, ColumnProperties pColumnProperties)
     {
-        RaycastHit raycastHit;
-        Ray ray = Camera.main.ScreenPointToRay(new Vector3(/*Screen.width / 2.0f, Screen.height / 2.0f*/Input.mousePosition.x, Input.mousePosition.y, 0));
+        _selectedColumn = pSelectedColumn;
+        _columnProperties = pColumnProperties;
+    }
 
-        if (Physics.Raycast(ray, out raycastHit) && isColumnMoving() == false)
+    public void AttemptRaise(int pPlayerID, GameObject pSelectedColumn, ColumnProperties pColumnProperties)
+    {
+        if (pSelectedColumn != null /*&& isColumnMoving() == false*/ && pColumnProperties.GetColumnType() != 1 && pColumnProperties.GetColumnStatus() == 0)
         {
-            _selectedColumn = raycastHit.collider.gameObject;
-            _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
+            //Debug.Log("My pos before moving is: " + _selectedColumn.transform.position + " while the baseY is: " + _baseYValue);
+            setSelectedColumnPropertiesDataValues(pColumnProperties);
+            pColumnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
+            pColumnProperties.ToggleColumnRising(true);
         }
     }
 
-    public void AttemptRaise(int pPlayerID)
+    public void AttemptLower(int pPlayerID, GameObject pSelectedColumn, ColumnProperties pColumnProperties)
     {
-        if (_selectedColumn != null /*&& isColumnMoving() == false*/ && _columnProperties.GetColumnType() != 1 && _columnProperties.GetColumnStatus() == 0)
-        {
-            Debug.Log("My pos before moving is: " + _selectedColumn.transform.position + " while the baseY is: " + _baseYValue);
-            _columnRising = true;
-            _columnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
-        }
-    }
-
-    public void AttemptLower(int pPlayerID)
-    {
-        if (_selectedColumn != null /*&& isColumnMoving() == false*/ && _columnProperties.GetColumnType() != 1 && _columnProperties.GetColumnStatus() == 0)
+        if (pSelectedColumn != null /*&& isColumnMoving() == false*/ && pColumnProperties.GetColumnType() != 1 && pColumnProperties.GetColumnStatus() == 0)
         {
             Debug.Log("My pos before moving is: " + _selectedColumn.transform.position + " while the baseY is: " + _baseYValue);
-            _columnLowering = true;
-            _columnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
+            setSelectedColumnPropertiesDataValues(pColumnProperties);
+            pColumnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
+            pColumnProperties.ToggleColumnLowering(true);
         }
     }
+
+    private void setSelectedColumnPropertiesDataValues(ColumnProperties _columnProperties)
+    {
+        _columnProperties.SetDataValues(_baseYValue, _columnDisplacementSize, _columnMovementAccelerationSpeed, _columnMovementMaxSpeed, _columnResettingSpeed);
+    }
+
     /*
     //wait for imput from lowering / raising column buttons
     private void detectColumnControlInput()
@@ -92,19 +96,20 @@ public class ColumnControl : MonoBehaviour
     }*/
 
     //if columnLowering or columnRising has been turned on, start moving the column
+    /*
     private void updateColumnPosition()
     {
-        if (_columnRising == true)
+        if (columnRising == true)
         {
             moveColumn(1.0f);
         }
-        if (_columnLowering == true)
+        if (columnLowering == true)
         {
             moveColumn(-1.0f);
         }
-    }
-
-    private bool isColumnMoving()
+    }*/
+    /*
+    public bool IsColumnMoving()
     {
         //if the column is moving in any direction mark it as moving
         if (_columnRising == true || _columnLowering == true)
@@ -115,19 +120,19 @@ public class ColumnControl : MonoBehaviour
         {
             return false;
         }
-    }
-
+    }*/
+    /*
     private void columnHalted()
     {
         _columnRising = false;
         _columnLowering = false;
-    }
-
+    }*/
+    /*
     //actually move the column
     private void moveColumn(float pPolarity)
     {
         //if column is not yet at the height of it's end position
-        if(_baseYValue + Mathf.Abs(_selectedColumn.transform.position.y) + (_baseYValue / 2) < _columnDisplacementSize && isColumnMoving() == true) 
+        if(_baseYValue + Mathf.Abs(_selectedColumn.transform.position.y) + (_baseYValue / 2) < _columnDisplacementSize && IsColumnMoving() == true) 
         {
             //increase the speed of the column to give it natural acceleration
             _columnSpeed += _columnMovementAccelerationSpeed;
@@ -145,5 +150,5 @@ public class ColumnControl : MonoBehaviour
             _columnSpeed = 0.0f;
             _columnProperties.ResetColumn(_columnResettingSpeed, _columnDisplacementSize, _baseYValue, (pPolarity * -1));
         }
-    }
+    }*/
 }
