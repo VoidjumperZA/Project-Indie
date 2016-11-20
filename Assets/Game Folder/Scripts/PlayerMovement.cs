@@ -35,6 +35,11 @@ public class PlayerMovement : MonoBehaviour
         transform.Translate(pDirection * _actualSpeed * Time.deltaTime);
     }
 
+    public void Throw(Vector3 pDirection)
+    {
+        print("movement throw");
+    }
+
     public void Flash()
     {
 
