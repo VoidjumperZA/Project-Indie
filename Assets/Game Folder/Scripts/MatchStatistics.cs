@@ -6,7 +6,7 @@ public static class MatchStatistics
 {
     private static int T1_Score;
     private static int T2_Score;
-    private static Dictionary<int, int> matchGoals = new Dictionary<int, int>();            //(Team, Goals)
+    private static Dictionary<int, int> matchGoals = new Dictionary<int, int>();            //(Team,   Goals)
     private static Dictionary<int, int> teamInfo = new Dictionary<int, int>();              //(Player, Team)
     private static Dictionary<int, int> goalsScored = new Dictionary<int, int>();           //(Player, Goals Scored)
     private static Dictionary<int, int> playersSquished = new Dictionary<int, int>();       //(Player, Number of enemies squished)
