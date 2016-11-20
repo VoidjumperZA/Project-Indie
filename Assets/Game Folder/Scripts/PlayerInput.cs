@@ -15,7 +15,7 @@ public class PlayerInput : MonoBehaviour
     private delegate void InputUpdate();
     private event InputUpdate _update;
 
-    private PlayerMovement _movement;  
+    private PlayerMovement _movement;
     private ColumnControl columnControl;
     private PlayerCamera _cameraScript;
 
@@ -23,7 +23,7 @@ public class PlayerInput : MonoBehaviour
     private ColumnProperties _columnProperties;
 
     private int playerID;
-    private float raycastPos = 1.0f;
+    private Vector3 _raycastPos;
 
     private void Start()
     {
@@ -37,15 +37,15 @@ public class PlayerInput : MonoBehaviour
         _cameraScript = playerCamera.GetComponent<PlayerCamera>();
         columnControl = columnControlManager.GetComponent<ColumnControl>();
 
-        switch(gameObject.tag)
+        switch (gameObject.tag)
         {
             case "Player_1":
                 playerID = 1;
-                raycastPos = 4.0f;
+                _raycastPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f);
                 break;
             case "Player_2":
                 playerID = 2;
-                raycastPos = 1.3f;
+                _raycastPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.25f, 0.0f);
                 break;
             case "Player_3":
                 playerID = 3;
@@ -86,22 +86,19 @@ public class PlayerInput : MonoBehaviour
 
     private void raycastingColumn()
     {
-         //handles the raycast selecting the right column
+        //handles the raycast selecting the right column
 
         RaycastHit raycastHit;
-        Ray ray = playerCamera.ScreenPointToRay(new Vector3(playerCamera.pixelWidth / 2.0f, playerCamera.pixelHeight / 4.0f, 0));
-        
-        //Debug.Log("playerCamera.pixelHeight: " + playerCamera.pixelWidth / 2.0f + ", " + playerCamera.pixelHeight / 2.0f);
-        Debug.Log("screen / cam: " + Screen.width / (playerCamera.pixelWidth / 2.0f) + ", " + Screen.height / (playerCamera.pixelHeight / 2.0f));
-        //^ This prints (2, 4) which should be the correct position. However it seems  to get a point MUCH lower than this
+        Ray ray = playerCamera.ScreenPointToRay(_raycastPos); //Fixed it :D
 
         if (Physics.Raycast(ray, out raycastHit))
         {
             if (raycastHit.collider.gameObject.tag == "Column")
             {
+                print("YEEHAWWW");
                 _selectedColumn = raycastHit.collider.gameObject;
                 _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
-               // columnControl.UpdateSelectedColumn(_selectedColumn, _columnProperties);
+                // columnControl.UpdateSelectedColumn(_selectedColumn, _columnProperties);
             }
         }
     }
@@ -109,7 +106,7 @@ public class PlayerInput : MonoBehaviour
 
     private void raiseLowerCheck()
     {
-        if(InputManager.RaiseColumn(playerID) > 0)
+        if (InputManager.RaiseColumn(playerID) > 0)
         {
             columnControl.AttemptRaise(playerID, _selectedColumn, _columnProperties);
         }
