@@ -92,7 +92,7 @@ public class PlayerInput : MonoBehaviour
 
     private void throwCheck()
     {
-        if (InputManager.ThrowButton(playerID) > 0)
+        if (InputManager.ThrowButton(playerID) > 0 && throwAxisLock == false)
         {
             lockAxis(ref throwAxisLock, true);
             print("P" + playerID + " is throwing.");

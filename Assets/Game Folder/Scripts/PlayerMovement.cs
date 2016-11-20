@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     private float _maxMovementSpeed;
     [SerializeField]
     private float _accelerationSpeed;
+    [SerializeField]
+    private float _throwingForce;
 
     private float _actualSpeed;
 
@@ -39,10 +41,10 @@ public class PlayerMovement : MonoBehaviour
     {
         print("movement throw");
         Transform ball = transform.FindChild("Ball_Test");
-        ball.SetParent(GameObject.Find("Level").transform);
+        ball.SetParent(GameObject.Find("TestBench").transform);
         Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
         ballRigidbody.useGravity = true;
-        ballRigidbody.AddForce(pDirection);
+        ballRigidbody.AddForce(pDirection * _throwingForce);
     }
 
     public void Flash()
