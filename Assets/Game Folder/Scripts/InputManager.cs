@@ -113,20 +113,34 @@ public static class InputManager
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
-    public static bool FlashButton(int pPlayerID)
+    public static float FlashButton(int pPlayerID)
     {
-        switch (pPlayerID)
-        {
-            case 1:
-                return Input.GetButtonDown("1_FlashButton");
-                break;
-            case 2:
-                return Input.GetButtonDown("2_J_FlashButton");
-                break;
-            default:
-                return Input.GetButtonDown("1_FlashButton");
-                break;
-        }
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_FlashButton");
+        p1_result += Input.GetAxis("1_K_FlashButton");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_FlashButton");
+
+        float p3_result = 0.0f;
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
+    }
+
+    public static float ThrowButton(int pPlayerID)
+    {
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_ThrowButton");
+        p1_result += Input.GetAxis("1_K_ThrowButton");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_ThrowButton");
+
+        float p3_result = 0.0f;
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
 
     }
     /*

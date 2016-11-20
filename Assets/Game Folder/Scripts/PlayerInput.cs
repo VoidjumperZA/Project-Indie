@@ -74,11 +74,14 @@ public class PlayerInput : MonoBehaviour
     private void flashCheck()
     {
         //Just for testing
-        if (InputManager.FlashButton(playerID))
+        if (InputManager.FlashButton(playerID) > 0)
         {
             print("P" + playerID + " is flashing.");
         }
-
+        if (InputManager.FlashButton(playerID) > 0)
+        {
+            print("P" + playerID + " is throwing.");
+        }
     }
 
     private void raycastingColumn()
