@@ -24,7 +24,7 @@ public class Ball : MonoBehaviour
             transform.SetParent(movement.transform);
             changePlayerState(movement);
             _rigidbody.velocity = Vector3.zero;
-            //_rigidbody.useGravity = false;
+            _rigidbody.useGravity = false;
             //_rigidbody.freezeRotation = false;
             transform.localPosition = new Vector3(0, 1, 0);
 
