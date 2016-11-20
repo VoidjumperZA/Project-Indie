@@ -4,7 +4,8 @@ using System.Collections;
 public class Ball : MonoBehaviour
 {
     private Rigidbody _rigidbody;
-    private GameObject owner;
+    private GameObject lastOwner;
+    private PlayerInput temp_PlayerInputForPlayerID;
 
     private void Start()
     {
@@ -28,9 +29,15 @@ public class Ball : MonoBehaviour
             _rigidbody.useGravity = false;
             //_rigidbody.freezeRotation = false;
             transform.localPosition = new Vector3(0, 1, 0);
+            temp_PlayerInputForPlayerID = movement.gameObject.GetComponent<PlayerInput>();
 
             //VOID
-            owner = movement.gameObject;
+            lastOwner = movement.gameObject;
+        }
+        if (pCollision.gameObject.tag == "T1_Goal")
+        {
+            MatchStatistics.AddPlayerGoal(temp_PlayerInputForPlayerID.GetPlayerID());
+            Debug.Log("GAME SCORE: " + MatchStatistics.GetMatchGoals().x + " | " + MatchStatistics.GetMatchGoals().y);
         }
     }
 

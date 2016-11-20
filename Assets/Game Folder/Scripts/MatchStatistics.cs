@@ -85,6 +85,20 @@ public static class MatchStatistics
         return ReturnDictionaryValue(matchGoals, pTeamID);
     }
 
+    //returns a vec2 of the goals of both teams
+    /// <summary>
+    /// Returns a Vector2 with the x element being Team 1's goals and the y being Team 2's.
+    /// </summary>
+    /// <returns></returns>
+    public static Vector2 GetMatchGoals()
+    {
+        //this could be cleaned up instead of hardtyping values
+        Vector2 goals;
+        goals.x = ReturnDictionaryValue(matchGoals, 1);
+        goals.y = ReturnDictionaryValue(matchGoals, 2);
+        return goals;
+    }
+
     //returns the number of times that player has died
     /// <summary>
     /// Returns the number of times that player has died.

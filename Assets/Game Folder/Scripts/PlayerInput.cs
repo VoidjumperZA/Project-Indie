@@ -23,6 +23,7 @@ public class PlayerInput : MonoBehaviour
     private ColumnProperties _columnProperties;
 
     private int playerID;
+    private int temp_TeamID;
     private Vector3 _raycastPos;
 
     private bool flashAxisLock = false;
@@ -46,10 +47,12 @@ public class PlayerInput : MonoBehaviour
         {
             case "Player_1":
                 playerID = 1;
-                _raycastPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f);
+                temp_TeamID = 1;
+                _raycastPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f);                
                 break;
             case "Player_2":
-                playerID = 2;
+                playerID = 2;                
+                temp_TeamID = 2;
                 _raycastPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.25f, 0.0f);
                 break;
             case "Player_3":
@@ -58,6 +61,17 @@ public class PlayerInput : MonoBehaviour
             case "Player_4":
                 playerID = 4;
                 break;
+
+                //---------------------------------------------------------------------------
+                //                                  NOTE
+                //---------------------------------------------------------------------------
+
+                //replace the temp_TeamID with data read in through the UI. This is also as
+                //player 2 and player 1 could be on the same team while 3 and 4 are on the 
+                //opposite
+
+                //Somehow read the team, probably assigned through UI before the match starts
+                MatchStatistics.AssignPlayerToTeam(playerID, temp_TeamID);
         }
     }
 
@@ -139,4 +153,21 @@ public class PlayerInput : MonoBehaviour
         pAxisToLock = pState;
     }
 
+    /// <summary>
+    /// Int attached to the PlayerInput script spesificing which player this instance is listed as.
+    /// </summary>
+    /// <returns></returns>
+    public int GetPlayerID()
+    {
+        return playerID;
+    }
+
+    /// <summary>
+    /// Int attached to the PlayerInput script spesificing on which team this player belongs.
+    /// </summary>
+    /// <returns></returns>
+    public int GetPlayerTeam()
+    {
+        return temp_TeamID;
+    }
 }
