@@ -62,11 +62,16 @@ public class PlayerCamera : MonoBehaviour
             RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo, rayLength))
             {
+<<<<<<< HEAD
                 //print("NAME: " + hitInfo.collider.name);
                 if (_raycastLerp)
                 {
     
                     //print("LERPING");
+=======
+                if (_raycastLerp)
+                {
+>>>>>>> aa0452df8093dcb3ff14f3de8286a14d2c1205aa
                     transform.position = Vector3.Lerp(transform.position, hitInfo.point, _raycastLerpSpeed);
                     transform.LookAt(_finalCameraLookAt);
                     return;
@@ -96,16 +101,25 @@ public class PlayerCamera : MonoBehaviour
         _target.transform.Rotate(0, pXRotation * _horizontalCameraRotationSpeed, 0);
         float xRotation = _targetCameraHelper.eulerAngles.x;
         if (xRotation > 90) { xRotation = (360 - xRotation) * -1; }
+<<<<<<< HEAD
         //print(xRotation);
 
         if (pYRotation > 0 && xRotation > _minVerticalCameraRotation)
         {
             //print("Going down");
+=======
+
+        if (pYRotation > 0 && xRotation > _minVerticalCameraRotation)
+        {
+>>>>>>> aa0452df8093dcb3ff14f3de8286a14d2c1205aa
             _targetCameraHelper.transform.Rotate(-pYRotation * _verticalCameraRotionSpeed, 0, 0);
         }
         else if (pYRotation < 0 && xRotation < _maxVerticalCameraRotation)
         {
+<<<<<<< HEAD
             //print("Going up");
+=======
+>>>>>>> aa0452df8093dcb3ff14f3de8286a14d2c1205aa
             _targetCameraHelper.transform.Rotate(-pYRotation * _verticalCameraRotionSpeed, 0, 0);
         }
 
