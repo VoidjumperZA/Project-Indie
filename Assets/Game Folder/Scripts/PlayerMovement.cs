@@ -47,11 +47,10 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="pDirection"></param>
     public void Throw(Vector3 pDirection)
     {
-        print("movement throw");
-        Transform ball = transform.FindChild("Ball_Test");
-        ball.SetParent(GameObject.Find("TestBench").transform);
+        //get the ball's gameObject
+        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
-        ballRigidbody.useGravity = true;
+        ball.GetComponent<Ball>().TogglePossession(false);     
         ballRigidbody.AddForce(pDirection * _throwingForce);
     }
 

@@ -12,6 +12,15 @@ public static class MatchStatistics
     private static Dictionary<int, int> playersSquished = new Dictionary<int, int>();       //(Player, Number of enemies squished)
     private static Dictionary<int, int> playersDropped = new Dictionary<int, int>();        //(Player, Number of enemies dropped)
     private static Dictionary<int, int> deaths = new Dictionary<int, int>();                //(Player, Deaths)
+   
+    /// <summary>
+    /// Should be called on match creation. Creats a dictionary to store goals for Team 1 and Team 2.
+    /// </summary>
+    public static void IntialiseGoalTracking()
+    {
+        matchGoals.Add(1, 0);
+        matchGoals.Add(2, 0);
+    }
 
     //assigns a player to a team
     /// <summary>
@@ -22,6 +31,11 @@ public static class MatchStatistics
     public static void AssignPlayerToTeam(int pPlayerID, int pTeamID)
     {
         teamInfo.Add(pPlayerID, pTeamID);
+
+        goalsScored.Add(pPlayerID, 0);
+        playersSquished.Add(pPlayerID, 0);
+        playersDropped.Add(pPlayerID, 0);
+        deaths.Add(pPlayerID, 0);
     }
 
     //adds a death to the tally for the spesified player
@@ -148,7 +162,7 @@ public static class MatchStatistics
     {
         int numberOfItems;
         pDictionary.TryGetValue(pKey, out numberOfItems);
-        pDictionary.Add(pKey, numberOfItems + 1);
+        pDictionary[pKey] = numberOfItems + 1;
     }
 
     private static int ReturnDictionaryValue(Dictionary<int, int> pDictionary, int pKey)

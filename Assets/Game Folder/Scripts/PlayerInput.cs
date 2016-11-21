@@ -61,18 +61,18 @@ public class PlayerInput : MonoBehaviour
             case "Player_4":
                 playerID = 4;
                 break;
-
-                //---------------------------------------------------------------------------
-                //                                  NOTE
-                //---------------------------------------------------------------------------
-
-                //replace the temp_TeamID with data read in through the UI. This is also as
-                //player 2 and player 1 could be on the same team while 3 and 4 are on the 
-                //opposite
-
-                //Somehow read the team, probably assigned through UI before the match starts
-                MatchStatistics.AssignPlayerToTeam(playerID, temp_TeamID);
+                
         }
+        //---------------------------------------------------------------------------
+        //                                  NOTE
+        //---------------------------------------------------------------------------
+
+        //replace the temp_TeamID with data read in through the UI. This is also as
+        //player 2 and player 1 could be on the same team while 3 and 4 are on the 
+        //opposite
+
+        //Somehow read the team, probably assigned through UI before the match starts
+        MatchStatistics.AssignPlayerToTeam(playerID, temp_TeamID);
     }
 
     private void Update()

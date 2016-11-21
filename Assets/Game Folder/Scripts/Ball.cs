@@ -3,18 +3,31 @@ using System.Collections;
 
 public class Ball : MonoBehaviour
 {
+    [SerializeField]
+    private Vector3 ballOffset;
+
     private Rigidbody _rigidbody;
     private GameObject lastOwner;
+    private GameObject currentOwner;
     private PlayerInput temp_PlayerInputForPlayerID;
+    private Vector3 centrePosition;
+
+    private bool inPossession;
 
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        centrePosition = transform.position;
+        inPossession = false;
+        
+        //This should definitely be deleted. I've only put it on here because this script is called once
+        //it should be called from our lobby 
+        MatchStatistics.IntialiseGoalTracking();
     }
 
     private void Update()
     {
-
+        moveWithToPlayer();
     }
 
     private void OnCollisionEnter(Collision pCollision)
@@ -22,17 +35,14 @@ public class Ball : MonoBehaviour
         PlayerMovement movement = pCollision.gameObject.GetComponent<PlayerMovement>();
         if (movement != null)
         {
-            transform.SetParent(movement.transform);
-            changePlayerState(movement);
-            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            _rigidbody.velocity = Vector3.zero;
-            _rigidbody.useGravity = false;
-            //_rigidbody.freezeRotation = false;
-            transform.localPosition = new Vector3(0, 1, 0);
+            currentOwner = movement.gameObject;
             temp_PlayerInputForPlayerID = movement.gameObject.GetComponent<PlayerInput>();
+            TogglePossession(true);
+            //transform.SetParent(movement.transform);
+                //transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                
+                //transform.localPosition = new Vector3(0, 1, 0);
 
-            //VOID
-            lastOwner = movement.gameObject;
         }
         if (pCollision.gameObject.tag == "T1_Goal")
         {
@@ -41,13 +51,47 @@ public class Ball : MonoBehaviour
         }
     }
 
-    private void changePlayerState(PlayerMovement pMovement)
+    //
+    /// <summary>
+    /// Reset the ball to the arena's centre and call a game timer.
+    /// </summary>
+    public void ResetToCentre()
     {
-        print("HELLO ITS A ME MARIO");
+        transform.position = centrePosition;
     }
 
-    private void score()
+    public void TogglePossession(bool pState)
     {
+        if (pState == true)
+        {
+            inPossession = true;
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.useGravity = false;
+        }
+        else
+        {
+            inPossession = false;
+            _rigidbody.useGravity = true;
+            lastOwner = currentOwner;
+            currentOwner = null;
+        }
+    }
 
+    private void moveWithToPlayer()
+    {
+        if (inPossession == true)
+        {
+            transform.position = currentOwner.transform.position;
+            transform.Translate(ballOffset);
+        }
+    }
+    
+    /// <summary>
+    /// Will return true if the target is owned by a player.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsInPossession()
+    {
+        return inPossession;
     }
 }
