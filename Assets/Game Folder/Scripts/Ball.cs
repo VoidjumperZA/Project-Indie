@@ -82,7 +82,7 @@ public class Ball : MonoBehaviour
         if (inPossession == true)
         {
             transform.position = currentOwner.transform.position;
-            transform.Translate(ballOffset);
+            transform.Translate(ballOffset, Space.World);
         }
     }
     
