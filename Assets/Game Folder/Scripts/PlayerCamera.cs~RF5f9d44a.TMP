@@ -48,38 +48,37 @@ public class PlayerCamera : MonoBehaviour
         //Converting the camera position from the player's local space to the world space position
         _finalCameraPosition = _targetCameraHelper.TransformPoint(_relativeCameraPosition);
         _finalCameraLookAt = _target.TransformPoint(_relativeCameraLookAt);
-        //DESIGNER If statement to enable or disable raycasting, have to look which one works better
-        if (_raycasting)
-        {
-            Vector3 cam2Player = _finalCameraPosition - _targetCameraHelper.position;
-            float rayLength = cam2Player.magnitude;
-
-            Ray ray = new Ray(_targetCameraHelper.position, cam2Player);
-            RaycastHit hitInfo;
-            if (Physics.Raycast(ray, out hitInfo, rayLength))
-            {
-                print("NAME: " + hitInfo.collider.name);
-                if (_raycastLerp)
-                {
-                    print("LERPING");
-                    transform.position = Vector3.Lerp(transform.position, hitInfo.point, _raycastLerpSpeed);
-                    return;
-                }
-                else
-                {
-                    transform.position = hitInfo.point;
-                    return;
-                }
-            }
-        }
         //DESIGNER If statement so they can swap between following smoothly and following in a snappy manner through the inspector
-        if (!_smoothFollow)//THIS BITCH
+        if (!_smoothFollow)
         {
             transform.position = _finalCameraPosition;
         }
         else
         {
             transform.position = Vector3.Slerp(transform.position, _finalCameraPosition, _smoothFollowSpeed);
+        }
+        //DESIGNER If statement to enable or disable raycasting, have to look which one works better
+        if (_raycasting)
+        {
+            Vector3 cam2Player = _targetCameraHelper.position - _finalCameraPosition;
+            float rayLength = cam2Player.magnitude;
+
+            Ray ray = new Ray(_finalCameraPosition, cam2Player);
+            RaycastHit hitInfo;
+            if (Physics.Raycast(ray, out hitInfo, rayLength))
+            {
+                if (_raycastLerp)
+                {
+                    print("LERPING");
+                    //print("tansform.position = " + transform.position + ", hitInfo.point = " + hitInfo.point);
+                    transform.position = Vector3.Slerp(transform.position, hitInfo.point, _raycastLerpSpeed);
+                    Vector3 previousPosition = transform.position;
+                }
+                else
+                {
+                    transform.position = hitInfo.point;
+                }
+            }
         }
         transform.LookAt(_finalCameraLookAt);
     }

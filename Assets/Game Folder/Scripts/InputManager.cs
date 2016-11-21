@@ -4,77 +4,215 @@ using System.Collections;
 public static class InputManager
 {
     //Joysticks and WASD movement
-    public static float MovementHorizontal()
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static float MovementHorizontal(int pPlayerID)
     {
-        float result = 0.0f;
-        result += Input.GetAxis("J_MovementHorizontal");
-        result += Input.GetAxis("K_MovementHorizontal");
-        return Mathf.Clamp(result, -1.0f, 1.0f);
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_MovementHorizontal");
+        p1_result += Input.GetAxis("1_K_MovementHorizontal");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_MovementHorizontal");
+
+        float p3_result = 0.0f;
+        
+
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
-    public static float MovementVertical()
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static float MovementVertical(int pPlayerID)
     {
-        float result = 0.0f;
-        result += Input.GetAxis("J_MovementVertical");
-        result += Input.GetAxis("K_MovementVertical");
-        return Mathf.Clamp(result, -1.0f, 1.0f);
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_MovementVertical");
+        p1_result += Input.GetAxis("1_K_MovementVertical");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_MovementVertical");
+
+
+        float p3_result = 0.0f;
+
+
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);   
     }
 
-    public static Vector3 Movement()
+    /// <summary>
+    /// /// Vector3 float values for both the horizontal and vertical axes input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static Vector3 Movement(int pPlayerID)
     {
-        return new Vector3(MovementHorizontal(), 0, MovementVertical());
+        return new Vector3(MovementHorizontal(pPlayerID), 0, MovementVertical(pPlayerID));
     }
 
     //Mouse camera movement
-    public static float CameraHorizontal()
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static float CameraHorizontal(int pPlayerID)
     {
-        float result = 0.0f;
-        result += Input.GetAxis("J_CameraHorizontal");
-        result += Input.GetAxis("M_CameraHorizontal");
-        return Mathf.Clamp(result, -1.0f, 1.0f);
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_CameraHorizontal");
+        p1_result += Input.GetAxis("1_M_CameraHorizontal");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_CameraHorizontal");
+
+        float p3_result = 0.0f;
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
+        
     }
 
-    public static float CameraVertical()
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static float CameraVertical(int pPlayerID)
     {
-        float result = 0.0f;
-        result += Input.GetAxis("J_CameraVertical");
-        result += Input.GetAxis("M_CameraVertical");
-        return Mathf.Clamp(result, -1.0f, 1.0f);
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_CameraVertical");
+        p1_result += Input.GetAxis("1_M_CameraVertical");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_CameraVertical");
+
+        float p3_result = 0.0f;
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
-    public static Vector3 CameraMovement()
+    /// <summary>
+    /// Vector3 float values for both the horizontal and vertical axes input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static Vector3 CameraMovement(int pPlayerID)
     {
-        return new Vector3(CameraHorizontal(), 0, CameraVertical());
+        return new Vector3(CameraHorizontal(pPlayerID), 0, CameraVertical(pPlayerID));
     }
 
     //Triggers / ColumnControl
-    public static float RaiseColumn()
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static float RaiseColumn(int pPlayerID)
     {
-        float result = 0.0f;
-        result += Input.GetAxis("J_RaiseColumn");
-        result += Input.GetAxis("K_RaiseColumn");
-        return Mathf.Clamp(result, -1.0f, 1.0f);
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_RaiseColumn");
+        p1_result += Input.GetAxis("1_K_RaiseColumn");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_RaiseColumn");
+
+        float p3_result = 0.0f;
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
-    public static float LowerColumn()
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static float LowerColumn(int pPlayerID)
     {
-        float result = 0.0f;
-        result += Input.GetAxis("J_LowerColumn");
-        result += Input.GetAxis("K_LowerColumn");
-        return Mathf.Clamp(result, -1.0f, 1.0f);
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_LowerColumn");
+        p1_result += Input.GetAxis("1_K_LowerColumn");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_LowerColumn");
+
+        float p3_result = 0.0f;
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
-
-    //Buttons
-    public static bool FlashButton()
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static float FlashButton(int pPlayerID)
     {
-        return Input.GetButtonDown("FlashButton");
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_FlashButton");
+        p1_result += Input.GetAxis("1_K_FlashButton");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_FlashButton");
+
+        float p3_result = 0.0f;
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
-    public static bool ThrowButton()
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static float ThrowButton(int pPlayerID)
     {
-        return Input.GetButtonDown("ThrowButton");
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_ThrowButton");
+        p1_result += Input.GetAxis("1_K_ThrowButton");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_ThrowButton");
+
+        float p3_result = 0.0f;
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
-    //https://www.facebook.com/PakaluPapitoOfficial/videos/1929920053902162/?hc_ref=NEWSFEED
+    //internal method for clamping axes to 1, in the case of both keyboard and joystick input simultaenously
+    //our axis value would become twice as large
+    private static float returnClampedAxis(int pPlayerID, float pP1_Result, float pP2_Result, float pP3_Result, float pP4_Result)
+    {
+        switch (pPlayerID)
+        {
+            case 1:
+                return Mathf.Clamp(pP1_Result, -1.0f, 1.0f);
+                break;
+            case 2:
+                return Mathf.Clamp(pP2_Result, -1.0f, 1.0f);
+                break;
+            case 3:
+                return Mathf.Clamp(pP3_Result, -1.0f, 1.0f);
+                break;
+            case 4:
+                return Mathf.Clamp(pP4_Result, -1.0f, 1.0f);
+                break;
+            default:
+                return Mathf.Clamp(pP1_Result, -1.0f, 1.0f);
+                break;
+        }
+    }
 }

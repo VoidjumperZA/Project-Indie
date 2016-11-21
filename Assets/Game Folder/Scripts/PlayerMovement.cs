@@ -8,11 +8,14 @@ public class PlayerMovement : MonoBehaviour
     private float _maxMovementSpeed;
     [SerializeField]
     private float _accelerationSpeed;
+    [SerializeField]
+    private float _throwingForce;
+
+    private float _actualSpeed;
 
     //Could be changed for an enum later on, for now we can use a Boolean
     private bool _ballPosession = false;
 
-    //Need to test this (rigidBody)
     private Rigidbody _rigidBody;
 
     private void Start()
@@ -20,21 +23,41 @@ public class PlayerMovement : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
+    /// <summary>
+    /// Move the player in a given direction while applying acceleration.
+    /// </summary>
+    /// <param name="pDirection"></param>
+    public void Move(Vector3 pDirection)
     {
-        Move();
-    }
-
-    public void Move()
-    {
-        if(_rigidBody.velocity.magnitude < _maxMovementSpeed)
+        if(pDirection.magnitude == 0)
         {
-            _rigidBody.AddRelativeForce(InputManager.Movement() * _accelerationSpeed);
+            _actualSpeed = 0.0f;
         }
-
-        //print("velocity: " + _rigidBody.velocity.magnitude);
+        else
+        {
+            _actualSpeed += _accelerationSpeed;
+            _actualSpeed = Mathf.Min(_maxMovementSpeed, _actualSpeed);
+        }
+        transform.Translate(pDirection * _actualSpeed * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Release the ball in the direction aimed, putting the ball back into play.
+    /// </summary>
+    /// <param name="pDirection"></param>
+    public void Throw(Vector3 pDirection)
+    {
+        print("movement throw");
+        Transform ball = transform.FindChild("Ball_Test");
+        ball.SetParent(GameObject.Find("TestBench").transform);
+        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
+        ballRigidbody.useGravity = true;
+        ballRigidbody.AddForce(pDirection * _throwingForce);
+    }
+
+    /// <summary>
+    /// Teleport the player forward a short amount while also throwing the ball ahead of them.
+    /// </summary>
     public void Flash()
     {
 
