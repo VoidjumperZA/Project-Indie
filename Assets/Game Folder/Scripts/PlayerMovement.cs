@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     private float _accelerationSpeed;
     [SerializeField]
     private float _throwingForce;
+    [SerializeField]
+    private float _throwRotationAddition;
 
     private float _actualSpeed;
 
@@ -29,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="pDirection"></param>
     public void Move(Vector3 pDirection)
     {
-        if(pDirection.magnitude == 0)
+        if (pDirection.magnitude == 0)
         {
             _actualSpeed = 0.0f;
         }
@@ -50,7 +52,8 @@ public class PlayerMovement : MonoBehaviour
         //get the ball's gameObject
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
-        ball.GetComponent<Ball>().TogglePossession(false);     
+        ball.GetComponent<Ball>().TogglePossession(false);
+        pDirection = Quaternion.AngleAxis(-_throwRotationAddition, transform.right) * pDirection;
         ballRigidbody.AddForce(pDirection * _throwingForce);
     }
 
