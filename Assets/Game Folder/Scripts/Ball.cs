@@ -41,22 +41,27 @@ public class Ball : MonoBehaviour
             currentOwner = movement.gameObject;
             currentOwnerID = movement.gameObject.GetComponent<PlayerInput>();
 
-            //if we have a last owner and the last owner's team is not the same as the current owner's team
-            if (lastOwner != null && MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()) != MatchStatistics.GetTeamIDofPlayer(lastOwnerID.GetPlayerID()))
+            try
             {
-                lastOwnerOfOtherTeam = lastOwner;
-                lastOwnerOfOtherTeamID = lastOwnerID;
+                //if we have a last owner and the last owner's team is not the same as the current owner's team
+                if (lastOwner != null && MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()) != MatchStatistics.GetTeamIDofPlayer(lastOwnerID.GetPlayerID()))
+                {
+                    lastOwnerOfOtherTeam = lastOwner;
+                    lastOwnerOfOtherTeamID = lastOwnerID;
+                }
             }
-            else
+            catch
             {
                 Debug.Log("lastOwner is null. Possibly as another player has not touched the ball. This is intentional.");
             }
+
             TogglePossession(true);
 
         }
         Goal goalScript = pCollision.gameObject.GetComponent<Goal>();
         if (goalScript != null)
         {
+            Debug.Log("Yes hello, this is Goal?");
             //if the goal does not belong to the same team as the player who scored
             if (goalScript.GetTeamOwnershipID() != MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()))
             {                
