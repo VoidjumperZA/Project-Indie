@@ -19,6 +19,12 @@ public class ColumnControl : MonoBehaviour
     [SerializeField]
     private float _columnResettingSpeed;
 
+    [SerializeField]
+    private float _columnTimeInMSUntilReset;
+
+    [SerializeField]
+    private float _playerColumnControlCooldown;
+
     private GameObject _selectedColumn;
     private ColumnProperties _columnProperties;
 
@@ -91,78 +97,4 @@ public class ColumnControl : MonoBehaviour
     {
         _columnProperties.SetDataValues(_baseYValue, _columnDisplacementSize, _columnMovementAccelerationSpeed, _columnMovementMaxSpeed, _columnResettingSpeed);
     }
-
-    /*
-    //wait for imput from lowering / raising column buttons
-    private void detectColumnControlInput()
-    {
-        //if we've pressed the button, we have a column selected, it isn't already being controlled and it isn't a Static type column
-        if (InputManager.RaiseColumn(1) > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
-        {
-            Debug.Log("My pos before moving is: " + selectedColumn.transform.position + " while the baseY is: " + baseYValue);
-            columnRising = true;
-        }
-        if (InputManager.LowerColumn(1) > 0 && selectedColumn != null && isColumnMoving() == false && columnProperties.GetColumnType() != 1)
-        {
-            Debug.Log("My pos before moving is: " + selectedColumn.transform.position + " while the baseY is: " + baseYValue);
-            columnLowering = true;
-        }
-    }*/
-
-    //if columnLowering or columnRising has been turned on, start moving the column
-    /*
-    private void updateColumnPosition()
-    {
-        if (columnRising == true)
-        {
-            moveColumn(1.0f);
-        }
-        if (columnLowering == true)
-        {
-            moveColumn(-1.0f);
-        }
-    }*/
-    /*
-    public bool IsColumnMoving()
-    {
-        //if the column is moving in any direction mark it as moving
-        if (_columnRising == true || _columnLowering == true)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }*/
-    /*
-    private void columnHalted()
-    {
-        _columnRising = false;
-        _columnLowering = false;
-    }*/
-    /*
-    //actually move the column
-    private void moveColumn(float pPolarity)
-    {
-        //if column is not yet at the height of it's end position
-        if(_baseYValue + Mathf.Abs(_selectedColumn.transform.position.y) + (_baseYValue / 2) < _columnDisplacementSize && IsColumnMoving() == true) 
-        {
-            //increase the speed of the column to give it natural acceleration
-            _columnSpeed += _columnMovementAccelerationSpeed;
-            if (_columnSpeed >= _columnMovementMaxSpeed)
-            {
-                _columnSpeed = _columnMovementMaxSpeed;
-            }
-            _selectedColumn.transform.Translate(0, pPolarity * _columnSpeed, 0);
-            //Debug.Log("Speed: " + columnSpeed + "lossyScale: " + selectedColumn.transform.lossyScale.y + ", localScale: " + selectedColumn.transform.localScale.y);
-        }
-        else
-        {
-            //stop the column moving, which should deactive both columnRising and columnLowering
-            columnHalted();
-            _columnSpeed = 0.0f;
-            _columnProperties.ResetColumn(_columnResettingSpeed, _columnDisplacementSize, _baseYValue, (pPolarity * -1));
-        }
-    }*/
 }

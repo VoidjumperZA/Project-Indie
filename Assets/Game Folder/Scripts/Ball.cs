@@ -7,9 +7,12 @@ public class Ball : MonoBehaviour
     private Vector3 ballOffset;
 
     private Rigidbody _rigidbody;
-    private GameObject lastOwner;
-    private GameObject currentOwner;
-    private PlayerInput temp_PlayerInputForPlayerID;
+    private GameObject currentOwner;            //tracks who is currently holding the ball
+    private GameObject lastOwner;               //tracks who touched the ball last, can track assists
+    private GameObject lastOwnerOfOtherTeam;    //tracks the last enemy to touch the other ball, in the case of own goals
+    private PlayerInput currentOwnerID;
+    private PlayerInput lastOwnerID;
+    private PlayerInput lastOwnerOfOtherTeamID;
     private Vector3 centrePosition;
 
     private bool inPossession;
@@ -36,18 +39,35 @@ public class Ball : MonoBehaviour
         if (movement != null)
         {
             currentOwner = movement.gameObject;
-            temp_PlayerInputForPlayerID = movement.gameObject.GetComponent<PlayerInput>();
+            currentOwnerID = movement.gameObject.GetComponent<PlayerInput>();
+
+            //if we have a last owner and the last owner's team is not the same as the current owner's team
+            if (lastOwner != null && MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()) != MatchStatistics.GetTeamIDofPlayer(lastOwnerID.GetPlayerID()))
+            {
+                lastOwnerOfOtherTeam = lastOwner;
+                lastOwnerOfOtherTeamID = lastOwnerID;
+            }
+            else
+            {
+                Debug.Log("lastOwner is null. Possibly as another player has not touched the ball. This is intentional.");
+            }
             TogglePossession(true);
-            //transform.SetParent(movement.transform);
-                //transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                
-                //transform.localPosition = new Vector3(0, 1, 0);
 
         }
-        if (pCollision.gameObject.tag == "T1_Goal")
+        Goal goalScript = pCollision.gameObject.GetComponent<Goal>();
+        if (goalScript != null)
         {
-            MatchStatistics.AddPlayerGoal(temp_PlayerInputForPlayerID.GetPlayerID());
+            //if the goal does not belong to the same team as the player who scored
+            if (goalScript.GetTeamOwnershipID() != MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()))
+            {                
+                MatchStatistics.AddPlayerGoal(currentOwnerID.GetPlayerID());
+            }
+            else
+            {
+                MatchStatistics.AddPlayerGoal(lastOwnerOfOtherTeamID.GetPlayerID());
+            }
             Debug.Log("GAME SCORE: " + MatchStatistics.GetMatchGoals().x + " | " + MatchStatistics.GetMatchGoals().y);
+            ResetToCentre();
         }
     }
 

@@ -28,6 +28,8 @@ public class PlayerInput : MonoBehaviour
 
     private bool flashAxisLock = false;
     private bool throwAxisLock = false;
+    private bool raiseAxisLock = false;
+    private bool lowerAxisLock = false;
 
     private void Start()
     {
@@ -138,13 +140,26 @@ public class PlayerInput : MonoBehaviour
     //check if input is calling for the player to raise or lower a column, then execute
     private void raiseLowerCheck()
     {
-        if (InputManager.RaiseColumn(playerID) > 0)
+        //raise column
+        if (InputManager.RaiseColumn(playerID) > 0 && raiseAxisLock == false)
         {
             columnControl.AttemptRaise(playerID, _selectedColumn, _columnProperties);
+            lockAxis(ref raiseAxisLock, true);
         }
-        if (InputManager.LowerColumn(playerID) > 0)
+        if (InputManager.RaiseColumn(playerID) == 0)
+        {
+            lockAxis(ref raiseAxisLock, false);
+        }
+
+        //lower column
+        if (InputManager.LowerColumn(playerID) > 0 && lowerAxisLock == false)
         {
             columnControl.AttemptLower(playerID, _selectedColumn, _columnProperties);
+            lockAxis(ref lowerAxisLock, true);
+        }
+        if (InputManager.LowerColumn(playerID) == 0)
+        {
+            lockAxis(ref lowerAxisLock, false);
         }
     }
 

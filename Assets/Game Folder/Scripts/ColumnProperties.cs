@@ -70,9 +70,9 @@ public class ColumnProperties : MonoBehaviour
         }
         else
         {
-            Debug.Log("My pos before .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
+            //Debug.Log("My pos before .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
             gameObject.transform.position = new Vector3(gameObject.transform.position.x, _baseYValue, gameObject.transform.position.z);                   
-            Debug.Log("My pos after .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
+            //Debug.Log("My pos after .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
             _movementDelta = 0.0f;
             _atBaseLevel = true;
             columnStatus = ColumnStatus.Free;

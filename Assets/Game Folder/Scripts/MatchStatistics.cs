@@ -24,10 +24,10 @@ public static class MatchStatistics
 
     //assigns a player to a team
     /// <summary>
-    /// Assigns a player to a team.
+    /// Assigns a player to a team. Automatically generates internal dictionary entries for that player's stats.
     /// </summary>
-    /// <param name="pPlayerID"><param name="pTeamID"></param>
-    /// <returns></returns>
+    /// <param name="pPlayerID"></param>
+    /// <param name="pTeamID"></param>
     public static void AssignPlayerToTeam(int pPlayerID, int pTeamID)
     {
         teamInfo.Add(pPlayerID, pTeamID);
@@ -155,6 +155,16 @@ public static class MatchStatistics
     public static int GetPlayerGoals(int pPlayerID)
     {
         return ReturnDictionaryValue(goalsScored, pPlayerID);
+    }
+
+    /// <summary>
+    /// Returns the team the given player is on.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static int GetTeamIDofPlayer(int pPlayerID)
+    {
+        return ReturnDictionaryValue(teamInfo, pPlayerID);
     }
 
     //internal method for incrementing a value of a spesified statistic
