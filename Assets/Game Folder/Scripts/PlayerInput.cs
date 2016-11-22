@@ -99,6 +99,18 @@ public class PlayerInput : MonoBehaviour
         {
             lockAxis(ref flashAxisLock, true);
             print("P" + playerID + " is flashing.");
+
+            //Raycast for flashing should be here
+            GameObject currentColumn;
+            Ray ray = new Ray(transform.position, -transform.up);
+            RaycastHit hitInfo;
+            if(Physics.Raycast(ray, out hitInfo))
+            {
+                currentColumn = hitInfo.collider.gameObject;
+            }
+
+
+
         }
         if (InputManager.FlashButton(playerID) == 0)
         {

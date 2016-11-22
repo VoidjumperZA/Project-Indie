@@ -62,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     public void Flash()
     {
+        //raycast down and look which column you are hitting, then look at the position after the flash, raycast down and see if it is another column
 
     }
 }
