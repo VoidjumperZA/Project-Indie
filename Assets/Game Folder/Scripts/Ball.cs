@@ -74,6 +74,8 @@ public class Ball : MonoBehaviour
             Debug.Log("GAME SCORE: " + MatchStatistics.GetMatchGoals().x + " | " + MatchStatistics.GetMatchGoals().y);
             ResetToCentre();
         }
+        //A little fix for ResetToCentre()
+        _rigidbody.freezeRotation = false;
     }
 
     //
@@ -83,6 +85,8 @@ public class Ball : MonoBehaviour
     public void ResetToCentre()
     {
         transform.position = centrePosition;
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.freezeRotation = true;
     }
 
     public void TogglePossession(bool pState)
