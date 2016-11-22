@@ -65,6 +65,15 @@ public static class MatchStatistics
         IncrementItemByOne(matchGoals, playerTeam);
     }
 
+    /// <summary>
+    /// Add a goal to a team with no player getting the attributation for the goal.
+    /// </summary>
+    /// <param name="pTeamID"></param>
+    public static void AddUnattributedGoal(int pTeamID)
+    {
+        IncrementItemByOne(matchGoals, pTeamID);
+    }
+
     //adds a count to the tally of squished players for the spesified player
     /// <summary>
     /// Adds a count to the tally of squished players for the spesified player.

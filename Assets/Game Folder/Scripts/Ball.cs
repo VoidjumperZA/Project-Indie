@@ -62,16 +62,25 @@ public class Ball : MonoBehaviour
         if (goalScript != null)
         {
             Debug.Log("Yes hello, this is Goal?");
+
             //if the goal does not belong to the same team as the player who scored
             if (goalScript.GetTeamOwnershipID() != MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()))
-            {
-                print("if");           
+            {   
                 MatchStatistics.AddPlayerGoal(currentOwnerID.GetPlayerID());
             }
             else
             {
-                print("else");
-                MatchStatistics.AddPlayerGoal(lastOwnerOfOtherTeamID.GetPlayerID());
+                //if an own goal is scored when no opposing player has touched the ball, give
+                //the opposing team a goal, but no player credit
+                if (lastOwnerOfOtherTeamID == null)
+                {
+                    MatchStatistics.AddUnattributedGoal(goalScript.GetTeamOwnershipID());
+                }
+                //give the opposing team a goal with the last opposing player to have touched it the credit
+                else
+                {
+                    MatchStatistics.AddPlayerGoal(lastOwnerOfOtherTeamID.GetPlayerID());
+                }
             }
             Debug.Log("GAME SCORE: " + MatchStatistics.GetMatchGoals().x + " | " + MatchStatistics.GetMatchGoals().y);
             ResetToCentre();
@@ -104,6 +113,7 @@ public class Ball : MonoBehaviour
             inPossession = false;
             _rigidbody.useGravity = true;
             lastOwner = currentOwner;
+            lastOwnerID = currentOwnerID;
             currentOwner = null;
         }
     }

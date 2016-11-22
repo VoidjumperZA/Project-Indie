@@ -105,6 +105,32 @@ public class PlayerInput : MonoBehaviour
             lockAxis(ref flashAxisLock, false);
         }
     }
+    
+
+    private void faceButtonCheck(ref bool pAxisLock)
+    {
+        if (InputManager.ThrowButton(playerID) > 0 && pAxisLock == false)
+        {
+            lockAxis(ref pAxisLock, true);
+            
+            //DELEGATE: ?
+            //_movement.Throw(_cameraScript.gameObject.transform.forward);
+        }
+        if (InputManager.ThrowButton(playerID) == 0)
+        {
+            lockAxis(ref pAxisLock, false);
+        }
+    }
+
+    private void executeFlash()
+    {
+
+    }
+
+    private void executeThrow()
+    {
+        _movement.Throw(_cameraScript.gameObject.transform.forward);
+    }
 
     //check if input is calling for the player to throw, then execute
     private void throwCheck()
