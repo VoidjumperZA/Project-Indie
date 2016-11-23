@@ -56,6 +56,15 @@ public class PlayerMovement : MonoBehaviour
         ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
     }
 
+    public void Throw(Vector3 pDirection)
+    {
+        //get the ball's gameObject
+        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
+        ball.GetComponent<Ball>().TogglePossession(false);
+        ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
+    }
+
     /// <summary>
     /// Teleport the player forward a short amount while also throwing the ball ahead of them.
     /// </summary>
