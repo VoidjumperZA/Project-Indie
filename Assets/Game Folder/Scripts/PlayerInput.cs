@@ -95,6 +95,7 @@ public class PlayerInput : MonoBehaviour
     //check if input is calling for the player to flash, then execute
     private void flashCheck()
     {
+        //Maybe make a difference vector and translate for the trail effect possibly?
         if (InputManager.FlashButton(playerID) > 0 && flashAxisLock == false)
         {
             lockAxis(ref flashAxisLock, true);
@@ -110,7 +111,7 @@ public class PlayerInput : MonoBehaviour
             }
             Vector3 afterFlashFailPosition = transform.position + (transform.forward * _movement.GetFlashDistance());
             Vector3 afterFlashSucceedPosition = afterFlashFailPosition;
-            afterFlashSucceedPosition.y = columnControl.GetBaseYValue();
+            afterFlashSucceedPosition.y = columnControl.GetGroundFloorYValue();
             Ray secondRay = new Ray(afterFlashFailPosition, -transform.up);
             RaycastHit secondHitInfo;
             if(Physics.Raycast(secondRay, out secondHitInfo))
@@ -118,13 +119,17 @@ public class PlayerInput : MonoBehaviour
                 possibleNextColumn = secondHitInfo.collider.gameObject;
             }
 
+            print("position: " + transform.position + ", afterFlashFailPosition: " + afterFlashFailPosition + ", afterFlashSucceedPosition: " + afterFlashSucceedPosition);
+
             if(currentColumn == possibleNextColumn)
             {
-                _movement.Flash(afterFlashSucceedPosition);
+                _movement.Flash(afterFlashFailPosition);
+                print("fail");
             }
             else
             {
-                _movement.Flash(afterFlashFailPosition);
+                _movement.Flash(afterFlashSucceedPosition);
+                print("succeed");
             }
         }
         if (InputManager.FlashButton(playerID) == 0)
