@@ -37,7 +37,6 @@ public class PlayerInput : MonoBehaviour
         _update += raycastingColumn;
         _update += raiseLowerCheck;
         _update += flashCheck;
-        _update += throwCheck;
         _update += movementHandler;
 
         _movement = GetComponent<PlayerMovement>();
@@ -170,6 +169,7 @@ public class PlayerInput : MonoBehaviour
             lockAxis(ref throwAxisLock, true);
             print("P" + playerID + " is throwing.");
             _movement.Throw(_cameraScript.gameObject.transform.forward);
+            Able2Throw(false);
         }
         if (InputManager.ThrowButton(playerID) == 0)
         {
@@ -245,5 +245,17 @@ public class PlayerInput : MonoBehaviour
     public int GetPlayerTeam()
     {
         return temp_TeamID;
+    }
+
+    public void Able2Throw(bool pBool)
+    {
+        if(pBool == false)
+        {
+            _update -= throwCheck;
+        }
+        else
+        {
+            _update += throwCheck;
+        }
     }
 }
