@@ -187,6 +187,11 @@ public class PlayerInput : MonoBehaviour
                 _selectedColumn = raycastHit.collider.gameObject;
                 _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
             }
+            else
+            {
+                _selectedColumn = null;
+                _columnProperties = null;
+            }
         }
     }
 

@@ -12,8 +12,8 @@ public class DeathZones : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        setStartPosOfBoundaries(upperBoundary, 1.0f);
-        setStartPosOfBoundaries(lowerBoundary, -1.0f);
+        setStartPosOfBoundaries(upperBoundary, 3.0f);
+        setStartPosOfBoundaries(lowerBoundary, 1.0f);
     }
 
     // Update is called once per frame
@@ -25,7 +25,8 @@ public class DeathZones : MonoBehaviour
     private void setStartPosOfBoundaries(GameObject pZone, float pPolarity)
     {
         ColumnControl columnControl = GetComponent<ColumnControl>();
-        pZone.transform.position = new Vector3(pZone.transform.position.x, pZone.transform.position.y, 0);
-        //pZone.transform.Translate(0, 0, (columnControl.GetColumnDisplacement() / 2) * pPolarity);
+        //pZone.transform.position = new Vector3(pZone.transform.position.x, pZone.transform.position.y, 0);
+        pZone.transform.position = new Vector3(pZone.transform.position.x, 0 + (columnControl.GetUnmovingColumn().GetComponent<MeshRenderer>().bounds.extents.y) * pPolarity, pZone.transform.position.z);
+        
     }
 }

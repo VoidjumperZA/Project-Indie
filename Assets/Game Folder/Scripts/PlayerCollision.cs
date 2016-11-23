@@ -23,6 +23,7 @@ public class PlayerCollision : MonoBehaviour
     {
         if (pCol.gameObject.tag == "UpperBoundary" || pCol.gameObject.tag == "LowerBoundary")
         {
+            Debug.Log("Collided with " + pCol.gameObject.tag);
             //raycast down, if there's a column find who owned it
             if (detectColumnBelow() == true)
             {
@@ -45,13 +46,13 @@ public class PlayerCollision : MonoBehaviour
     private bool detectColumnBelow()
     {
         RaycastHit raycastHit;
-        Ray ray = new Ray(gameObject.transform.position, new Vector3(0, -1, 0));
+        Ray ray = new Ray(gameObject.transform.position, -gameObject.transform.up);
 
         if (Physics.Raycast(ray, out raycastHit))
         {
             if (raycastHit.collider.gameObject.tag == "Column")
             {
-                columnProperties = gameObject.GetComponent<ColumnProperties>();
+                columnProperties = raycastHit.collider.gameObject.GetComponent<ColumnProperties>();
                 return true;
             }
             else

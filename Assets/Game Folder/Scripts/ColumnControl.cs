@@ -108,4 +108,8 @@ public class ColumnControl : MonoBehaviour
         return _baseYValue;
     }
 
+    public GameObject GetUnmovingColumn()
+    {
+        return _unmovingColumn;
+    }
 }
