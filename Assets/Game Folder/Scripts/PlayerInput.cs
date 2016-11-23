@@ -12,6 +12,14 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private Image crosshairs;
 
+    private enum PlayerState
+    {
+        NORMAL,
+        CARRYINGBALL
+    }
+
+    private PlayerState _state = PlayerState.NORMAL;
+
     private delegate void InputUpdate();
     private event InputUpdate _update;
 
@@ -55,10 +63,10 @@ public class PlayerInput : MonoBehaviour
             case "Player_1":
                 playerID = 1;
                 temp_TeamID = 1;
-                _raycastPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f);                
+                _raycastPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f);
                 break;
             case "Player_2":
-                playerID = 2;                
+                playerID = 2;
                 temp_TeamID = 2;
                 _raycastPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.25f, 0.0f);
                 break;
@@ -68,7 +76,7 @@ public class PlayerInput : MonoBehaviour
             case "Player_4":
                 playerID = 4;
                 break;
-                
+
         }
         //---------------------------------------------------------------------------
         //                                  NOTE
@@ -110,7 +118,7 @@ public class PlayerInput : MonoBehaviour
             GameObject possibleNextColumn = null;
             Ray firstRay = new Ray(transform.position, -transform.up);
             RaycastHit firstHitInfo;
-            if(Physics.Raycast(firstRay, out firstHitInfo))
+            if (Physics.Raycast(firstRay, out firstHitInfo))
             {
                 currentColumn = firstHitInfo.collider.gameObject;
             }
@@ -119,12 +127,12 @@ public class PlayerInput : MonoBehaviour
             afterFlashSucceedPosition.y = columnControl.GetGroundFloorYValue();
             Ray secondRay = new Ray(afterFlashFailPosition, -transform.up);
             RaycastHit secondHitInfo;
-            if(Physics.Raycast(secondRay, out secondHitInfo))
+            if (Physics.Raycast(secondRay, out secondHitInfo))
             {
                 possibleNextColumn = secondHitInfo.collider.gameObject;
             }
 
-            if(currentColumn == possibleNextColumn)
+            if (currentColumn == possibleNextColumn)
             {
                 _movement.Flash(afterFlashFailPosition);
                 print("fail");
@@ -134,22 +142,25 @@ public class PlayerInput : MonoBehaviour
                 _movement.Flash(afterFlashSucceedPosition);
                 print("succeed");
             }
-            _movement.Throw(transform.forward, true);
-            Able2Throw(false);
+            if (_state == PlayerState.CARRYINGBALL)
+            {
+                _movement.Throw(transform.forward, true);
+                Able2Throw(false);
+            }
         }
         if (InputManager.FlashButton(playerID) == 0)
         {
             lockAxis(ref flashAxisLock, false);
         }
     }
-    
+
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock)
     {
         if (pButtonPressed > 0 && pAxisLock == false)
         {
             lockAxis(ref pAxisLock, true);
-            
+
             //DELEGATE: ?
             //_movement.Throw(_cameraScript.gameObject.transform.forward);
         }
@@ -209,7 +220,7 @@ public class PlayerInput : MonoBehaviour
         if (InputManager.PauseButton(playerID) == 0)
         {
             lockAxis(ref pauseAxisLock, false);
-        }        
+        }
     }
 
     //raycast gameobjects and if they're columns, set them as the selected column
@@ -284,13 +295,15 @@ public class PlayerInput : MonoBehaviour
 
     public void Able2Throw(bool pBool)
     {
-        if(pBool == false)
+        if (pBool == false)
         {
             _update -= throwCheck;
+            _state = PlayerState.NORMAL;
         }
         else
         {
             _update += throwCheck;
+            _state = PlayerState.CARRYINGBALL;
         }
     }
 }
