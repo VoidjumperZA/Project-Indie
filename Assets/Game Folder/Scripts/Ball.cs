@@ -7,9 +7,12 @@ public class Ball : MonoBehaviour
     private Vector3 ballOffset;
 
     private Rigidbody _rigidbody;
-    private GameObject lastOwner;
-    private GameObject currentOwner;
-    private PlayerInput temp_PlayerInputForPlayerID;
+    private GameObject currentOwner;            //tracks who is currently holding the ball
+    private GameObject lastOwner;               //tracks who touched the ball last, can track assists
+    private GameObject lastOwnerOfOtherTeam;    //tracks the last enemy to touch the other ball, in the case of own goals
+    private PlayerInput currentOwnerID;
+    private PlayerInput lastOwnerID;
+    private PlayerInput lastOwnerOfOtherTeamID;
     private Vector3 centrePosition;
 
     private bool inPossession;
@@ -36,19 +39,54 @@ public class Ball : MonoBehaviour
         if (movement != null)
         {
             currentOwner = movement.gameObject;
-            temp_PlayerInputForPlayerID = movement.gameObject.GetComponent<PlayerInput>();
+            currentOwnerID = movement.gameObject.GetComponent<PlayerInput>();
+
+            try
+            {
+                //if we have a last owner and the last owner's team is not the same as the current owner's team
+                if (lastOwner != null && MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()) != MatchStatistics.GetTeamIDofPlayer(lastOwnerID.GetPlayerID()))
+                {
+                    lastOwnerOfOtherTeam = lastOwner;
+                    lastOwnerOfOtherTeamID = lastOwnerID;
+                }
+            }
+            catch
+            {
+                Debug.Log("lastOwner is null. Possibly as another player has not touched the ball. This is intentional.");
+            }
+
             TogglePossession(true);
-            //transform.SetParent(movement.transform);
-                //transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                
-                //transform.localPosition = new Vector3(0, 1, 0);
 
         }
-        if (pCollision.gameObject.tag == "T1_Goal")
+        Goal goalScript = pCollision.gameObject.GetComponent<Goal>();
+        if (goalScript != null)
         {
-            MatchStatistics.AddPlayerGoal(temp_PlayerInputForPlayerID.GetPlayerID());
+            Debug.Log("Yes hello, this is Goal?");
+
+            //if the goal does not belong to the same team as the player who scored
+            if (goalScript.GetTeamOwnershipID() != MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()))
+            {   
+                MatchStatistics.AddPlayerGoal(currentOwnerID.GetPlayerID());
+            }
+            else
+            {
+                //if an own goal is scored when no opposing player has touched the ball, give
+                //the opposing team a goal, but no player credit
+                if (lastOwnerOfOtherTeamID == null)
+                {
+                    MatchStatistics.AddUnattributedGoal(goalScript.GetTeamOwnershipID());
+                }
+                //give the opposing team a goal with the last opposing player to have touched it the credit
+                else
+                {
+                    MatchStatistics.AddPlayerGoal(lastOwnerOfOtherTeamID.GetPlayerID());
+                }
+            }
             Debug.Log("GAME SCORE: " + MatchStatistics.GetMatchGoals().x + " | " + MatchStatistics.GetMatchGoals().y);
+            ResetToCentre();
         }
+        //A little fix for ResetToCentre()
+        _rigidbody.freezeRotation = false;
     }
 
     //
@@ -58,6 +96,8 @@ public class Ball : MonoBehaviour
     public void ResetToCentre()
     {
         transform.position = centrePosition;
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.freezeRotation = true;
     }
 
     public void TogglePossession(bool pState)
@@ -73,6 +113,7 @@ public class Ball : MonoBehaviour
             inPossession = false;
             _rigidbody.useGravity = true;
             lastOwner = currentOwner;
+            lastOwnerID = currentOwnerID;
             currentOwner = null;
         }
     }
@@ -82,7 +123,7 @@ public class Ball : MonoBehaviour
         if (inPossession == true)
         {
             transform.position = currentOwner.transform.position;
-            transform.Translate(ballOffset);
+            transform.Translate(ballOffset, Space.World);
         }
     }
     

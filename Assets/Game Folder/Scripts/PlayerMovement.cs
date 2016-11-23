@@ -10,6 +10,10 @@ public class PlayerMovement : MonoBehaviour
     private float _accelerationSpeed;
     [SerializeField]
     private float _throwingForce;
+    [SerializeField]
+    private float _throwRotationAddition;
+    [SerializeField]
+    private float _flashDistance;
 
     private float _actualSpeed;
 
@@ -29,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="pDirection"></param>
     public void Move(Vector3 pDirection)
     {
-        if(pDirection.magnitude == 0)
+        if (pDirection.magnitude == 0)
         {
             _actualSpeed = 0.0f;
         }
@@ -50,15 +54,22 @@ public class PlayerMovement : MonoBehaviour
         //get the ball's gameObject
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
-        ball.GetComponent<Ball>().TogglePossession(false);     
+        ball.GetComponent<Ball>().TogglePossession(false);
+        pDirection = Quaternion.AngleAxis(-_throwRotationAddition, transform.right) * pDirection;
         ballRigidbody.AddForce(pDirection * _throwingForce);
     }
 
     /// <summary>
     /// Teleport the player forward a short amount while also throwing the ball ahead of them.
     /// </summary>
-    public void Flash()
+    public void Flash(Vector3 pPosition)
     {
+        //raycast down and look which column you are hitting, then look at the position after the flash, raycast down and see if it is another column
+        transform.position = pPosition;
+    }
 
+    public float GetFlashDistance()
+    {
+        return _flashDistance;
     }
 }

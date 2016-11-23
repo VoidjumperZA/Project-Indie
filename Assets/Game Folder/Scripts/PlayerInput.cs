@@ -28,6 +28,8 @@ public class PlayerInput : MonoBehaviour
 
     private bool flashAxisLock = false;
     private bool throwAxisLock = false;
+    private bool raiseAxisLock = false;
+    private bool lowerAxisLock = false;
 
     private void Start()
     {
@@ -97,11 +99,64 @@ public class PlayerInput : MonoBehaviour
         {
             lockAxis(ref flashAxisLock, true);
             print("P" + playerID + " is flashing.");
+
+            GameObject currentColumn = null;
+            GameObject possibleNextColumn = null;
+            Ray firstRay = new Ray(transform.position, -transform.up);
+            RaycastHit firstHitInfo;
+            if(Physics.Raycast(firstRay, out firstHitInfo))
+            {
+                currentColumn = firstHitInfo.collider.gameObject;
+            }
+            Vector3 afterFlashFailPosition = transform.position + (transform.forward * _movement.GetFlashDistance());
+            Vector3 afterFlashSucceedPosition = afterFlashFailPosition;
+            afterFlashSucceedPosition.y = columnControl.GetBaseYValue();
+            Ray secondRay = new Ray(afterFlashFailPosition, -transform.up);
+            RaycastHit secondHitInfo;
+            if(Physics.Raycast(secondRay, out secondHitInfo))
+            {
+                possibleNextColumn = secondHitInfo.collider.gameObject;
+            }
+
+            if(currentColumn == possibleNextColumn)
+            {
+                _movement.Flash(afterFlashSucceedPosition);
+            }
+            else
+            {
+                _movement.Flash(afterFlashFailPosition);
+            }
         }
         if (InputManager.FlashButton(playerID) == 0)
         {
             lockAxis(ref flashAxisLock, false);
         }
+    }
+    
+
+    private void faceButtonCheck(ref bool pAxisLock)
+    {
+        if (InputManager.ThrowButton(playerID) > 0 && pAxisLock == false)
+        {
+            lockAxis(ref pAxisLock, true);
+            
+            //DELEGATE: ?
+            //_movement.Throw(_cameraScript.gameObject.transform.forward);
+        }
+        if (InputManager.ThrowButton(playerID) == 0)
+        {
+            lockAxis(ref pAxisLock, false);
+        }
+    }
+
+    private void executeFlash()
+    {
+
+    }
+
+    private void executeThrow()
+    {
+        _movement.Throw(_cameraScript.gameObject.transform.forward);
     }
 
     //check if input is calling for the player to throw, then execute
@@ -138,13 +193,26 @@ public class PlayerInput : MonoBehaviour
     //check if input is calling for the player to raise or lower a column, then execute
     private void raiseLowerCheck()
     {
-        if (InputManager.RaiseColumn(playerID) > 0)
+        //raise column
+        if (InputManager.RaiseColumn(playerID) > 0 && raiseAxisLock == false)
         {
             columnControl.AttemptRaise(playerID, _selectedColumn, _columnProperties);
+            lockAxis(ref raiseAxisLock, true);
         }
-        if (InputManager.LowerColumn(playerID) > 0)
+        if (InputManager.RaiseColumn(playerID) == 0)
+        {
+            lockAxis(ref raiseAxisLock, false);
+        }
+
+        //lower column
+        if (InputManager.LowerColumn(playerID) > 0 && lowerAxisLock == false)
         {
             columnControl.AttemptLower(playerID, _selectedColumn, _columnProperties);
+            lockAxis(ref lowerAxisLock, true);
+        }
+        if (InputManager.LowerColumn(playerID) == 0)
+        {
+            lockAxis(ref lowerAxisLock, false);
         }
     }
 

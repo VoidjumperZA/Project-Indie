@@ -16,6 +16,10 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField]
     private float _verticalCameraRotionSpeed;
     [SerializeField]
+    private float _minVerticalCameraRotation;
+    [SerializeField]
+    private float _maxVerticalCameraRotation;
+    [SerializeField]
     private bool _smoothFollow = true;
     [SerializeField]
     private float _smoothFollowSpeed;
@@ -58,22 +62,23 @@ public class PlayerCamera : MonoBehaviour
             RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo, rayLength))
             {
-                print("NAME: " + hitInfo.collider.name);
+                //print("NAME: " + hitInfo.collider.name);
                 if (_raycastLerp)
                 {
-                    print("LERPING");
                     transform.position = Vector3.Lerp(transform.position, hitInfo.point, _raycastLerpSpeed);
+                    transform.LookAt(_finalCameraLookAt);
                     return;
                 }
                 else
                 {
                     transform.position = hitInfo.point;
+                    transform.LookAt(_finalCameraLookAt);
                     return;
                 }
             }
         }
         //DESIGNER If statement so they can swap between following smoothly and following in a snappy manner through the inspector
-        if (!_smoothFollow)//THIS BITCH
+        if (!_smoothFollow)
         {
             transform.position = _finalCameraPosition;
         }
@@ -87,7 +92,19 @@ public class PlayerCamera : MonoBehaviour
     public void MoveCamera(float pXRotation, float pYRotation)
     {
         _target.transform.Rotate(0, pXRotation * _horizontalCameraRotationSpeed, 0);
-        _targetCameraHelper.transform.Rotate(-pYRotation * _verticalCameraRotionSpeed, 0, 0);
+        float xRotation = _targetCameraHelper.eulerAngles.x;
+        if (xRotation > 90) { xRotation = (360 - xRotation) * -1; }
+
+        if (pYRotation > 0 && xRotation > _minVerticalCameraRotation)
+        {
+            _targetCameraHelper.transform.Rotate(-pYRotation * _verticalCameraRotionSpeed, 0, 0);
+        }
+        else if (pYRotation < 0 && xRotation < _maxVerticalCameraRotation)
+        {
+            _targetCameraHelper.transform.Rotate(-pYRotation * _verticalCameraRotionSpeed, 0, 0);
+        }
+
+
         //DESIGNER A Drawline to visualise where the camera looks at
         Debug.DrawLine(transform.position, _finalCameraLookAt);
         //BUGTEST
