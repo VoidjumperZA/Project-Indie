@@ -32,6 +32,7 @@ public class ColumnControl : MonoBehaviour
     private bool _columnRising;
     private bool _columnLowering;
     private float _columnSpeed;
+    private float _halfColumnHeight;
 
     // Use this for initialization
     private void Start()
@@ -39,7 +40,8 @@ public class ColumnControl : MonoBehaviour
         _columnRising = false;
         _columnLowering = false;
 
-        _baseYValue = _unmovingColumn.transform.position.y;              
+        _baseYValue = _unmovingColumn.transform.position.y;
+        _halfColumnHeight = GameObject.Find("Column").GetComponent<MeshRenderer>().bounds.extents.y;              
     }
 
     // Update is called once per frame
@@ -103,9 +105,11 @@ public class ColumnControl : MonoBehaviour
         return _columnDisplacementSize;
     }
 
-    public float GetBaseYValue()
+    public float GetGroundFloorYValue()
     {
-        return _baseYValue;
+        print("_baseYvalue: " + _baseYValue + "_halfColumnHeight: " + _halfColumnHeight);
+        return _baseYValue + (2.0f * _halfColumnHeight);
+        //Probuilder placed the origin at the bottom!!!!
     }
 
     public GameObject GetUnmovingColumn()
