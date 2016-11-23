@@ -85,6 +85,11 @@ public class Ball : MonoBehaviour
             Debug.Log("GAME SCORE: " + MatchStatistics.GetMatchGoals().x + " | " + MatchStatistics.GetMatchGoals().y);
             ResetToCentre();
         }
+
+        if (pCollision.gameObject.tag == "LowerBoundary")
+        {
+            ResetToCentre();
+        }
         //A little fix for ResetToCentre()
         _rigidbody.freezeRotation = false;
     }
