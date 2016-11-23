@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     private float _throwingForce;
     [SerializeField]
     private float _throwRotationAddition;
+    [SerializeField]
+    private float _flashDistance;
 
     private float _actualSpeed;
 
@@ -60,9 +62,14 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Teleport the player forward a short amount while also throwing the ball ahead of them.
     /// </summary>
-    public void Flash()
+    public void Flash(Vector3 pPosition)
     {
         //raycast down and look which column you are hitting, then look at the position after the flash, raycast down and see if it is another column
+        transform.position = pPosition;
+    }
 
+    public float GetFlashDistance()
+    {
+        return _flashDistance;
     }
 }

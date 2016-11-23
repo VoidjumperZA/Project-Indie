@@ -103,4 +103,9 @@ public class ColumnControl : MonoBehaviour
         return _columnDisplacementSize;
     }
 
+    public float GetBaseYValue()
+    {
+        return _baseYValue;
+    }
+
 }

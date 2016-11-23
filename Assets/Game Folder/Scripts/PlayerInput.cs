@@ -100,17 +100,32 @@ public class PlayerInput : MonoBehaviour
             lockAxis(ref flashAxisLock, true);
             print("P" + playerID + " is flashing.");
 
-            //Raycast for flashing should be here
-            GameObject currentColumn;
-            Ray ray = new Ray(transform.position, -transform.up);
-            RaycastHit hitInfo;
-            if(Physics.Raycast(ray, out hitInfo))
+            GameObject currentColumn = null;
+            GameObject possibleNextColumn = null;
+            Ray firstRay = new Ray(transform.position, -transform.up);
+            RaycastHit firstHitInfo;
+            if(Physics.Raycast(firstRay, out firstHitInfo))
             {
-                currentColumn = hitInfo.collider.gameObject;
+                currentColumn = firstHitInfo.collider.gameObject;
+            }
+            Vector3 afterFlashFailPosition = transform.position + (transform.forward * _movement.GetFlashDistance());
+            Vector3 afterFlashSucceedPosition = afterFlashFailPosition;
+            afterFlashSucceedPosition.y = columnControl.GetBaseYValue();
+            Ray secondRay = new Ray(afterFlashFailPosition, -transform.up);
+            RaycastHit secondHitInfo;
+            if(Physics.Raycast(secondRay, out secondHitInfo))
+            {
+                possibleNextColumn = secondHitInfo.collider.gameObject;
             }
 
-
-
+            if(currentColumn == possibleNextColumn)
+            {
+                _movement.Flash(afterFlashSucceedPosition);
+            }
+            else
+            {
+                _movement.Flash(afterFlashFailPosition);
+            }
         }
         if (InputManager.FlashButton(playerID) == 0)
         {
