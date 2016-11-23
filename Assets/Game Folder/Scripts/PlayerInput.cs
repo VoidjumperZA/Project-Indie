@@ -95,9 +95,6 @@ public class PlayerInput : MonoBehaviour
     //check if input is calling for the player to flash, then execute
     private void flashCheck()
     {
-
-        print(InputManager.Movement(playerID));
-
         //Maybe make a difference vector and translate for the trail effect possibly?
         if (InputManager.FlashButton(playerID) > 0 && flashAxisLock == false)
         {
