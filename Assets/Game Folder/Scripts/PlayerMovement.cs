@@ -3,18 +3,7 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //DESIGNER Inspector values, once chosen a nice value, these can be replaced with "hard coded" values
-    [SerializeField]
-    private float _maxMovementSpeed;
-    [SerializeField]
-    private float _accelerationSpeed;
-    [SerializeField]
-    private float _throwingForce;
-    [SerializeField]
-    private float _throwRotationAddition;
-    [SerializeField]
-    private float _flashDistance;
-
+    private PlayerProperties playerProperties;
     private float _actualSpeed;
 
     //Could be changed for an enum later on, for now we can use a Boolean
@@ -24,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
         _rigidBody = GetComponent<Rigidbody>();
     }
 
@@ -39,8 +29,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            _actualSpeed += _accelerationSpeed;
-            _actualSpeed = Mathf.Min(_maxMovementSpeed, _actualSpeed);
+            _actualSpeed += playerProperties.GetAccelerationSpeed();
+            _actualSpeed = Mathf.Min(playerProperties.GetMaxMovementSpeed(), _actualSpeed);
         }
         transform.Translate(pDirection * _actualSpeed * Time.deltaTime);
     }
@@ -55,8 +45,8 @@ public class PlayerMovement : MonoBehaviour
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
         ball.GetComponent<Ball>().TogglePossession(false);
-        pDirection = Quaternion.AngleAxis(-_throwRotationAddition, transform.right) * pDirection;
-        ballRigidbody.AddForce(pDirection * _throwingForce);
+        pDirection = Quaternion.AngleAxis(-playerProperties.GetThrowRotationAddition(), transform.right) * pDirection;
+        ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
     }
 
     /// <summary>
@@ -70,6 +60,6 @@ public class PlayerMovement : MonoBehaviour
 
     public float GetFlashDistance()
     {
-        return _flashDistance;
+        return playerProperties.GetFlashDistance();
     }
 }
