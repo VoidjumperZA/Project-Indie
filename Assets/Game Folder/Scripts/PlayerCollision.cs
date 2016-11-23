@@ -29,7 +29,9 @@ public class PlayerCollision : MonoBehaviour
             {
                 if (pCol.gameObject.tag == "UpperBoundary")
                 {
-                    MatchStatistics.AddPlayerSquished(columnProperties.GetOwnerID());                    
+                    MatchStatistics.AddPlayerSquished(columnProperties.GetOwnerID());
+                    GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+                    ball.transform.position = new Vector3(columnProperties.gameObject.transform.position.x - columnProperties.gameObject.GetComponent<MeshRenderer>().bounds.extents.x * 1.1f, pCol.transform.position.y - (ball.GetComponent<MeshRenderer>().bounds.extents.y * 4.1f), ball.transform.position.z);                
                 }
                 else if (pCol.gameObject.tag == "LowerBoundary")
                 {
