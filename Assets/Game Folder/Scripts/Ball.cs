@@ -40,6 +40,7 @@ public class Ball : MonoBehaviour
         {
             currentOwner = movement.gameObject;
             currentOwnerID = movement.gameObject.GetComponent<PlayerInput>();
+            currentOwnerID.Able2Throw(true);
 
             try
             {
