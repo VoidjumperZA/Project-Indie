@@ -134,6 +134,8 @@ public class PlayerInput : MonoBehaviour
                 _movement.Flash(afterFlashSucceedPosition);
                 print("succeed");
             }
+            _movement.Throw(transform.forward, true);
+            Able2Throw(false);
         }
         if (InputManager.FlashButton(playerID) == 0)
         {
@@ -164,7 +166,7 @@ public class PlayerInput : MonoBehaviour
 
     private void executeThrow()
     {
-        _movement.Throw(_cameraScript.gameObject.transform.forward);
+        //_movement.Throw(_cameraScript.gameObject.transform.forward);
     }
 
     //check if input is calling for the player to throw, then execute
@@ -174,7 +176,7 @@ public class PlayerInput : MonoBehaviour
         {
             lockAxis(ref throwAxisLock, true);
             print("P" + playerID + " is throwing.");
-            _movement.Throw(_cameraScript.gameObject.transform.forward);
+            _movement.Throw(_cameraScript.gameObject.transform.forward, false);
             Able2Throw(false);
         }
         if (InputManager.ThrowButton(playerID) == 0)

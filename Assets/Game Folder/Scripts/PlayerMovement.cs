@@ -39,13 +39,20 @@ public class PlayerMovement : MonoBehaviour
     /// Release the ball in the direction aimed, putting the ball back into play.
     /// </summary>
     /// <param name="pDirection"></param>
-    public void Throw(Vector3 pDirection)
+    public void Throw(Vector3 pDirection, bool pForced)
     {
         //get the ball's gameObject
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
         ball.GetComponent<Ball>().TogglePossession(false);
-        pDirection = Quaternion.AngleAxis(-playerProperties.GetThrowRotationAddition(), transform.right) * pDirection;
+        if (pForced == false)
+        {
+            pDirection = Quaternion.AngleAxis(-playerProperties.GetThrowRotationAddition(), transform.right) * pDirection;
+        }
+        else
+        {
+            pDirection = Quaternion.AngleAxis(-playerProperties.GetForcedThrowRotationAddition(), transform.right) * pDirection;
+        }
         ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
     }
 
