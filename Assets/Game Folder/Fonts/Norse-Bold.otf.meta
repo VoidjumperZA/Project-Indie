@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: dd327041f2c14a54fb66c3a0adbaa07e
+timeCreated: 1479934106
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Norse
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 251b8d9c1ac403044b50f03a35052a4d, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

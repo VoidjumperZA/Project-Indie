@@ -24,12 +24,16 @@ public class PlayerInput : MonoBehaviour
 
     private int playerID;
     private int temp_TeamID;
+    private int cameraPolarity = 1;
     private Vector3 _raycastPos;
 
     private bool flashAxisLock = false;
     private bool throwAxisLock = false;
     private bool raiseAxisLock = false;
     private bool lowerAxisLock = false;
+    private bool invertAxisLock = false;
+    private bool pauseAxisLock = false;
+    private bool scoreboardAxisLock = false;
 
     private void Start()
     {
@@ -39,6 +43,8 @@ public class PlayerInput : MonoBehaviour
         _update += flashCheck;
         _update += throwCheck;
         _update += movementHandler;
+        _update += inversionCheck;
+        _update += pauseCheck;
 
         _movement = GetComponent<PlayerMovement>();
         _cameraScript = playerCamera.GetComponent<PlayerCamera>();
@@ -84,7 +90,7 @@ public class PlayerInput : MonoBehaviour
 
     private void mouseHandler()
     {
-        _cameraScript.MoveCamera(InputManager.CameraHorizontal(playerID), InputManager.CameraVertical(playerID));
+        _cameraScript.MoveCamera(InputManager.CameraHorizontal(playerID), InputManager.CameraVertical(playerID) * cameraPolarity);
     }
 
     private void movementHandler()
@@ -137,16 +143,16 @@ public class PlayerInput : MonoBehaviour
     }
     
 
-    private void faceButtonCheck(ref bool pAxisLock)
+    private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock)
     {
-        if (InputManager.ThrowButton(playerID) > 0 && pAxisLock == false)
+        if (pButtonPressed > 0 && pAxisLock == false)
         {
             lockAxis(ref pAxisLock, true);
             
             //DELEGATE: ?
             //_movement.Throw(_cameraScript.gameObject.transform.forward);
         }
-        if (InputManager.ThrowButton(playerID) == 0)
+        if (pButtonPressed == 0)
         {
             lockAxis(ref pAxisLock, false);
         }
@@ -175,6 +181,33 @@ public class PlayerInput : MonoBehaviour
         {
             lockAxis(ref throwAxisLock, false);
         }
+    }
+
+    private void inversionCheck()
+    {
+        if (InputManager.InvertButton(playerID) > 0 && invertAxisLock == false)
+        {
+            lockAxis(ref invertAxisLock, true);
+            cameraPolarity *= -1;
+        }
+        if (InputManager.InvertButton(playerID) == 0)
+        {
+            lockAxis(ref invertAxisLock, false);
+        }
+    }
+
+    private void pauseCheck()
+    {
+        if (InputManager.PauseButton(playerID) > 0 && pauseAxisLock == false)
+        {
+            lockAxis(ref pauseAxisLock, true);
+            PauseScreen pauseScreen = GameObject.Find("Manager").GetComponent<PauseScreen>();
+            pauseScreen.DisplayPauseScreen(!pauseScreen.IsPauseScreenActive(), playerID);
+        }
+        if (InputManager.PauseButton(playerID) == 0)
+        {
+            lockAxis(ref pauseAxisLock, false);
+        }        
     }
 
     //raycast gameobjects and if they're columns, set them as the selected column

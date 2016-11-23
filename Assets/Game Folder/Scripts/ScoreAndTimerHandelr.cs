@@ -18,8 +18,8 @@ public class ScoreAndTimerHandelr : MonoBehaviour
 
     private void Update()
     {
-        _team1_scoreText.text = "Team1: " + MatchStatistics.GetGoalsForTeam(1).ToString();
-        _team2_scoreText.text = "Team2: " + MatchStatistics.GetGoalsForTeam(2).ToString();
-        _timerText.text = "Time: " + ((int)Time.time).ToString();
+        _team1_scoreText.text = "" + MatchStatistics.GetGoalsForTeam(1).ToString();
+        _team2_scoreText.text = "" + MatchStatistics.GetGoalsForTeam(2).ToString();
+        _timerText.text = "" + ((int)Time.time).ToString();
     }
 }

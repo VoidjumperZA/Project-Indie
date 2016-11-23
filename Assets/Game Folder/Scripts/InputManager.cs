@@ -192,6 +192,37 @@ public static class InputManager
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
 
+    //QUICK FIX: PLEASE DELETE
+    public static float InvertButton(int pPlayerID)
+    {
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_InvertButton");
+        p1_result += Input.GetAxis("1_K_InvertButton");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_InvertButton");
+
+        float p3_result = 0.0f;
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
+    }
+
+    public static float PauseButton(int pPlayerID)
+    {
+        float p1_result = 0.0f;
+        p1_result += Input.GetAxis("1_J_PauseButton");
+        p1_result += Input.GetAxis("1_K_PauseButton");
+
+        float p2_result = 0.0f;
+        p2_result += Input.GetAxis("2_J_PauseButton");
+
+        float p3_result = 0.0f;
+        float p4_result = 0.0f;
+
+        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
+    }
+
     //internal method for clamping axes to 1, in the case of both keyboard and joystick input simultaenously
     //our axis value would become twice as large
     private static float returnClampedAxis(int pPlayerID, float pP1_Result, float pP2_Result, float pP3_Result, float pP4_Result)
