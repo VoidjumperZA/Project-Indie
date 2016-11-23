@@ -20,12 +20,14 @@ public class ColumnProperties : MonoBehaviour
     private float _columnMovementAccelerationSpeed;
     private float _columnMovementMaxSpeed;
     private float _columnResettingSpeed;
+    private float _columnTimeUntilReset;
     private float _baseYValue;
 
     private float _polarity;
     private float _movementDelta = 0.0f;
-
     private float _columnSpeed;
+
+    private int playerOwnerID;
 
     private void Start()
     {
@@ -41,24 +43,33 @@ public class ColumnProperties : MonoBehaviour
         }
     }
 
-    public void SetDataValues(float pBaseYValue, float pColumnDisplacementSize, float pColumnMovementAccelerationSpeed, float pColumnMovementMaxSpeed, float pColumnResettingSpeed)
+    public void SetDataValues(float pBaseYValue, float pColumnDisplacementSize, float pColumnMovementAccelerationSpeed, float pColumnMovementMaxSpeed, float pColumnResettingSpeed, float pColumnTimeUntilReset, int pPlayerOwnerID)
     {
         _baseYValue = pBaseYValue;
         _columnDisplacementSize = pColumnDisplacementSize;
         _columnMovementAccelerationSpeed = pColumnMovementAccelerationSpeed;
         _columnMovementMaxSpeed = pColumnMovementMaxSpeed;
         _columnResettingSpeed = pColumnResettingSpeed;
+        _columnTimeUntilReset = pColumnTimeUntilReset;
+        playerOwnerID = pPlayerOwnerID;
     }
 
 
-    public void ResetColumn(float pColumnResettingSpeed, float pColumnDisplacementSize, float pBaseYValue, float pPolarity)
+    public void ResetColumn(float pColumnResettingSpeed, float pColumnDisplacementSize, float pPolarity)
     {
         _columnResettingSpeed = pColumnResettingSpeed;
         _columnDisplacementSize = pColumnDisplacementSize;
-        _baseYValue = pBaseYValue;
         _polarity = pPolarity;
+
         _atBaseLevel = false;
     }
+
+    private IEnumerator waitUntilGrindToArena(float pPolarity)
+    {
+        yield return new WaitForSeconds(_columnTimeUntilReset);
+        ResetColumn(_columnResettingSpeed, _columnDisplacementSize, (pPolarity * -1));
+    }
+
 
     private void grindToArenaLevel()
     {
@@ -100,7 +111,7 @@ public class ColumnProperties : MonoBehaviour
             //stop the column moving, which should deactive both columnRising and columnLowering
             columnHalted();
             _columnSpeed = 0.0f;
-            ResetColumn(_columnResettingSpeed, _columnDisplacementSize, _baseYValue, (pPolarity * -1));
+            StartCoroutine(waitUntilGrindToArena(pPolarity));            
         }
     }
 
@@ -153,5 +164,10 @@ public class ColumnProperties : MonoBehaviour
     public void ToggleColumnLowering(bool pState)
     {
         _columnLowering = pState;
+    }
+
+    public int GetOwnerID()
+    {
+        return playerOwnerID;
     }
 }

@@ -20,7 +20,7 @@ public class ColumnControl : MonoBehaviour
     private float _columnResettingSpeed;
 
     [SerializeField]
-    private float _columnTimeInMSUntilReset;
+    private float _columnTimeUntilReset;
 
     [SerializeField]
     private float _playerColumnControlCooldown;
@@ -71,7 +71,7 @@ public class ColumnControl : MonoBehaviour
         {
             Debug.Log("Column Type: " + pColumnProperties.GetColumnType());
             //Debug.Log("My pos before moving is: " + _selectedColumn.transform.position + " while the baseY is: " + _baseYValue);
-            setSelectedColumnPropertiesDataValues(pColumnProperties);
+            setSelectedColumnPropertiesDataValues(pColumnProperties, pPlayerID);
             pColumnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
             pColumnProperties.ToggleColumnRising(true);
         }
@@ -87,14 +87,20 @@ public class ColumnControl : MonoBehaviour
     {
         if (pSelectedColumn != null /*&& isColumnMoving() == false*/ && pColumnProperties.GetColumnType() != 1 && pColumnProperties.GetColumnStatus() == 0)
         {
-            setSelectedColumnPropertiesDataValues(pColumnProperties);
+            setSelectedColumnPropertiesDataValues(pColumnProperties, pPlayerID);
             pColumnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
             pColumnProperties.ToggleColumnLowering(true);
         }
     }
 
-    private void setSelectedColumnPropertiesDataValues(ColumnProperties _columnProperties)
+    private void setSelectedColumnPropertiesDataValues(ColumnProperties _columnProperties, int pPlayerID)
     {
-        _columnProperties.SetDataValues(_baseYValue, _columnDisplacementSize, _columnMovementAccelerationSpeed, _columnMovementMaxSpeed, _columnResettingSpeed);
+        _columnProperties.SetDataValues(_baseYValue, _columnDisplacementSize, _columnMovementAccelerationSpeed, _columnMovementMaxSpeed, _columnResettingSpeed, _columnTimeUntilReset, pPlayerID);
     }
+
+    public float GetColumnDisplacement()
+    {
+        return _columnDisplacementSize;
+    }
+
 }
