@@ -5,12 +5,14 @@ public class PlayerCollision : MonoBehaviour
 {
     private PlayerInput playerInput;
     private PlayerActions playerActions;
+    private PlayerMovement playerMovement;
     private ColumnProperties columnProperties;
     // Use this for initialization
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
         playerActions = GetComponent<PlayerActions>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -30,8 +32,15 @@ public class PlayerCollision : MonoBehaviour
                 if (pCol.gameObject.tag == "UpperBoundary")
                 {
                     MatchStatistics.AddPlayerSquished(columnProperties.GetOwnerID());
+
                     GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-                    ball.transform.position = new Vector3(columnProperties.gameObject.transform.position.x - columnProperties.gameObject.GetComponent<MeshRenderer>().bounds.extents.x * 1.1f, pCol.transform.position.y - (ball.GetComponent<MeshRenderer>().bounds.extents.y * 4.1f), ball.transform.position.z);                
+                    Vector3 deltaFromBallToColumnUser = new Vector3();
+                    GameObject columnUser = GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayer(columnProperties.GetOwnerID());
+                    deltaFromBallToColumnUser = columnUser.transform.position - ball.transform.position;
+
+                    //However, it is still inside the column and trapped on the otehr side of the glass, it first
+                    //needs to be moved away (renderer.bounds.extends?) before being thrown. Good luck Dom :)
+                    playerMovement.Throw(deltaFromBallToColumnUser);                    
                 }
                 else if (pCol.gameObject.tag == "LowerBoundary")
                 {

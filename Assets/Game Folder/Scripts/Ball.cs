@@ -75,6 +75,7 @@ public class Ball : MonoBehaviour
                 //the opposing team a goal, but no player credit
                 if (lastOwnerOfOtherTeamID == null)
                 {
+                    Debug.Log("Scorer is on team" + MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()) + " while the goal registering is for team " + goalScript.GetTeamOwnershipID());
                     MatchStatistics.AddUnattributedGoal(goalScript.GetTeamOwnershipID());
                 }
                 //give the opposing team a goal with the last opposing player to have touched it the credit
@@ -84,6 +85,13 @@ public class Ball : MonoBehaviour
                 }
             }
             Debug.Log("GAME SCORE: " + MatchStatistics.GetMatchGoals().x + " | " + MatchStatistics.GetMatchGoals().y);
+
+            //Reset all players after a goal has been scored
+            for (int i = 0; i < GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayersArraySize(); i++)
+            {
+                Debug.Log("i is " + i);
+                GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayer(i + 1).GetComponent<PlayerActions>().Respawn();
+            }            
             ResetToCentre();
         }
 
