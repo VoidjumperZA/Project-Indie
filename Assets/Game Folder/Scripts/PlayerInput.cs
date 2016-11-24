@@ -26,6 +26,7 @@ public class PlayerInput : MonoBehaviour
     private PlayerMovement _movement;
     private ColumnControl columnControl;
     private PlayerCamera _cameraScript;
+    private PlayerProperties _playerproperties;
 
     private GameObject _selectedColumn;
     private ColumnProperties _columnProperties;
@@ -43,6 +44,11 @@ public class PlayerInput : MonoBehaviour
     private bool pauseAxisLock = false;
     private bool scoreboardAxisLock = false;
 
+    private bool _flashAvailable = true;
+    private bool _columnMovementAvailable = true;
+    private float _flashCounter = 0.0f;
+    private float _columnMovementCounter = 0.0f;
+
     private void Start()
     {
         _update += mouseHandler;
@@ -52,10 +58,13 @@ public class PlayerInput : MonoBehaviour
         _update += movementHandler;
         _update += inversionCheck;
         _update += pauseCheck;
+        _update += flashCooldownResetter;
+        _update += columnMovementCooldownResetter;
 
         _movement = GetComponent<PlayerMovement>();
         _cameraScript = playerCamera.GetComponent<PlayerCamera>();
         columnControl = columnControlManager.GetComponent<ColumnControl>();
+        _playerproperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
 
         //assign the player and ID based on his tag
         switch (gameObject.tag)
@@ -104,13 +113,14 @@ public class PlayerInput : MonoBehaviour
     {
         _movement.Move(InputManager.Movement(playerID));
     }
-
+    
     //check if input is calling for the player to flash, then execute
     private void flashCheck()
     {
         //Maybe make a difference vector and translate for the trail effect possibly?
-        if (InputManager.FlashButton(playerID) > 0 && flashAxisLock == false)
+        if (InputManager.FlashButton(playerID) > 0 && flashAxisLock == false && _flashAvailable == true)
         {
+            _flashAvailable = false;
             lockAxis(ref flashAxisLock, true);
             print("P" + playerID + " is flashing.");
 
@@ -248,8 +258,9 @@ public class PlayerInput : MonoBehaviour
     private void raiseLowerCheck()
     {
         //raise column
-        if (InputManager.RaiseColumn(playerID) > 0 && raiseAxisLock == false)
+        if (InputManager.RaiseColumn(playerID) > 0 && raiseAxisLock == false && _columnMovementAvailable == true)
         {
+            _columnMovementAvailable = false;
             columnControl.AttemptRaise(playerID, _selectedColumn, _columnProperties);
             lockAxis(ref raiseAxisLock, true);
         }
@@ -259,8 +270,9 @@ public class PlayerInput : MonoBehaviour
         }
 
         //lower column
-        if (InputManager.LowerColumn(playerID) > 0 && lowerAxisLock == false)
+        if (InputManager.LowerColumn(playerID) > 0 && lowerAxisLock == false && _columnMovementAvailable == true)
         {
+            _columnMovementAvailable = false;
             columnControl.AttemptLower(playerID, _selectedColumn, _columnProperties);
             lockAxis(ref lowerAxisLock, true);
         }
@@ -304,6 +316,32 @@ public class PlayerInput : MonoBehaviour
         {
             _update += throwCheck;
             _state = PlayerState.CARRYINGBALL;
+        }
+    }
+
+    private void flashCooldownResetter()
+    {
+        if(_flashAvailable == false)
+        {
+            _flashCounter++;
+        }
+        if(_flashCounter >= _playerproperties.GetFlashCooldownValue())
+        {
+            _flashAvailable = true;
+            _flashCounter = 0.0f;
+        }
+    }
+
+    private void columnMovementCooldownResetter()
+    {
+        if (_columnMovementAvailable == false)
+        {
+            _columnMovementCounter++;
+        }
+        if (_columnMovementCounter >= _playerproperties.GetColumnMovementCooldownValue())
+        {
+            _columnMovementAvailable = true;
+            _columnMovementCounter = 0.0f;
         }
     }
 }

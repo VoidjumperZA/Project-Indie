@@ -15,6 +15,10 @@ public class PlayerProperties : MonoBehaviour
     [SerializeField]
     private float _forcedThrowRotationAddition;
     [SerializeField]
+    private float _columnMovementCooldownValue;
+    [SerializeField]
+    private float _flashCooldownValue;
+    [SerializeField]
     private float _flashDistance;
 
     // Use this for initialization
@@ -58,6 +62,16 @@ public class PlayerProperties : MonoBehaviour
     public float GetForcedThrowRotationAddition()
     {
         return _forcedThrowRotationAddition;
+    }
+
+    public float GetColumnMovementCooldownValue()
+    {
+        return _columnMovementCooldownValue;
+    }
+
+    public float GetFlashCooldownValue()
+    {
+        return _flashCooldownValue;
     }
 
     public float GetFlashDistance()
