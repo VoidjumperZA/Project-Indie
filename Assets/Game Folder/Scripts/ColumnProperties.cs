@@ -29,13 +29,13 @@ public class ColumnProperties : MonoBehaviour
 
     private int playerOwnerID;
 
-    //FMOD
+    //VYTAUTAS' FMOD IMPLEMENTATION BEGINS
 
     public string hexSound = "event:/Hexagons";
     public FMOD.Studio.EventInstance hexSoundEv;
     public FMOD.Studio.ParameterInstance directionParam;
 
-    //
+    //VYTAUTAS' FMOD IMPLEMENTATION ENDS
 
     private void Start()
     {
@@ -68,9 +68,12 @@ public class ColumnProperties : MonoBehaviour
         _columnResettingSpeed = pColumnResettingSpeed;
         _columnDisplacementSize = pColumnDisplacementSize;
         _polarity = pPolarity;
+
+        //FMOD
         hexSoundEv = FMODUnity.RuntimeManager.CreateInstance(hexSound);
         hexSoundEv.getParameter("Direction", out directionParam);
         FMODUnity.RuntimeManager.PlayOneShot(hexSound, gameObject.transform.position);
+        //
 
         _atBaseLevel = false;
     }
@@ -85,7 +88,6 @@ public class ColumnProperties : MonoBehaviour
     private void grindToArenaLevel()
     {
         if(_movementDelta < _columnDisplacementSize)
-        //if (Mathf.Abs(gameObject.transform.position.y) + (columnDisplacementSize / 2) > baseYValue)
         {
             gameObject.transform.Translate(0, _polarity * _columnResettingSpeed, 0);
             _movementDelta += _columnResettingSpeed;
@@ -115,7 +117,6 @@ public class ColumnProperties : MonoBehaviour
                 _columnSpeed = _columnMovementMaxSpeed;
             }
             gameObject.transform.Translate(0, pPolarity * _columnSpeed, 0);
-            //Debug.Log("Speed: " + columnSpeed + "lossyScale: " + selectedColumn.transform.lossyScale.y + ", localScale: " + selectedColumn.transform.localScale.y);
         }
         else
         {

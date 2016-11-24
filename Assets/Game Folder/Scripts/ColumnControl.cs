@@ -23,7 +23,7 @@ public class ColumnControl : MonoBehaviour
     private float _columnTimeUntilReset;
 
     [SerializeField]
-    private float _playerColumnControlCooldown;
+    private float _selectionPentagramRotationSpeed;
 
     private GameObject _selectedColumn;
     private ColumnProperties _columnProperties;
@@ -76,10 +76,9 @@ public class ColumnControl : MonoBehaviour
             setSelectedColumnPropertiesDataValues(pColumnProperties, pPlayerID);
             pColumnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
             pColumnProperties.ToggleColumnRising(true);
-            pColumnProperties.hexSoundEv = FMODUnity.RuntimeManager.CreateInstance(pColumnProperties.hexSound);
-            pColumnProperties.hexSoundEv.getParameter("Direction", out pColumnProperties.directionParam);
-            pColumnProperties.directionParam.setValue(1);
-            FMODUnity.RuntimeManager.PlayOneShot(pColumnProperties.hexSound, pSelectedColumn.gameObject.transform.position);
+
+            //FMOD
+            playFMOD(pSelectedColumn, pColumnProperties, 1);
         }
     }
 
@@ -96,10 +95,9 @@ public class ColumnControl : MonoBehaviour
             setSelectedColumnPropertiesDataValues(pColumnProperties, pPlayerID);
             pColumnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
             pColumnProperties.ToggleColumnLowering(true);
-            pColumnProperties.hexSoundEv = FMODUnity.RuntimeManager.CreateInstance(pColumnProperties.hexSound);
-            pColumnProperties.hexSoundEv.getParameter("Direction", out pColumnProperties.directionParam);
-            pColumnProperties.directionParam.setValue(0);
-            FMODUnity.RuntimeManager.PlayOneShot(pColumnProperties.hexSound, pSelectedColumn.gameObject.transform.position);
+
+            //FMOD
+            playFMOD(pSelectedColumn, pColumnProperties, 0);
         }
     }
 
@@ -124,4 +122,19 @@ public class ColumnControl : MonoBehaviour
     {
         return _unmovingColumn;
     }
+
+    public float GetSelectionPentagramRotationSpeed()
+    {
+        return _selectionPentagramRotationSpeed;
+    }
+
+
+    private void playFMOD(GameObject pSelectedColumn, ColumnProperties pColumnProperties, int pDirectionParamValue)
+    {
+        pColumnProperties.hexSoundEv = FMODUnity.RuntimeManager.CreateInstance(pColumnProperties.hexSound);
+        pColumnProperties.hexSoundEv.getParameter("Direction", out pColumnProperties.directionParam);
+        pColumnProperties.directionParam.setValue(pDirectionParamValue);
+        FMODUnity.RuntimeManager.PlayOneShot(pColumnProperties.hexSound, pSelectedColumn.gameObject.transform.position);
+    }
+
 }

@@ -28,14 +28,13 @@ public class PlayerInput : MonoBehaviour
     private PlayerCamera _cameraScript;
     private PlayerProperties _playerproperties;
 
-    // FMOD
+    //VYTAUTAS' FMOD IMPLEMENTATION BEGINS
 
-    string flashSound = "event:/Flash";
-    string ballShootSound = "event:/BallShoot";
+    public string flashSound = "event:/Flash";
+    public string ballShootSound = "event:/BallShoot";
     private FMOD_StudioEventEmitter _eventemitter;
 
-    //
-
+    //VYTAUTAS' FMOD IMPLEMENTATION ENDS
 
     private GameObject _selectedColumn;
     private ColumnProperties _columnProperties;
@@ -129,22 +128,29 @@ public class PlayerInput : MonoBehaviour
         //Maybe make a difference vector and translate for the trail effect possibly?
         if (InputManager.FlashButton(playerID) > 0 && flashAxisLock == false && _flashAvailable == true)
         {
+            //lock the flash
             _flashAvailable = false;
             lockAxis(ref flashAxisLock, true);
-            FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
-            print("P" + playerID + " is flashing.");
 
+
+            //get our current column and the next one we could possibly land on
             GameObject currentColumn = null;
             GameObject possibleNextColumn = null;
+
+            //fire a ray to select our current column
             Ray firstRay = new Ray(transform.position, -transform.up);
             RaycastHit firstHitInfo;
             if (Physics.Raycast(firstRay, out firstHitInfo))
             {
                 currentColumn = firstHitInfo.collider.gameObject;
             }
+
+            //store the positions of where we'll be after a flash
             Vector3 afterFlashFailPosition = transform.position + (transform.TransformVector(InputManager.Movement(playerID)) * _movement.GetFlashDistance());
             Vector3 afterFlashSucceedPosition = afterFlashFailPosition;
             afterFlashSucceedPosition.y = columnControl.GetGroundFloorYValue();
+
+            //fire a ray to find our next possible column
             Ray secondRay = new Ray(afterFlashFailPosition, -transform.up);
             RaycastHit secondHitInfo;
             if (Physics.Raycast(secondRay, out secondHitInfo))
@@ -154,11 +160,13 @@ public class PlayerInput : MonoBehaviour
 
             if (currentColumn == possibleNextColumn)
             {
+                FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
                 _movement.Flash(afterFlashFailPosition);
                 print("fail");
             }
             else
             {
+                FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
                 _movement.Flash(afterFlashSucceedPosition);
                 print("succeed");
             }
@@ -256,6 +264,9 @@ public class PlayerInput : MonoBehaviour
             {
                 _selectedColumn = raycastHit.collider.gameObject;
                 _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
+
+                Pentagram selectedPentagram = _selectedColumn.GetComponentInChildren<Pentagram>();
+                selectedPentagram.TogglePentagram(true, gameObject.transform);
             }
             else
             {

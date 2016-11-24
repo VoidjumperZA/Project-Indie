@@ -17,8 +17,10 @@ public class Ball : MonoBehaviour
 
     private bool inPossession;
 
-    string pickSound = "event:/Pick";
-    string goalSound = "event:/Goal";
+    //VYTAUTAS' FMOD IMPLEMENTATION BEGINS
+    public string pickSound = "event:/Pick";
+    public string goalSound = "event:/Goal";
+    //VYTAUTAS' FMOD IMPLEMENTATION ENDS
 
     private void Start()
     {
