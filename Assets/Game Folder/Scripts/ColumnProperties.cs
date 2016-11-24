@@ -67,15 +67,14 @@ public class ColumnProperties : MonoBehaviour
     {
         _columnResettingSpeed = pColumnResettingSpeed;
         _columnDisplacementSize = pColumnDisplacementSize;
-        _polarity = pPolarity;
+        _polarity = pPolarity;      
+        _atBaseLevel = false;
 
         //FMOD
         hexSoundEv = FMODUnity.RuntimeManager.CreateInstance(hexSound);
         hexSoundEv.getParameter("Direction", out directionParam);
         FMODUnity.RuntimeManager.PlayOneShot(hexSound, gameObject.transform.position);
         //
-
-        _atBaseLevel = false;
     }
 
     private IEnumerator waitUntilGrindToArena(float pPolarity)
@@ -87,6 +86,7 @@ public class ColumnProperties : MonoBehaviour
 
     private void grindToArenaLevel()
     {
+        Debug.Log("movementDelta is " + _movementDelta + " and my column displacement size is " + _columnDisplacementSize);
         if(_movementDelta < _columnDisplacementSize)
         {
             gameObject.transform.Translate(0, _polarity * _columnResettingSpeed, 0);
@@ -94,9 +94,9 @@ public class ColumnProperties : MonoBehaviour
         }
         else
         {
-            //Debug.Log("My pos before .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
+            Debug.Log("My pos before .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
             gameObject.transform.position = new Vector3(gameObject.transform.position.x, _baseYValue, gameObject.transform.position.z);                   
-            //Debug.Log("My pos after .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
+            Debug.Log("My pos after .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
             _movementDelta = 0.0f;
             _atBaseLevel = true;
             columnStatus = ColumnStatus.Free;
@@ -110,6 +110,7 @@ public class ColumnProperties : MonoBehaviour
         //if column is not yet at the height of it's end position
         if (_baseYValue + Mathf.Abs(gameObject.transform.position.y) + (_baseYValue / 2) < _columnDisplacementSize && IsColumnMoving() == true)
         {
+            Debug.Log("BaseY: " + _baseYValue + " + pos y " + Mathf.Abs(gameObject.transform.position.y) + " > " + _columnDisplacementSize);
             //increase the speed of the column to give it natural acceleration
             _columnSpeed += _columnMovementAccelerationSpeed;
             if (_columnSpeed >= _columnMovementMaxSpeed)

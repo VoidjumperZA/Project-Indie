@@ -20,6 +20,18 @@ public class Pentagram : MonoBehaviour
     {
         gameObject.SetActive(pState);
 
-        gameObject.GetComponentInChildren<SimpleLookAt>().AssignPlayer(pPlayerTransform);
+        SimpleLookAt rune = GetComponentInChildren(typeof(SimpleLookAt)) as SimpleLookAt;
+        rune.AssignPlayer(pPlayerTransform);
     }
+
+    public void TogglePentagram(bool pState)
+    {
+        gameObject.SetActive(pState);
+    }
+
+    public bool IsPentagramActive()
+    {
+        return gameObject.activeSelf;
+    }
+
 }

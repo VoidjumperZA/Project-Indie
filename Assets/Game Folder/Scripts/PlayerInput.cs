@@ -38,6 +38,7 @@ public class PlayerInput : MonoBehaviour
 
     private GameObject _selectedColumn;
     private ColumnProperties _columnProperties;
+    private Pentagram selectedPentagram;
 
     private int playerID;
     private int temp_TeamID;
@@ -161,12 +162,16 @@ public class PlayerInput : MonoBehaviour
             if (currentColumn == possibleNextColumn)
             {
                 FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
+                Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
+                playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
                 _movement.Flash(afterFlashFailPosition);
                 print("fail");
             }
             else
             {
                 FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
+                Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
+                playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
                 _movement.Flash(afterFlashSucceedPosition);
                 print("succeed");
             }
@@ -265,13 +270,31 @@ public class PlayerInput : MonoBehaviour
                 _selectedColumn = raycastHit.collider.gameObject;
                 _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
 
-                Pentagram selectedPentagram = _selectedColumn.GetComponentInChildren<Pentagram>();
-                selectedPentagram.TogglePentagram(true, gameObject.transform);
+                if (_columnProperties.GetColumnType() == 0)
+                {
+                    //if we have a pentagram already, and it's not the same one we're targeting, switch the old one off
+                    Pentagram newSelectedPenta = _selectedColumn.GetComponentInChildren(typeof(Pentagram), true) as Pentagram;
+                    if (selectedPentagram != null && selectedPentagram != newSelectedPenta)
+                    {
+                        selectedPentagram.TogglePentagram(false);
+                    }
+
+                    selectedPentagram = newSelectedPenta;
+                    if (selectedPentagram.IsPentagramActive() != true)
+                    {
+                        selectedPentagram.TogglePentagram(true, gameObject.transform);
+                    }
+                }
+                
             }
             else
             {
                 _selectedColumn = null;
                 _columnProperties = null;
+                if (selectedPentagram != null)
+                {
+                    selectedPentagram.TogglePentagram(false);
+                }
             }
         }
     }
