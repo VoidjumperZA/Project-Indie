@@ -6,6 +6,8 @@ public class PlayerActions : MonoBehaviour
     private Vector3 spawnPosition;
     private Quaternion spawnRotation;
     private Rigidbody rigidBody;
+
+    private bool applyGravity = false;
     // Use this for initialization
     void Start()
     {
@@ -18,7 +20,10 @@ public class PlayerActions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (applyGravity == true)
+        {
+            applyAddedGravity();
+        }
     }
 
     public void Respawn()
@@ -29,6 +34,17 @@ public class PlayerActions : MonoBehaviour
 
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         ball.GetComponent<Ball>().TogglePossession(false);
+    }
+
+    public void ToggleAddedGravity(bool pState)
+    {
+        applyGravity = pState;
+    }
+
+    private void applyAddedGravity()
+    {
+        Debug.Log("test");
+        gameObject.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, -GameObject.Find("Manager").GetComponent<PlayerProperties>().GetAddedGravity(), 0) * Time.deltaTime);
     }
 
 }

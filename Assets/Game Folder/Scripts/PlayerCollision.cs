@@ -51,6 +51,19 @@ public class PlayerCollision : MonoBehaviour
             playerActions.Respawn();
 
         }
+
+        if (pCol.gameObject.tag == "Column")
+        {
+            playerActions.ToggleAddedGravity(false);
+        }
+    }
+
+    void OnCollisionExit(Collision pCol)
+    {
+        if (pCol.gameObject.tag == "Column")
+        {
+            playerActions.ToggleAddedGravity(true);          
+        }
     }
 
     //raycast downwards, if there is a column beneath you save it's properties

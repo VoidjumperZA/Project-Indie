@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     {
         playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
         _rigidBody = GetComponent<Rigidbody>();
+        
     }
 
     /// <summary>

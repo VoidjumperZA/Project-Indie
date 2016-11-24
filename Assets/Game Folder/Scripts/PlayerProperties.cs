@@ -20,6 +20,8 @@ public class PlayerProperties : MonoBehaviour
     private float _flashCooldownValue;
     [SerializeField]
     private float _flashDistance;
+    [SerializeField]
+    private float _addedGravity;
 
     // Use this for initialization
     void Start()
@@ -77,5 +79,10 @@ public class PlayerProperties : MonoBehaviour
     public float GetFlashDistance()
     {
         return _flashDistance;
+    }
+
+    public float GetAddedGravity()
+    {
+        return _addedGravity;
     }
 }
