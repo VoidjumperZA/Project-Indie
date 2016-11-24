@@ -76,6 +76,10 @@ public class ColumnControl : MonoBehaviour
             setSelectedColumnPropertiesDataValues(pColumnProperties, pPlayerID);
             pColumnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
             pColumnProperties.ToggleColumnRising(true);
+            pColumnProperties.hexSoundEv = FMODUnity.RuntimeManager.CreateInstance(pColumnProperties.hexSound);
+            pColumnProperties.hexSoundEv.getParameter("Direction", out pColumnProperties.directionParam);
+            pColumnProperties.directionParam.setValue(1);
+            FMODUnity.RuntimeManager.PlayOneShot(pColumnProperties.hexSound, pSelectedColumn.gameObject.transform.position);
         }
     }
 
@@ -92,6 +96,10 @@ public class ColumnControl : MonoBehaviour
             setSelectedColumnPropertiesDataValues(pColumnProperties, pPlayerID);
             pColumnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
             pColumnProperties.ToggleColumnLowering(true);
+            pColumnProperties.hexSoundEv = FMODUnity.RuntimeManager.CreateInstance(pColumnProperties.hexSound);
+            pColumnProperties.hexSoundEv.getParameter("Direction", out pColumnProperties.directionParam);
+            pColumnProperties.directionParam.setValue(0);
+            FMODUnity.RuntimeManager.PlayOneShot(pColumnProperties.hexSound, pSelectedColumn.gameObject.transform.position);
         }
     }
 

@@ -29,6 +29,14 @@ public class ColumnProperties : MonoBehaviour
 
     private int playerOwnerID;
 
+    //FMOD
+
+    public string hexSound = "event:/Hexagons";
+    public FMOD.Studio.EventInstance hexSoundEv;
+    public FMOD.Studio.ParameterInstance directionParam;
+
+    //
+
     private void Start()
     {
         columnStatus = ColumnStatus.Free;
@@ -60,6 +68,9 @@ public class ColumnProperties : MonoBehaviour
         _columnResettingSpeed = pColumnResettingSpeed;
         _columnDisplacementSize = pColumnDisplacementSize;
         _polarity = pPolarity;
+        hexSoundEv = FMODUnity.RuntimeManager.CreateInstance(hexSound);
+        hexSoundEv.getParameter("Direction", out directionParam);
+        FMODUnity.RuntimeManager.PlayOneShot(hexSound, gameObject.transform.position);
 
         _atBaseLevel = false;
     }

@@ -28,6 +28,15 @@ public class PlayerInput : MonoBehaviour
     private PlayerCamera _cameraScript;
     private PlayerProperties _playerproperties;
 
+    // FMOD
+
+    string flashSound = "event:/Flash";
+    string ballShootSound = "event:/BallShoot";
+    private FMOD_StudioEventEmitter _eventemitter;
+
+    //
+
+
     private GameObject _selectedColumn;
     private ColumnProperties _columnProperties;
 
@@ -122,6 +131,7 @@ public class PlayerInput : MonoBehaviour
         {
             _flashAvailable = false;
             lockAxis(ref flashAxisLock, true);
+            FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
             print("P" + playerID + " is flashing.");
 
             GameObject currentColumn = null;
@@ -198,6 +208,7 @@ public class PlayerInput : MonoBehaviour
             lockAxis(ref throwAxisLock, true);
             print("P" + playerID + " is throwing.");
             _movement.Throw(_cameraScript.gameObject.transform.forward, false);
+            FMODUnity.RuntimeManager.PlayOneShot(ballShootSound, _cameraScript.gameObject.transform.position);
             Able2Throw(false);
         }
         if (InputManager.ThrowButton(playerID) == 0)

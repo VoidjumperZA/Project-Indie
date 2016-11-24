@@ -17,6 +17,9 @@ public class Ball : MonoBehaviour
 
     private bool inPossession;
 
+    string pickSound = "event:/Pick";
+    string goalSound = "event:/Goal";
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -64,6 +67,7 @@ public class Ball : MonoBehaviour
         if (goalScript != null)
         {
             Debug.Log("Yes hello, this is Goal?");
+            FMODUnity.RuntimeManager.PlayOneShot(goalSound, goalScript.gameObject.transform.position);
 
             //if the goal does not belong to the same team as the player who scored
             if (goalScript.GetTeamOwnershipID() != MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()))
@@ -122,6 +126,8 @@ public class Ball : MonoBehaviour
             inPossession = true;
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.useGravity = false;
+
+            FMODUnity.RuntimeManager.PlayOneShot(pickSound, this.gameObject.transform.position);
         }
         else
         {

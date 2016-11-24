@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3501752d6d1c7ed4dbf6771dc53794cd
-timeCreated: 1479909595
+timeCreated: 1479981055
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -49,7 +49,7 @@ ModelImporter:
     4300014: SecondPiramid
     9500000: //RootNode
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
   animations:
