@@ -11,6 +11,9 @@ public class PauseScreen : MonoBehaviour
     private GameObject HUD;
 
     [SerializeField]
+    private Image[] Crosshairs;
+
+    [SerializeField]
     private Image pauseWheel;
 
     [SerializeField]
@@ -33,11 +36,11 @@ public class PauseScreen : MonoBehaviour
         if (IsPauseScreenActive() == true)
         {
             animateWheel();
-            HUD.SetActive(false);
+            toggleHUD(false);
         }
         else
         {
-            HUD.SetActive(true);
+            toggleHUD(true);
         }
     }
 
@@ -65,5 +68,14 @@ public class PauseScreen : MonoBehaviour
     public float GetPauseScreenOwner()
     {
         return pauseScreenOwner;
+    }
+
+    private void toggleHUD(bool pState)
+    {
+        HUD.SetActive(pState);
+        for (int i = 0; i < Crosshairs.Length; i++)
+        {
+            Crosshairs[i].enabled = pState;
+        }
     }
 }
