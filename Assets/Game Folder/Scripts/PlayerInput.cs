@@ -265,8 +265,8 @@ public class PlayerInput : MonoBehaviour
                 _selectedColumn = raycastHit.collider.gameObject;
                 _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
 
-                Pentagram selectedPentagram = _selectedColumn.GetComponentInChildren<Pentagram>();
-                selectedPentagram.TogglePentagram(true, gameObject.transform);
+               Pentagram selectedPentagram = _selectedColumn.GetComponentInChildren<Pentagram>();
+               selectedPentagram.TogglePentagram(true, gameObject.transform);
             }
             else
             {
