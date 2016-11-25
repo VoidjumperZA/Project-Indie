@@ -43,7 +43,6 @@ public class PlayerActions : MonoBehaviour
 
     private void applyAddedGravity()
     {
-        Debug.Log("test");
         gameObject.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, -GameObject.Find("Manager").GetComponent<PlayerProperties>().GetAddedGravity(), 0) * Time.deltaTime);
     }
 

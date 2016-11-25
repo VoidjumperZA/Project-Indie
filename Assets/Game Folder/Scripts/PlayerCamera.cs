@@ -34,6 +34,9 @@ public class PlayerCamera : MonoBehaviour
     private Vector3 _finalCameraPosition;
     private Vector3 _finalCameraLookAt;
 
+    private bool countDownOutOfSmoothFollow;
+    private Vector3 deltaVec;
+    private Vector3 cameraStartPos;
 
     private void Start()
     {
@@ -42,9 +45,28 @@ public class PlayerCamera : MonoBehaviour
         _targetCameraHelper = _target.GetChild(0).GetComponent<Transform>();
     }
 
-    private void Update()
+    void Update()
+    {
+        if (countDownOutOfSmoothFollow == true)
+        {
+            //if (cameraStartPos - gameObject.transform.position > deltaVec)
+           // {
+
+            //}
+        }
+    }
+
+    private IEnumerator waitAfterFlashToToggleMode()
+    {
+        yield return new WaitForSeconds(0.6f);
+        _smoothFollow = false;
+    }
+
+
+    private void LateUpdate()
     {
         followTarget();
+
     }
 
     private void followTarget()
@@ -109,5 +131,17 @@ public class PlayerCamera : MonoBehaviour
         Debug.DrawLine(transform.position, _finalCameraLookAt);
         //BUGTEST
         //print("X: " + pXRotation + "and Y: " + pYRotation);
+    }
+
+    public void ToggleSmoothFollow(bool pState, Vector3 pDeltaVec, Vector3 pStartingPos)
+    {
+        _smoothFollow = pState;
+        deltaVec = pDeltaVec;
+        cameraStartPos = pStartingPos;
+        if (pState == true)
+        {
+            countDownOutOfSmoothFollow = true;
+            StartCoroutine(waitAfterFlashToToggleMode());
+        }
     }
 }
