@@ -7,10 +7,6 @@ public class PlayerInput : MonoBehaviour
     //Receiving object references through inspector
     [SerializeField]
     private Camera _playerCamera;
-    [SerializeField]
-    private ColumnControl _columnControl;
-    [SerializeField]
-    private Image _crosshairs;
 
     //Player state variables
     private enum PlayerState
@@ -25,10 +21,16 @@ public class PlayerInput : MonoBehaviour
     private event InputUpdate _update;
     
     //Class instances
-    private PlayerMovement _movement;
+    private ColumnControl _columnControl;
+    private PlayerMovement _playerMovement;
     private PlayerActions _playerActions;
     private PlayerCamera _cameraScript;
-    private PlayerProperties _playerproperties;
+    private PlayerProperties _playerProperties;
+
+    //Need to be checked if needed.....
+    private GameObject _selectedColumn;
+    private ColumnProperties _columnProperties;
+    private Pentagram selectedPentagram;
 
     //Vytautas's' FMOD implementation
     public string flashSound = "event:/Flash";
@@ -43,11 +45,6 @@ public class PlayerInput : MonoBehaviour
     private bool invertAxisLock = false;
     private bool pauseAxisLock = false;
     private bool scoreboardAxisLock = false;
-
-    //Need to be checked if needed.....
-    private GameObject _selectedColumn;
-    private ColumnProperties _columnProperties;
-    private Pentagram selectedPentagram;
 
     private int playerID;
     private int temp_TeamID;
@@ -70,10 +67,11 @@ public class PlayerInput : MonoBehaviour
         _update += flashCooldownResetter;
         _update += columnMovementCooldownResetter;        
         //Getting class instances/components of objects. Need to be checked later for conventions
-        _movement = GetComponent<PlayerMovement>();
+        _playerMovement = GetComponent<PlayerMovement>();
         _playerActions = GetComponent<PlayerActions>();
         _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
-        _playerproperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
+        _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
+        _columnControl = GameObject.Find("Manager").GetComponent<ColumnControl>();
 
         //assign the player and ID based on his tag
         switch (gameObject.tag)
@@ -132,7 +130,7 @@ public class PlayerInput : MonoBehaviour
 
     private void movementHandler()
     {
-        _movement.Move(InputManager.Movement(playerID), _playerproperties.GetMovementSpeed());
+        _playerMovement.Move(InputManager.Movement(playerID), _playerProperties.GetMovementSpeed());
     }
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName, bool pOptionalVariable = true)
@@ -146,7 +144,7 @@ public class PlayerInput : MonoBehaviour
             {
                 case "Flash":
                     //executeFlash();
-                    _movement.Flash(InputManager.Movement(playerID), _playerproperties.GetFlashDistance(), _columnControl.GetGroundFloorYValue(), true, _playerproperties.GetFlashThrowBeforeFlash());
+                    _playerMovement.Flash(InputManager.Movement(playerID), _playerProperties.GetFlashDistance(), _columnControl.GetGroundFloorYValue(), true, _playerProperties.GetFlashThrowBeforeFlash());
                     //Either set _flashAvailable to false here or try to use ref bool pOptionalVariable, for now leave the cooldown issue for later since need to make another reset method first.
                     break;
                 case "Throw":
@@ -350,7 +348,7 @@ public class PlayerInput : MonoBehaviour
         {
             _flashCounter++;
         }
-        if(_flashCounter >= _playerproperties.GetFlashCooldownValue())
+        if(_flashCounter >= _playerProperties.GetFlashCooldownValue())
         {
             _flashAvailable = true;
             _flashCounter = 0.0f;
@@ -363,7 +361,7 @@ public class PlayerInput : MonoBehaviour
         {
             _columnMovementCounter++;
         }
-        if (_columnMovementCounter >= _playerproperties.GetColumnMovementCooldownValue())
+        if (_columnMovementCounter >= _playerProperties.GetColumnMovementCooldownValue())
         {
             _columnMovementAvailable = true;
             _columnMovementCounter = 0.0f;
