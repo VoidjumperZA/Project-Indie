@@ -4,12 +4,16 @@ using System.Collections;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody _rigidBody;
-
+    private Ball _ballScript;
+    private Rigidbody _ballRigidbody;
     private bool _flashThrowBeforeFlash;
 
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody>();
+        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+        _ballRigidbody = ball.GetComponent<Rigidbody>();
+        _ballScript = ball.GetComponent<Ball>();
     }
 
     /// <summary>
@@ -27,9 +31,9 @@ public class PlayerMovement : MonoBehaviour
     //NOTES: Flashing works, looks kinda oke actually, not sure if we need the smoothcamera, need feedback on this.
     //Fmod needs to be implemented, for now focus on other stuff, fix this later.
     //We need: - int PlayerID, float groundFloorValue, bool pBallposession
-    public void Flash(Vector3 pDirection, float pFlashDistance, float pGroundFloorYValue, bool pBallPosession, bool pFlashThrowBeforeFlash)
+    public void Flash(Vector3 pFlashDirection, float pFlashDistance, float pGroundFloorYValue, float pFlashThrowingForce, float pFlashThrowRotationAddition, bool pBallPosession, bool pFlashThrowBeforeFlash)
     {
-        pDirection.Normalize();
+        pFlashDirection.Normalize();
 
         //get our current column and the next one we could possibly land on
         GameObject currentColumn = null;
@@ -44,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Create the positions of where we'll be after a flash
-        Vector3 afterFlashFailPosition = transform.position + (transform.TransformVector(pDirection * pFlashDistance));
+        Vector3 afterFlashFailPosition = transform.position + (transform.TransformVector(pFlashDirection * pFlashDistance));
         Vector3 afterFlashSucceedPosition = afterFlashFailPosition;
         afterFlashSucceedPosition.y = pGroundFloorYValue;
 
@@ -58,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (_flashThrowBeforeFlash && pBallPosession)
         {
-            FlashThrow();
+            FlashThrow(pFlashThrowingForce, pFlashThrowRotationAddition);
         }
 
         if (currentColumn == possibleNextColumn)
@@ -70,8 +74,6 @@ public class PlayerMovement : MonoBehaviour
             //Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
             //playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
 
-
-            //playerActions.Flash(afterFlashFailPosition);
             transform.position = afterFlashFailPosition;
         }
         else
@@ -83,28 +85,19 @@ public class PlayerMovement : MonoBehaviour
             //Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
             //playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
 
-            //playerActions.Flash(afterFlashSucceedPosition);
             transform.position = afterFlashSucceedPosition;
         }
 
         if(!_flashThrowBeforeFlash && pBallPosession)
         {
-            FlashThrow();
+            FlashThrow(pFlashThrowingForce ,pFlashThrowRotationAddition);
         }
-
-        //if (_state == PlayerState.CARRYINGBALL)
-        //{
-        //    playerActions.Throw(transform.forward, true);
-        //    Able2Throw(false);
-        //}
     }
 
-    private void FlashThrow()
+    private void FlashThrow(float pFlashThrowingForce ,float pFlashThrowRotationAddition)
     {
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
-
-        //pDirection = Quaternion.AngleAxis(-playerProperties.GetForcedThrowRotationAddition(), gameObject.transform.right) * pDirection;
-        //ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
+        Vector3 Direction = Quaternion.AngleAxis(-pFlashThrowRotationAddition, transform.right) * transform.forward;
+        _ballScript.TogglePossession(false);
+        _ballRigidbody.AddForce(Direction * pFlashThrowingForce);
     }
 }

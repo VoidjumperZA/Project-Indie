@@ -8,18 +8,10 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private Camera _playerCamera;
 
-    //Player state variables
-    private enum PlayerState
-    {
-        NORMAL,
-        CARRYINGBALL
-    }
-    private PlayerState _state = PlayerState.NORMAL;
-
     //Delegates
     private delegate void InputUpdate();
     private event InputUpdate _update;
-    
+
     //Class instances
     private ColumnControl _columnControl;
     private PlayerMovement _playerMovement;
@@ -46,15 +38,16 @@ public class PlayerInput : MonoBehaviour
     private bool pauseAxisLock = false;
     private bool scoreboardAxisLock = false;
 
+    //Individual player stats
     private int playerID;
     private int temp_TeamID;
     private int cameraPolarity = 1;
     private Vector3 _raycastPos;
+    private bool _ballPosession = false;
 
-    private bool _flashAvailable = true;
-    private bool _columnMovementAvailable = true;
-    private float _flashCounter = 0.0f;
-    private float _columnMovementCounter = 0.0f;
+    //Cooldown values
+    private float _flashTimeStamp;
+    private float _columnMovementTimeStamp;
 
     private void Start()
     {
@@ -63,15 +56,15 @@ public class PlayerInput : MonoBehaviour
         _update += raycastingColumn;
         _update += raiseLowerCheck;
         _update += movementHandler;
-        //Need a neater way than this resetter shit for adding cooldowns
-        _update += flashCooldownResetter;
-        _update += columnMovementCooldownResetter;        
         //Getting class instances/components of objects. Need to be checked later for conventions
         _playerMovement = GetComponent<PlayerMovement>();
         _playerActions = GetComponent<PlayerActions>();
         _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
         _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
         _columnControl = GameObject.Find("Manager").GetComponent<ColumnControl>();
+
+        _flashTimeStamp = Time.time;
+        _columnMovementTimeStamp = Time.time;
 
         //assign the player and ID based on his tag
         switch (gameObject.tag)
@@ -117,10 +110,12 @@ public class PlayerInput : MonoBehaviour
         _update();
 
         //I would put these on the delegate but I'm not sure how to do that with parameters
-        faceButtonCheck(InputManager.FlashButton(playerID), ref flashAxisLock, "Flash", _flashAvailable);
+        faceButtonCheck(InputManager.FlashButton(playerID), ref flashAxisLock, "Flash");
         faceButtonCheck(InputManager.ThrowButton(playerID), ref throwAxisLock, "Throw");
         faceButtonCheck(InputManager.InvertButton(playerID), ref invertAxisLock, "Inverse");
         faceButtonCheck(InputManager.PauseButton(playerID), ref flashAxisLock, "Pause");
+
+        print("PlayerID: " + playerID + ", ballPosession:  " + _ballPosession);
     }
 
     private void mouseHandler()
@@ -133,27 +128,32 @@ public class PlayerInput : MonoBehaviour
         _playerMovement.Move(InputManager.Movement(playerID), _playerProperties.GetMovementSpeed());
     }
 
-    private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName, bool pOptionalVariable = true)
+    private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
     {
-        if (pButtonPressed > 0 && pAxisLock == false && pOptionalVariable == true)
+        if (pButtonPressed > 0 && pAxisLock == false)
         {
             lockAxis(ref pAxisLock, true);
 
             //execute the appropriate method for the call
-            switch(pActionName)
+            switch (pActionName)
             {
                 case "Flash":
                     //executeFlash();
-                    _playerMovement.Flash(InputManager.Movement(playerID), _playerProperties.GetFlashDistance(), _columnControl.GetGroundFloorYValue(), true, _playerProperties.GetFlashThrowBeforeFlash());
+                    if (_flashTimeStamp <= Time.time)
+                    {
+                        _flashTimeStamp = Time.time + _playerProperties.GetFlashCooldownValue();
+                        _playerMovement.Flash(InputManager.Movement(playerID), _playerProperties.GetFlashDistance(), _columnControl.GetGroundFloorYValue(), _playerProperties.GetFlashThrowingForce(), _playerProperties.GetFlashThrowRotationAddition(), _ballPosession, _playerProperties.GetFlashThrowBeforeFlash());
+                    }
                     //Either set _flashAvailable to false here or try to use ref bool pOptionalVariable, for now leave the cooldown issue for later since need to make another reset method first.
                     break;
                 case "Throw":
                     //executeThrow();
-                    _playerActions.Throw(_cameraScript.gameObject.transform.forward);
+                    if (_ballPosession) { _playerActions.Throw(_cameraScript.transform.forward); }
                     break;
                 case "Inverse":
+                    //This will be removed once we have the options screen done I think...
                     executeInverse();
-                    break;               
+                    break;
                 case "Pause":
                     executePause();
                     break;
@@ -280,28 +280,31 @@ public class PlayerInput : MonoBehaviour
     //check if input is calling for the player to raise or lower a column, then execute
     private void raiseLowerCheck()
     {
-        //raise column
-        if (InputManager.RaiseColumn(playerID) > 0 && raiseAxisLock == false && _columnMovementAvailable == true)
+        //For now this if statement is here, need to wait untill its in faceButtonCheck
+        if (_columnMovementTimeStamp <= Time.time)
         {
-            _columnMovementAvailable = false;
-            _columnControl.AttemptRaise(playerID, _selectedColumn, _columnProperties);
-            lockAxis(ref raiseAxisLock, true);
-        }
-        if (InputManager.RaiseColumn(playerID) == 0)
-        {
-            lockAxis(ref raiseAxisLock, false);
-        }
+            _columnMovementTimeStamp = Time.time + _playerProperties.GetColumnMovementCooldownValue();
+            //raise column
+            if (InputManager.RaiseColumn(playerID) > 0 && raiseAxisLock == false)
+            {
+                _columnControl.AttemptRaise(playerID, _selectedColumn, _columnProperties);
+                lockAxis(ref raiseAxisLock, true);
+            }
+            if (InputManager.RaiseColumn(playerID) == 0)
+            {
+                lockAxis(ref raiseAxisLock, false);
+            }
 
-        //lower column
-        if (InputManager.LowerColumn(playerID) > 0 && lowerAxisLock == false && _columnMovementAvailable == true)
-        {
-            _columnMovementAvailable = false;
-            _columnControl.AttemptLower(playerID, _selectedColumn, _columnProperties);
-            lockAxis(ref lowerAxisLock, true);
-        }
-        if (InputManager.LowerColumn(playerID) == 0)
-        {
-            lockAxis(ref lowerAxisLock, false);
+            //lower column
+            if (InputManager.LowerColumn(playerID) > 0 && lowerAxisLock == false)
+            {
+                _columnControl.AttemptLower(playerID, _selectedColumn, _columnProperties);
+                lockAxis(ref lowerAxisLock, true);
+            }
+            if (InputManager.LowerColumn(playerID) == 0)
+            {
+                lockAxis(ref lowerAxisLock, false);
+            }
         }
     }
 
@@ -309,6 +312,12 @@ public class PlayerInput : MonoBehaviour
     {
         pAxisToLock = pState;
     }
+    public void SetBallPosession(bool pBool)
+    {
+        _ballPosession = pBool;
+    }
+
+    //Not sure if these should be in PlayerInput at all, same for the values ofcourse
 
     /// <summary>
     /// Int attached to the PlayerInput script spesificing which player this instance is listed as.
@@ -326,45 +335,5 @@ public class PlayerInput : MonoBehaviour
     public int GetPlayerTeam()
     {
         return temp_TeamID;
-    }
-
-    public void Able2Throw(bool pBool)
-    {
-        if (pBool == false)
-        {
-            //_update -= throwCheck;
-            _state = PlayerState.NORMAL;
-        }
-        else
-        {
-            //_update += throwCheck;
-            _state = PlayerState.CARRYINGBALL;
-        }
-    }
-
-    private void flashCooldownResetter()
-    {
-        if(_flashAvailable == false)
-        {
-            _flashCounter++;
-        }
-        if(_flashCounter >= _playerProperties.GetFlashCooldownValue())
-        {
-            _flashAvailable = true;
-            _flashCounter = 0.0f;
-        }
-    }
-
-    private void columnMovementCooldownResetter()
-    {
-        if (_columnMovementAvailable == false)
-        {
-            _columnMovementCounter++;
-        }
-        if (_columnMovementCounter >= _playerProperties.GetColumnMovementCooldownValue())
-        {
-            _columnMovementAvailable = true;
-            _columnMovementCounter = 0.0f;
-        }
     }
 }

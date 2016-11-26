@@ -3,23 +3,24 @@ using System.Collections;
 
 public class PlayerActions : MonoBehaviour
 {
-    private Vector3 spawnPosition;
-    private Quaternion spawnRotation;
-    private Rigidbody rigidBody;
     private PlayerProperties playerProperties;
+
+    private Vector3 _spawnPosition;
+    private Quaternion _spawnRotation;
+    private Rigidbody _rigidBody;
+
     private bool applyGravity = false;
-    // Use this for initialization
+
     void Start()
     {
         playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
 
-        spawnPosition = transform.position;
-        spawnRotation = transform.rotation;
+        _spawnPosition = transform.position;
+        _spawnRotation = transform.rotation;
 
-        rigidBody = gameObject.GetComponent<Rigidbody>();
+        _rigidBody = gameObject.GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (applyGravity == true)
@@ -30,9 +31,9 @@ public class PlayerActions : MonoBehaviour
 
     public void Respawn()
     {
-        transform.position = spawnPosition;
-        transform.rotation = spawnRotation;
-        rigidBody.velocity = Vector3.zero;
+        transform.position = _spawnPosition;
+        transform.rotation = _spawnRotation;
+        _rigidBody.velocity = Vector3.zero;
 
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         ball.GetComponent<Ball>().TogglePossession(false);

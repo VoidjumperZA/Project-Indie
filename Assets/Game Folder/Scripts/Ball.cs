@@ -41,7 +41,10 @@ public class Ball : MonoBehaviour
         {
             currentOwner = movement.gameObject;
             currentOwnerID = movement.gameObject.GetComponent<PlayerInput>();
-            currentOwnerID.Able2Throw(true);
+            //This one
+            //currentOwnerID.SetBallPosession(true);
+            //THis one
+            TogglePossession(true);
 
             try
             {
@@ -57,8 +60,6 @@ public class Ball : MonoBehaviour
                 Debug.Log("lastOwner is null. Possibly as another player has not touched the ball. This is intentional.");
             }
 
-            TogglePossession(true);
-
         }
         Goal goalScript = pCollision.gameObject.GetComponent<Goal>();
         if (goalScript != null)
@@ -68,7 +69,7 @@ public class Ball : MonoBehaviour
 
             //if the goal does not belong to the same team as the player who scored
             if (goalScript.GetTeamOwnershipID() != MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()))
-            {   
+            {
                 MatchStatistics.AddPlayerGoal(currentOwnerID.GetPlayerID());
             }
             else
@@ -93,7 +94,7 @@ public class Ball : MonoBehaviour
             {
                 Debug.Log("i is " + i);
                 GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayer(i + 1).GetComponent<PlayerActions>().Respawn();
-            }            
+            }
             ResetToCentre();
         }
 
@@ -118,6 +119,8 @@ public class Ball : MonoBehaviour
 
     public void TogglePossession(bool pState)
     {
+        if (currentOwnerID != null) { currentOwnerID.SetBallPosession(pState); }
+        print("Test");
         if (pState == true)
         {
             inPossession = true;
@@ -144,7 +147,7 @@ public class Ball : MonoBehaviour
             transform.Translate(ballOffset, Space.World);
         }
     }
-    
+
     /// <summary>
     /// Will return true if the target is owned by a player.
     /// </summary>
