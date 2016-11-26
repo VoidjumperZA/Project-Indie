@@ -5,15 +5,17 @@ public class PlayerProperties : MonoBehaviour
 {
     //DESIGNER Inspector values, once chosen a nice value, these can be replaced with "hard coded" values
     [SerializeField]
-    private float _maxMovementSpeed;
-    [SerializeField]
-    private float _accelerationSpeed;
+    private float _MovementSpeed;
     [SerializeField]
     private float _throwingForce;
     [SerializeField]
     private float _throwRotationAddition;
     [SerializeField]
-    private float _forcedThrowRotationAddition;
+    private bool _flashThrowBeforeFlash;
+    [SerializeField]
+    private float _flashThrowingForce;
+    [SerializeField]
+    private float _flashThrowRotationAddition;
     [SerializeField]
     private float _columnMovementCooldownValue;
     [SerializeField]
@@ -23,32 +25,27 @@ public class PlayerProperties : MonoBehaviour
     [SerializeField]
     private float _addedGravity;
 
-    // Use this for initialization
     void Start()
     {
-        //30
-        //0.5
-        //1300
-        //25
-        //30
+        //Standard values
 
-     
+        //Movement Speed:                   30
+        //Throwing Force:                   1900
+        //Throw Rotation Addition:          25
+        //Flash Throw Before Flash:         true
+        //Flash Throwing Force:             1900
+        //Flash Throw Rotation Addition:    45
+        //Column Movement Cooldown:         120
+        //Flash Cooldown Value:             120
+        //Flash Distance:                   20
+        //Added gravity:                    1180000
+
+        //For Dom where to start after dinner: FlashThrow in PlayerMovement, boolean in calling FLash method in PlayerInput, making states/booleans in PlayerInput, fixing Cooldowns, Fmod
     }
 
-    // Update is called once per frame
-    void Update()
+    public float GetMovementSpeed()
     {
-
-    }
-
-    public float GetMaxMovementSpeed()
-    {
-        return _maxMovementSpeed;
-    }
-
-    public float GetAccelerationSpeed()
-    {
-        return _accelerationSpeed;
+        return _MovementSpeed;
     }
 
     public float GetThrowingForce()
@@ -61,9 +58,19 @@ public class PlayerProperties : MonoBehaviour
         return _throwRotationAddition;
     }
 
-    public float GetForcedThrowRotationAddition()
+    public bool GetFlashThrowBeforeFlash()
     {
-        return _forcedThrowRotationAddition;
+        return _flashThrowBeforeFlash;
+    }
+
+    public float GetFlashThrowingForce()
+    {
+        return _flashThrowingForce;
+    }
+
+    public float GetFlashThrowRotationAddition()
+    {
+        return _flashThrowRotationAddition;
     }
 
     public float GetColumnMovementCooldownValue()

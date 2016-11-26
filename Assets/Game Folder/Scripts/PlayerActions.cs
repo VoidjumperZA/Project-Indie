@@ -53,24 +53,21 @@ public class PlayerActions : MonoBehaviour
     /// Release the ball in the direction aimed, putting the ball back into play.
     /// </summary>
     /// <param name="pDirection"></param>
-    public void Throw(Vector3 pDirection, bool pForced)
+    public void Throw(Vector3 pDirection)
     {
+        //going to make another function called FlashThrow in PlayerMovement
         //get the ball's gameObject
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
         ball.GetComponent<Ball>().TogglePossession(false);
-        if (pForced == false)
-        {
-            pDirection = Quaternion.AngleAxis(-playerProperties.GetThrowRotationAddition(), gameObject.transform.right) * pDirection;
-        }
-        else
-        {
-            pDirection = Quaternion.AngleAxis(-playerProperties.GetForcedThrowRotationAddition(), gameObject.transform.right) * pDirection;
-        }
+        pDirection = Quaternion.AngleAxis(-playerProperties.GetThrowRotationAddition(), gameObject.transform.right) * pDirection;
+
         ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
+        //pDirection = Quaternion.AngleAxis(-playerProperties.GetForcedThrowRotationAddition(), gameObject.transform.right) * pDirection;
     }
 
-    public void Throw(Vector3 pDirection)
+    //Need to change name and determine if this needs to be in PlayerActions
+    public void DeathThrow(Vector3 pDirection)
     {
         //get the ball's gameObject
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
