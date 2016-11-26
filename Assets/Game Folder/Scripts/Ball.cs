@@ -27,11 +27,6 @@ public class Ball : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         centrePosition = transform.position;
         inPossession = false;
-        
-        //This should definitely be deleted. I've only put it on here because this script is called once
-        //it should be called from our lobby 
-        MatchStatistics.IntialiseGoalTracking();
-        Cursor.visible = false;
     }
 
     private void Update()

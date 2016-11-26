@@ -24,6 +24,7 @@ public class PlayerInput : MonoBehaviour
     private event InputUpdate _update;
 
     private PlayerMovement _movement;
+    private PlayerActions playerActions;
     private ColumnControl columnControl;
     private PlayerCamera _cameraScript;
     private PlayerProperties _playerproperties;
@@ -63,14 +64,12 @@ public class PlayerInput : MonoBehaviour
         _update += mouseHandler;
         _update += raycastingColumn;
         _update += raiseLowerCheck;
-        _update += flashCheck;
         _update += movementHandler;
-        _update += inversionCheck;
-        _update += pauseCheck;
         _update += flashCooldownResetter;
-        _update += columnMovementCooldownResetter;
+        _update += columnMovementCooldownResetter;        
 
         _movement = GetComponent<PlayerMovement>();
+        playerActions = GetComponent<PlayerActions>();
         _cameraScript = playerCamera.GetComponent<PlayerCamera>();
         columnControl = columnControlManager.GetComponent<ColumnControl>();
         _playerproperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
@@ -108,9 +107,20 @@ public class PlayerInput : MonoBehaviour
         MatchStatistics.AssignPlayerToTeam(playerID, temp_TeamID);
     }
 
+    private void PlayerInput__update()
+    {
+        throw new System.NotImplementedException();
+    }
+
     private void Update()
     {
         _update();
+
+        //I would put these on the delegate but I'm not sure how to do that with parameters
+        faceButtonCheck(InputManager.FlashButton(playerID), ref flashAxisLock, "Flash", _flashAvailable);
+        faceButtonCheck(InputManager.ThrowButton(playerID), ref throwAxisLock, "Throw");
+        faceButtonCheck(InputManager.InvertButton(playerID), ref invertAxisLock, "Inverse");
+        faceButtonCheck(InputManager.PauseButton(playerID), ref flashAxisLock, "Pause");
     }
 
     private void mouseHandler()
@@ -130,56 +140,9 @@ public class PlayerInput : MonoBehaviour
         if (InputManager.FlashButton(playerID) > 0 && flashAxisLock == false && _flashAvailable == true)
         {
             //lock the flash
-            _flashAvailable = false;
             lockAxis(ref flashAxisLock, true);
 
-
-            //get our current column and the next one we could possibly land on
-            GameObject currentColumn = null;
-            GameObject possibleNextColumn = null;
-
-            //fire a ray to select our current column
-            Ray firstRay = new Ray(transform.position, -transform.up);
-            RaycastHit firstHitInfo;
-            if (Physics.Raycast(firstRay, out firstHitInfo))
-            {
-                currentColumn = firstHitInfo.collider.gameObject;
-            }
-
-            //store the positions of where we'll be after a flash
-            Vector3 afterFlashFailPosition = transform.position + (transform.TransformVector(InputManager.Movement(playerID)) * _movement.GetFlashDistance());
-            Vector3 afterFlashSucceedPosition = afterFlashFailPosition;
-            afterFlashSucceedPosition.y = columnControl.GetGroundFloorYValue();
-
-            //fire a ray to find our next possible column
-            Ray secondRay = new Ray(afterFlashFailPosition, -transform.up);
-            RaycastHit secondHitInfo;
-            if (Physics.Raycast(secondRay, out secondHitInfo))
-            {
-                possibleNextColumn = secondHitInfo.collider.gameObject;
-            }
-
-            if (currentColumn == possibleNextColumn)
-            {
-                FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
-                Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
-                playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
-                _movement.Flash(afterFlashFailPosition);
-                print("fail");
-            }
-            else
-            {
-                FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
-                Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
-                playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
-                _movement.Flash(afterFlashSucceedPosition);
-                print("succeed");
-            }
-            if (_state == PlayerState.CARRYINGBALL)
-            {
-                _movement.Throw(transform.forward, true);
-                Able2Throw(false);
-            }
+           
         }
         if (InputManager.FlashButton(playerID) == 0)
         {
@@ -188,14 +151,28 @@ public class PlayerInput : MonoBehaviour
     }
 
 
-    private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock)
+    private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName, bool pOptionalVariable = true)
     {
-        if (pButtonPressed > 0 && pAxisLock == false)
+        if (pButtonPressed > 0 && pAxisLock == false && pOptionalVariable == true)
         {
             lockAxis(ref pAxisLock, true);
 
-            //DELEGATE: ?
-            //_movement.Throw(_cameraScript.gameObject.transform.forward);
+            //execute the appropriate method for the call
+            switch(pActionName)
+            {
+                case "Flash":
+                    executeFlash();
+                    break;
+                case "Throw":
+                    executeThrow();
+                    break;
+                case "Inverse":
+                    executeInverse();
+                    break;               
+                case "Pause":
+                    executePause();
+                    break;
+            }
         }
         if (pButtonPressed == 0)
         {
@@ -203,14 +180,76 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    //actual flash method and calculation
     private void executeFlash()
     {
+        _flashAvailable = false;
 
+        //get our current column and the next one we could possibly land on
+        GameObject currentColumn = null;
+        GameObject possibleNextColumn = null;
+
+        //fire a ray to select our current column
+        Ray firstRay = new Ray(transform.position, -transform.up);
+        RaycastHit firstHitInfo;
+        if (Physics.Raycast(firstRay, out firstHitInfo))
+        {
+            currentColumn = firstHitInfo.collider.gameObject;
+        }
+
+        //store the positions of where we'll be after a flash
+        Vector3 afterFlashFailPosition = transform.position + (transform.TransformVector(InputManager.Movement(playerID)) * playerActions.GetFlashDistance());
+        Vector3 afterFlashSucceedPosition = afterFlashFailPosition;
+        afterFlashSucceedPosition.y = columnControl.GetGroundFloorYValue();
+
+        //fire a ray to find our next possible column
+        Ray secondRay = new Ray(afterFlashFailPosition, -transform.up);
+        RaycastHit secondHitInfo;
+        if (Physics.Raycast(secondRay, out secondHitInfo))
+        {
+            possibleNextColumn = secondHitInfo.collider.gameObject;
+        }
+
+        if (currentColumn == possibleNextColumn)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
+            Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
+            playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
+            playerActions.Flash(afterFlashFailPosition);
+            print("fail");
+        }
+        else
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
+            Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
+            playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
+            playerActions.Flash(afterFlashSucceedPosition);
+            print("succeed");
+        }
+        if (_state == PlayerState.CARRYINGBALL)
+        {
+            playerActions.Throw(transform.forward, true);
+            Able2Throw(false);
+        }
     }
 
+    //actual throw method and calculation
     private void executeThrow()
     {
-        //_movement.Throw(_cameraScript.gameObject.transform.forward);
+        playerActions.Throw(_cameraScript.gameObject.transform.forward, false); //why do we use camera script here?
+        FMODUnity.RuntimeManager.PlayOneShot(ballShootSound, _cameraScript.gameObject.transform.position);
+        Able2Throw(false);
+    }
+
+    private void executeInverse()
+    {
+        cameraPolarity *= -1;
+    }
+
+    private void executePause()
+    {
+        PauseScreen pauseScreen = GameObject.Find("Manager").GetComponent<PauseScreen>();
+        pauseScreen.DisplayPauseScreen(!pauseScreen.IsPauseScreenActive(), playerID);
     }
 
     //check if input is calling for the player to throw, then execute
@@ -219,10 +258,7 @@ public class PlayerInput : MonoBehaviour
         if (InputManager.ThrowButton(playerID) > 0 && throwAxisLock == false)
         {
             lockAxis(ref throwAxisLock, true);
-            print("P" + playerID + " is throwing.");
-            _movement.Throw(_cameraScript.gameObject.transform.forward, false);
-            FMODUnity.RuntimeManager.PlayOneShot(ballShootSound, _cameraScript.gameObject.transform.position);
-            Able2Throw(false);
+
         }
         if (InputManager.ThrowButton(playerID) == 0)
         {
@@ -235,7 +271,7 @@ public class PlayerInput : MonoBehaviour
         if (InputManager.InvertButton(playerID) > 0 && invertAxisLock == false)
         {
             lockAxis(ref invertAxisLock, true);
-            cameraPolarity *= -1;
+            
         }
         if (InputManager.InvertButton(playerID) == 0)
         {
@@ -248,8 +284,7 @@ public class PlayerInput : MonoBehaviour
         if (InputManager.PauseButton(playerID) > 0 && pauseAxisLock == false)
         {
             lockAxis(ref pauseAxisLock, true);
-            PauseScreen pauseScreen = GameObject.Find("Manager").GetComponent<PauseScreen>();
-            pauseScreen.DisplayPauseScreen(!pauseScreen.IsPauseScreenActive(), playerID);
+            
         }
         if (InputManager.PauseButton(playerID) == 0)
         {
@@ -354,12 +389,12 @@ public class PlayerInput : MonoBehaviour
     {
         if (pBool == false)
         {
-            _update -= throwCheck;
+            //_update -= throwCheck;
             _state = PlayerState.NORMAL;
         }
         else
         {
-            _update += throwCheck;
+            //_update += throwCheck;
             _state = PlayerState.CARRYINGBALL;
         }
     }

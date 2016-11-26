@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public static class InputManager
 {
@@ -11,19 +12,7 @@ public static class InputManager
     /// <returns></returns>
     public static float MovementHorizontal(int pPlayerID)
     {
-        float p1_result = 0.0f;
-        p1_result += Input.GetAxis("1_J_MovementHorizontal");
-        p1_result += Input.GetAxis("1_K_MovementHorizontal");
-
-        float p2_result = 0.0f;
-        p2_result += Input.GetAxis("2_J_MovementHorizontal");
-
-        float p3_result = 0.0f;
-        
-
-        float p4_result = 0.0f;
-
-        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
+        return determineMovementAxes(pPlayerID, "MovementHorizontal");
     }
 
     /// <summary>
@@ -33,20 +22,7 @@ public static class InputManager
     /// <returns></returns>
     public static float MovementVertical(int pPlayerID)
     {
-        float p1_result = 0.0f;
-        p1_result += Input.GetAxis("1_J_MovementVertical");
-        p1_result += Input.GetAxis("1_K_MovementVertical");
-
-        float p2_result = 0.0f;
-        p2_result += Input.GetAxis("2_J_MovementVertical");
-
-
-        float p3_result = 0.0f;
-
-
-        float p4_result = 0.0f;
-
-        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);   
+        return determineMovementAxes(pPlayerID, "MovementVertical");
     }
 
     /// <summary>
@@ -67,18 +43,8 @@ public static class InputManager
     /// <returns></returns>
     public static float CameraHorizontal(int pPlayerID)
     {
-        float p1_result = 0.0f;
-        p1_result += Input.GetAxis("1_J_CameraHorizontal");
-        p1_result += Input.GetAxis("1_M_CameraHorizontal");
+        return determineMovementAxes(pPlayerID, "CameraHorizontal");
 
-        float p2_result = 0.0f;
-        p2_result += Input.GetAxis("2_J_CameraHorizontal");
-
-        float p3_result = 0.0f;
-        float p4_result = 0.0f;
-
-        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
-        
     }
 
     /// <summary>
@@ -88,17 +54,7 @@ public static class InputManager
     /// <returns></returns>
     public static float CameraVertical(int pPlayerID)
     {
-        float p1_result = 0.0f;
-        p1_result += Input.GetAxis("1_J_CameraVertical");
-        p1_result += Input.GetAxis("1_M_CameraVertical");
-
-        float p2_result = 0.0f;
-        p2_result += Input.GetAxis("2_J_CameraVertical");
-
-        float p3_result = 0.0f;
-        float p4_result = 0.0f;
-
-        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
+        return determineMovementAxes(pPlayerID, "CameraVertical");
     }
 
     /// <summary>
@@ -119,17 +75,7 @@ public static class InputManager
     /// <returns></returns>
     public static float RaiseColumn(int pPlayerID)
     {
-        float p1_result = 0.0f;
-        p1_result += Input.GetAxis("1_J_RaiseColumn");
-        p1_result += Input.GetAxis("1_K_RaiseColumn");
-
-        float p2_result = 0.0f;
-        p2_result += Input.GetAxis("2_J_RaiseColumn");
-
-        float p3_result = 0.0f;
-        float p4_result = 0.0f;
-
-        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
+        return determineMovementAxes(pPlayerID, "RaiseColumn");
     }
 
     /// <summary>
@@ -139,17 +85,7 @@ public static class InputManager
     /// <returns></returns>
     public static float LowerColumn(int pPlayerID)
     {
-        float p1_result = 0.0f;
-        p1_result += Input.GetAxis("1_J_LowerColumn");
-        p1_result += Input.GetAxis("1_K_LowerColumn");
-
-        float p2_result = 0.0f;
-        p2_result += Input.GetAxis("2_J_LowerColumn");
-
-        float p3_result = 0.0f;
-        float p4_result = 0.0f;
-
-        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
+        return determineMovementAxes(pPlayerID, "LowerColumn");
     }
 
     /// <summary>
@@ -159,17 +95,7 @@ public static class InputManager
     /// <returns></returns>
     public static float FlashButton(int pPlayerID)
     {
-        float p1_result = 0.0f;
-        p1_result += Input.GetAxis("1_J_FlashButton");
-        p1_result += Input.GetAxis("1_K_FlashButton");
-
-        float p2_result = 0.0f;
-        p2_result += Input.GetAxis("2_J_FlashButton");
-
-        float p3_result = 0.0f;
-        float p4_result = 0.0f;
-
-        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
+        return determineMovementAxes(pPlayerID, "FlashButton");
     }
 
     /// <summary>
@@ -179,45 +105,46 @@ public static class InputManager
     /// <returns></returns>
     public static float ThrowButton(int pPlayerID)
     {
-        float p1_result = 0.0f;
-        p1_result += Input.GetAxis("1_J_ThrowButton");
-        p1_result += Input.GetAxis("1_K_ThrowButton");
-
-        float p2_result = 0.0f;
-        p2_result += Input.GetAxis("2_J_ThrowButton");
-
-        float p3_result = 0.0f;
-        float p4_result = 0.0f;
-
-        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
+        return determineMovementAxes(pPlayerID, "ThrowButton");
     }
 
     //QUICK FIX: PLEASE DELETE
     public static float InvertButton(int pPlayerID)
     {
-        float p1_result = 0.0f;
-        p1_result += Input.GetAxis("1_J_InvertButton");
-        p1_result += Input.GetAxis("1_K_InvertButton");
-
-        float p2_result = 0.0f;
-        p2_result += Input.GetAxis("2_J_InvertButton");
-
-        float p3_result = 0.0f;
-        float p4_result = 0.0f;
-
-        return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
+        return determineMovementAxes(pPlayerID, "InvertButton");
     }
 
     public static float PauseButton(int pPlayerID)
     {
+        return determineMovementAxes(pPlayerID, "PauseButton");
+
+    }
+
+    //internal method that handles axis input detection 
+    private static float determineMovementAxes(int pPlayerID, string pAxisName)
+    {
+        //saves us the trouble of fulling out five separate parametres for each controller and the keyboard
+        List<string> axisNames = new List<string>();
+
+        string keyboardAxis = "1_K_" + pAxisName;
+        axisNames.Add(keyboardAxis);
+
+        for (int i = 0; i < 4; i++)
+        {
+            string joystickAxis = "" + (i + 1) + "_J_" + pAxisName;
+            axisNames.Add(joystickAxis);
+        }
+
         float p1_result = 0.0f;
-        p1_result += Input.GetAxis("1_J_PauseButton");
-        p1_result += Input.GetAxis("1_K_PauseButton");
+        p1_result += Input.GetAxis(axisNames[0]);
+        p1_result += Input.GetAxis(axisNames[1]);
 
         float p2_result = 0.0f;
-        p2_result += Input.GetAxis("2_J_PauseButton");
+        p2_result += Input.GetAxis(axisNames[2]);
 
         float p3_result = 0.0f;
+
+
         float p4_result = 0.0f;
 
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
