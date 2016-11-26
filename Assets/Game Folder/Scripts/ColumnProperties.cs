@@ -112,7 +112,6 @@ public class ColumnProperties : MonoBehaviour
         //if (_baseYValue + Mathf.Abs(gameObject.transform.position.y) + (_baseYValue / 2) < _columnDisplacementSize && IsColumnMoving() == true)
         if(_orignalMovementDelta <  _columnDisplacementSize && IsColumnMoving() == true)
         {
-            Debug.Log("BaseY: " + _baseYValue + " + pos y " + Mathf.Abs(gameObject.transform.position.y) + " > " + _columnDisplacementSize);
             //increase the speed of the column to give it natural acceleration
             _columnSpeed += _columnMovementAccelerationSpeed;
             if (_columnSpeed >= _columnMovementMaxSpeed)
