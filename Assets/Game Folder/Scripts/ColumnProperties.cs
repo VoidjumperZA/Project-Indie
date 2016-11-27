@@ -6,6 +6,7 @@ public class ColumnProperties : MonoBehaviour
     [SerializeField]
     private bool _hasManaObject;
     GameObject _manaObject;
+    Rigidbody _rigidBody;
 
     private enum ColumnType { Dynamic, Static };
     public enum ColumnStatus { Free, Locked };
@@ -44,14 +45,14 @@ public class ColumnProperties : MonoBehaviour
 
     private void Start()
     {
+        _rigidBody = GetComponent<Rigidbody>();
         columnStatus = ColumnStatus.Free;
         _manaObject = Resources.Load("ManaObject") as GameObject;
         if (_hasManaObject)
         {
             GameObject newManaObject = Instantiate(_manaObject);
             newManaObject.transform.SetParent(transform);
-            //newManaObject.transform.localPosition = 
-
+            newManaObject.transform.position = new Vector3(transform.position.x, GetComponent<MeshRenderer>().bounds.extents.y * (2.0f - 0.25f), transform.position.z);
         }
     }
 
@@ -86,7 +87,7 @@ public class ColumnProperties : MonoBehaviour
         //FMOD
         hexSoundEv = FMODUnity.RuntimeManager.CreateInstance(hexSound);
         hexSoundEv.getParameter("Direction", out directionParam);
-        FMODUnity.RuntimeManager.PlayOneShot(hexSound, gameObject.transform.position);
+        FMODUnity.RuntimeManager.PlayOneShot(hexSound, transform.position);
         //
     }
 
@@ -99,17 +100,20 @@ public class ColumnProperties : MonoBehaviour
 
     private void grindToArenaLevel()
     {
-        Debug.Log("movementDelta is " + _resettingMovementDelta + " and my column displacement size is " + _columnDisplacementSize);
         if (_resettingMovementDelta < _columnDisplacementSize)
         {
-            gameObject.transform.Translate(0, _polarity * _columnResettingSpeed, 0);
+            transform.Translate(0, _polarity * _columnResettingSpeed, 0);
+            //Vector3 movement = transform.TransformDirection(0, _polarity * _columnResettingSpeed, 0);
+            //_rigidBody.MovePosition(transform.position + movement);
+
             _resettingMovementDelta += _columnResettingSpeed;
         }
         else
         {
-            Debug.Log("My pos before .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, _baseYValue, gameObject.transform.position.z);
-            Debug.Log("My pos after .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
+            transform.position = new Vector3(transform.position.x, _baseYValue, transform.position.z);
+            //Vector3 position = new Vector3(transform.position.x, _baseYValue, transform.position.z);
+            //_rigidBody.MovePosition(position);
+
             _resettingMovementDelta = 0.0f;
             _atBaseLevel = true;
             columnStatus = ColumnStatus.Free;
@@ -130,7 +134,10 @@ public class ColumnProperties : MonoBehaviour
             {
                 _columnSpeed = _columnMovementMaxSpeed;
             }
-            gameObject.transform.Translate(0, pPolarity * _columnSpeed, 0);
+            transform.Translate(0, pPolarity * _columnSpeed, 0);
+            //Vector3 movement = transform.TransformDirection(0, _polarity * _columnSpeed, 0);
+            //_rigidBody.MovePosition(transform.position + movement);
+
             _orignalMovementDelta += _columnSpeed;
         }
         else

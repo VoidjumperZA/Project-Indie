@@ -52,11 +52,37 @@ public class PlayerInput : MonoBehaviour
         _flashTimeStamp = Time.time;
         _columnMovementTimeStamp = Time.time;
         //Setting individual player values
+        _cameraPolarity = 1;
         _spawnHeight = transform.position.y;
         _manaPoints = 0.0f;
         _ballPosession = false;
         //Sending the right camera object and raycast position to _playerActions, so it doesn't need an instance of _playerInput
-        
+
+        //Temporarily switch statement
+        switch(gameObject.tag)
+        {
+            case "Player_1":
+                _playerID = 1;
+                _temp_TeamID = 1;
+                _raycastPos = new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f);
+                break;
+            case "Player_2":
+                _playerID = 2;
+                _temp_TeamID = 1;
+                _raycastPos = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
+                break;
+            case "Player_3":
+                _playerID = 3;
+                _temp_TeamID = 2;
+                _raycastPos = new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f);
+                break;
+            case "Player_4":
+                _playerID = 4;
+                _temp_TeamID = 2;
+                _raycastPos = new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f);
+                break;
+        }
+        _playerActions.SetCameraAndRaycastPos(_playerCamera, _raycastPos);
     }
 
     private void Update()
