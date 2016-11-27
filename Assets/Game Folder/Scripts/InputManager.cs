@@ -143,9 +143,10 @@ public static class InputManager
         p2_result += Input.GetAxis(axisNames[2]);
 
         float p3_result = 0.0f;
-
+        p3_result += Input.GetAxis(axisNames[3]);
 
         float p4_result = 0.0f;
+        p4_result += Input.GetAxis(axisNames[4]);
 
         return returnClampedAxis(pPlayerID, p1_result, p2_result, p3_result, p4_result);
     }
