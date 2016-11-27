@@ -17,6 +17,9 @@ public class PlayerActions : MonoBehaviour
     private ColumnProperties _columnProperties;
     private Pentagram selectedPentagram;
 
+    private Camera _camera;
+    private Vector3 _raycastPos;
+
     private void Start()
     {
         playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
@@ -26,63 +29,63 @@ public class PlayerActions : MonoBehaviour
 
         _rigidBody = gameObject.GetComponent<Rigidbody>();
 
-        //Columns implementation
         _columnControl = GameObject.Find("Manager").GetComponent<ColumnControl>();
-        //attemtpraise and attemptLower
     }
 
-    public void MoveColumn(string pDirection, int pPlayerID)
+
+    private void Update()
     {
-        if (pDirection == "Up") { _columnControl.AttemptRaise(pPlayerID, _selectedColumn, _columnProperties); }
-        else if (pDirection == "Down") { _columnControl.AttemptLower(pPlayerID, _selectedColumn, _columnProperties); }
+        RaycastingColumn();
+        if (applyGravity == true)
+        {
+            applyAddedGravity();
+        }
+    }
+
+    public void MoveColumn(string pRaiseOrLower, int pPlayerID)
+    {
+        if (pRaiseOrLower == "Raise") { _columnControl.AttemptRaise(pPlayerID, _selectedColumn, _columnProperties); }
+        else if (pRaiseOrLower == "Lower") { _columnControl.AttemptLower(pPlayerID, _selectedColumn, _columnProperties); }
     }
 
     //raycast gameobjects and if they're columns, set them as the selected column
     public void RaycastingColumn()
     {
-        //RaycastHit raycastHit;
-        //Ray ray; = _playerCamera.ScreenPointToRay(_raycastPos);
+        RaycastHit raycastHit;
+        Ray ray = _camera.ScreenPointToRay(_raycastPos);
 
-        //if (Physics.Raycast(ray, out raycastHit))
-        //{
-        //    if (raycastHit.collider.gameObject.tag == "Column")
-        //    {
-        //        _selectedColumn = raycastHit.collider.gameObject;
-        //        _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
-
-        //        if (_columnProperties.GetColumnType() == 0)
-        //        {
-        //            //if we have a pentagram already, and it's not the same one we're targeting, switch the old one off
-        //            Pentagram newSelectedPenta = _selectedColumn.GetComponentInChildren(typeof(Pentagram), true) as Pentagram;
-        //            if (selectedPentagram != null && selectedPentagram != newSelectedPenta)
-        //            {
-        //                selectedPentagram.TogglePentagram(false);
-        //            }
-
-        //            selectedPentagram = newSelectedPenta;
-        //            if (selectedPentagram.IsPentagramActive() != true)
-        //            {
-        //                selectedPentagram.TogglePentagram(true, gameObject.transform);
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        _selectedColumn = null;
-        //        _columnProperties = null;
-        //        if (selectedPentagram != null)
-        //        {
-        //            selectedPentagram.TogglePentagram(false);
-        //        }
-        //    }
-        //}
-    }
-
-    private void Update()
-    {
-        if (applyGravity == true)
+        if (Physics.Raycast(ray, out raycastHit))
         {
-            applyAddedGravity();
+            if (raycastHit.collider.gameObject.tag == "Column")
+            {
+                _selectedColumn = raycastHit.collider.gameObject;
+                _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
+
+                if (_columnProperties.GetColumnType() == 0)
+                {
+                    //if we have a pentagram already, and it's not the same one we're targeting, switch the old one off
+                    Pentagram newSelectedPenta = _selectedColumn.GetComponentInChildren(typeof(Pentagram), true) as Pentagram;
+                    if (selectedPentagram != null && selectedPentagram != newSelectedPenta)
+                    {
+                        selectedPentagram.TogglePentagram(false);
+                    }
+
+                    selectedPentagram = newSelectedPenta;
+                    if (selectedPentagram.IsPentagramActive() != true)
+                    {
+                        selectedPentagram.TogglePentagram(true, gameObject.transform);
+                    }
+                }
+            }
+            else
+            {
+                _selectedColumn = null;
+                _columnProperties = null;
+                if (selectedPentagram != null)
+                {
+                    selectedPentagram.TogglePentagram(false);
+                }
+            }
         }
     }
 
@@ -109,7 +112,6 @@ public class PlayerActions : MonoBehaviour
         gameObject.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, -GameObject.Find("Manager").GetComponent<PlayerProperties>().GetAddedGravity(), 0) * Time.deltaTime);
     }
 
-
     /// <summary>
     /// Release the ball in the direction aimed, putting the ball back into play.
     /// </summary>
@@ -134,5 +136,11 @@ public class PlayerActions : MonoBehaviour
         Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
         ball.GetComponent<Ball>().TogglePossession(false);
         ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
+    }
+
+    public void SetCameraAndRaycastPos(Camera pCamera, Vector3 pRaycastPos)
+    {
+        _camera = pCamera;
+        _raycastPos = pRaycastPos;
     }
 }

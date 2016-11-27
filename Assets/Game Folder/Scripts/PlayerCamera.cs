@@ -144,4 +144,6 @@ public class PlayerCamera : MonoBehaviour
             StartCoroutine(waitAfterFlashToToggleMode());
         }
     }
+
+
 }
