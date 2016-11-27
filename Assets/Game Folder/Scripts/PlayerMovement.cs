@@ -22,7 +22,6 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="pDirection"></param>
     public void Move(Vector3 pDirection, float pMovementSpeed)
     {
-        pDirection.Normalize();
         Vector3 movement = transform.TransformDirection(pDirection) * pMovementSpeed * Time.deltaTime;
         _rigidBody.MovePosition(transform.position + movement);
     }
@@ -31,10 +30,8 @@ public class PlayerMovement : MonoBehaviour
     //NOTES: Flashing works, looks kinda oke actually, not sure if we need the smoothcamera, need feedback on this.
     //Fmod needs to be implemented, for now focus on other stuff, fix this later.
     //We need: - int PlayerID, float groundFloorValue, bool pBallposession
-    public void Flash(Vector3 pFlashDirection, float pFlashDistance, float pGroundFloorYValue, float pFlashThrowingForce, float pFlashThrowRotationAddition, bool pBallPosession, bool pFlashThrowBeforeFlash)
+    public void Flash(Vector3 pFlashDirection, float pFlashDistance, float pSpawnHeight, float pFlashThrowingForce, float pFlashThrowRotationAddition, bool pBallPosession, bool pFlashThrowBeforeFlash)
     {
-        pFlashDirection.Normalize();
-
         //get our current column and the next one we could possibly land on
         GameObject currentColumn = null;
         GameObject possibleNextColumn = null;
@@ -50,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         //Create the positions of where we'll be after a flash
         Vector3 afterFlashFailPosition = transform.position + (transform.TransformVector(pFlashDirection * pFlashDistance));
         Vector3 afterFlashSucceedPosition = afterFlashFailPosition;
-        afterFlashSucceedPosition.y = pGroundFloorYValue;
+        afterFlashSucceedPosition.y = pSpawnHeight;
 
         //fire a ray to find our next possible column
         Ray secondRay = new Ray(afterFlashFailPosition, -transform.up);
