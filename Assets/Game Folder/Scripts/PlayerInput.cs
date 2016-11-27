@@ -56,7 +56,7 @@ public class PlayerInput : MonoBehaviour
         _manaPoints = 0.0f;
         _ballPosession = false;
         //Sending the right camera object and raycast position to _playerActions, so it doesn't need an instance of _playerInput
-        _playerActions.SetCameraAndRaycastPos(_playerCamera, _raycastPos);
+        
     }
 
     private void Update()
@@ -167,6 +167,7 @@ public class PlayerInput : MonoBehaviour
     public void SetRaycastPosition(Vector3 pRaycastPos)
     {
         _raycastPos = pRaycastPos;
+        _playerActions.SetCameraAndRaycastPos(_playerCamera, _raycastPos);
     }
 
     private bool flashDirectionCheck()

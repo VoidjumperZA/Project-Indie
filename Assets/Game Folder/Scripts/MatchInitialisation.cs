@@ -8,7 +8,7 @@ public class MatchInitialisation : MonoBehaviour
 
     private int teamThreshold = 1;
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         MatchStatistics.IntialiseGoalTracking();
         Cursor.visible = false;
@@ -88,7 +88,7 @@ public class MatchInitialisation : MonoBehaviour
         for (int i = 0; i < LobbySettings.GetNumberOfPlayers(); i++)
         {
             MatchStatistics.AssignPlayerToTeam(i + 1, teamThreshold);
-            if (i + 1 >= LobbySettings.GetTeam_1PlayerCount() && teamThreshold == 1)
+            if (i + 1 >= LobbySettings.GetTeam_1PlayerCount() && teamThreshold != 2)
             {
                 teamThreshold += 1;
             }
