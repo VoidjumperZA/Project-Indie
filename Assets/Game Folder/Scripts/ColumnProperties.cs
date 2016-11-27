@@ -3,6 +3,10 @@ using System.Collections;
 
 public class ColumnProperties : MonoBehaviour
 {
+    [SerializeField]
+    private bool _hasManaObject;
+    GameObject _manaObject;
+
     private enum ColumnType { Dynamic, Static };
     public enum ColumnStatus { Free, Locked };
 
@@ -41,6 +45,14 @@ public class ColumnProperties : MonoBehaviour
     private void Start()
     {
         columnStatus = ColumnStatus.Free;
+        _manaObject = Resources.Load("ManaObject") as GameObject;
+        if (_hasManaObject)
+        {
+            GameObject newManaObject = Instantiate(_manaObject);
+            newManaObject.transform.SetParent(transform);
+            //newManaObject.transform.localPosition = 
+
+        }
     }
 
     private void Update()
@@ -68,7 +80,7 @@ public class ColumnProperties : MonoBehaviour
     {
         _columnResettingSpeed = pColumnResettingSpeed;
         _columnDisplacementSize = pColumnDisplacementSize;
-        _polarity = pPolarity;      
+        _polarity = pPolarity;
         _atBaseLevel = false;
 
         //FMOD
@@ -88,7 +100,7 @@ public class ColumnProperties : MonoBehaviour
     private void grindToArenaLevel()
     {
         Debug.Log("movementDelta is " + _resettingMovementDelta + " and my column displacement size is " + _columnDisplacementSize);
-        if(_resettingMovementDelta < _columnDisplacementSize)
+        if (_resettingMovementDelta < _columnDisplacementSize)
         {
             gameObject.transform.Translate(0, _polarity * _columnResettingSpeed, 0);
             _resettingMovementDelta += _columnResettingSpeed;
@@ -96,7 +108,7 @@ public class ColumnProperties : MonoBehaviour
         else
         {
             Debug.Log("My pos before .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, _baseYValue, gameObject.transform.position.z);                   
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, _baseYValue, gameObject.transform.position.z);
             Debug.Log("My pos after .set is: " + gameObject.transform.position + " while the baseY value I was given is:" + _baseYValue);
             _resettingMovementDelta = 0.0f;
             _atBaseLevel = true;
@@ -110,7 +122,7 @@ public class ColumnProperties : MonoBehaviour
     {
         //if column is not yet at the height of it's end position
         //if (_baseYValue + Mathf.Abs(gameObject.transform.position.y) + (_baseYValue / 2) < _columnDisplacementSize && IsColumnMoving() == true)
-        if(_orignalMovementDelta <  _columnDisplacementSize && IsColumnMoving() == true)
+        if (_orignalMovementDelta < _columnDisplacementSize && IsColumnMoving() == true)
         {
             //increase the speed of the column to give it natural acceleration
             _columnSpeed += _columnMovementAccelerationSpeed;
@@ -127,7 +139,7 @@ public class ColumnProperties : MonoBehaviour
             _orignalMovementDelta = 0.0f;
             columnHalted();
             _columnSpeed = 0.0f;
-            StartCoroutine(waitUntilGrindToArena(pPolarity));            
+            StartCoroutine(waitUntilGrindToArena(pPolarity));
         }
     }
 
