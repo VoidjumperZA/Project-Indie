@@ -64,7 +64,7 @@ public class PlayerInput : MonoBehaviour
 
         _flashTimeStamp = Time.time;
         _columnMovementTimeStamp = Time.time;
-
+        /*
         //assign the player and ID based on his tag
         switch (gameObject.tag)
         {
@@ -95,7 +95,7 @@ public class PlayerInput : MonoBehaviour
         //opposite
 
         //Somehow read the team, probably assigned through UI before the match starts
-        MatchStatistics.AssignPlayerToTeam(playerID, temp_TeamID);
+        MatchStatistics.AssignPlayerToTeam(playerID, temp_TeamID);*/
     }
 
     //Where is this for?
@@ -320,12 +320,13 @@ public class PlayerInput : MonoBehaviour
         return playerID;
     }
 
-    /// <summary>
-    /// Int attached to the PlayerInput script spesificing on which team this player belongs.
-    /// </summary>
-    /// <returns></returns>
-    public int GetPlayerTeam()
+    public void AssignPlayerID(int pPlayerID)
     {
-        return temp_TeamID;
+        playerID = pPlayerID;
+    }
+    
+    public void SetRaycastPosition(Vector3 pRaycastPos)
+    {
+        _raycastPos = pRaycastPos;
     }
 }
