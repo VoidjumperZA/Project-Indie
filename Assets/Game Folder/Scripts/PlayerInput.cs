@@ -29,12 +29,13 @@ public class PlayerInput : MonoBehaviour
     private bool scoreboardAxisLock = false;
 
     //Individual player stats
-    private int playerID;
-    private int temp_TeamID;
-    private int cameraPolarity = 1;
-    private Vector3 _raycastPos;
-    private bool _ballPosession = false;
+    private int _playerID;
+    private int _temp_TeamID;
+    private int _cameraPolarity;
     private float _spawnHeight;
+    private float _manaPoints;
+    private bool _ballPosession;
+    private Vector3 _raycastPos;
 
     //Cooldown variables
     private float _flashTimeStamp;
@@ -50,78 +51,27 @@ public class PlayerInput : MonoBehaviour
         //Setting cooldown values
         _flashTimeStamp = Time.time;
         _columnMovementTimeStamp = Time.time;
-
-        /*
-=======
-
+        //Setting individual player values
         _spawnHeight = transform.position.y;
-
->>>>>>> 098abcf377c8abc46ce44183c1c615611bc67f7d
-        //assign the player and ID based on his tag
-        switch (gameObject.tag)
-        {
-            case "Player_1":
-                playerID = 1;
-                temp_TeamID = 1;
-                _raycastPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f);
-                break;
-            case "Player_2":
-                playerID = 2;
-                temp_TeamID = 2;
-                _raycastPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.25f, 0.0f);
-                break;
-            case "Player_3":
-                playerID = 3;
-                break;
-            case "Player_4":
-                playerID = 4;
-                break;
-
-        }
-
-
-        //pizza
+        _manaPoints = 0.0f;
+        _ballPosession = false;
+        //Sending the right camera object and raycast position to _playerActions, so it doesn't need an instance of _playerInput
         _playerActions.SetCameraAndRaycastPos(_playerCamera, _raycastPos);
-        MatchStatistics.AssignPlayerToTeam(playerID, temp_TeamID);
-
-
-        //---------------------------------------------------------------------------
-        //                                  NOTE
-        //---------------------------------------------------------------------------
-
-        //replace the temp_TeamID with data read in through the UI. This is also as
-        //player 2 and player 1 could be on the same team while 3 and 4 are on the 
-        //opposite
-
-        //Somehow read the team, probably assigned through UI before the match starts
-<<<<<<< HEAD
-        MatchStatistics.AssignPlayerToTeam(playerID, temp_TeamID);*/
     }
 
     private void Update()
     {
         //Send input to the PlayerCamera script
-        _cameraScript.MoveCamera(InputManager.CameraHorizontal(playerID), InputManager.CameraVertical(playerID) * cameraPolarity);
+        _cameraScript.MoveCamera(InputManager.CameraHorizontal(_playerID), InputManager.CameraVertical(_playerID) * _cameraPolarity);
         //Send input to the PlayerMovement script
-        _playerMovement.Move(InputManager.Movement(playerID).normalized, _playerProperties.GetMovementSpeed());
-
-        faceButtonCheck(InputManager.FlashButton(playerID), ref flashAxisLock, "Flash");
-        faceButtonCheck(InputManager.ThrowButton(playerID), ref throwAxisLock, "Throw");
-        faceButtonCheck(InputManager.InvertButton(playerID), ref invertAxisLock, "Inverse");
-        faceButtonCheck(InputManager.PauseButton(playerID), ref pauseAxisLock, "Pause");
-        faceButtonCheck(InputManager.RaiseColumn(playerID), ref raiseAxisLock, "RaiseColumn");
-        faceButtonCheck(InputManager.LowerColumn(playerID), ref lowerAxisLock, "LowerColumn");
-
-        //Notes:
-        //Try to make a delegate for faceButtonCheck
-
-        //DONE
-        //Add raise and lower column to faceButtonCheck
-        //Move raise and lower column to PlayerActions
-        //faceButtonCheck(InputManager.PauseButton(playerID), ref flashAxisLock, "Pause"); <---- using ref flashAxisLock?
-        //move raycasting columns to mouseHandler()?
-        //make sure flash will not happent when standing still + maybe only forward
-
+        _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
+        //faceButtonCheck methods which basically acts as activate on button release
+        faceButtonCheck(InputManager.FlashButton(_playerID), ref flashAxisLock, "Flash");
+        faceButtonCheck(InputManager.ThrowButton(_playerID), ref throwAxisLock, "Throw");
+        faceButtonCheck(InputManager.InvertButton(_playerID), ref invertAxisLock, "Inverse");
+        faceButtonCheck(InputManager.PauseButton(_playerID), ref pauseAxisLock, "Pause");
+        faceButtonCheck(InputManager.RaiseColumn(_playerID), ref raiseAxisLock, "RaiseColumn");
+        faceButtonCheck(InputManager.LowerColumn(_playerID), ref lowerAxisLock, "LowerColumn");
     }
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
@@ -137,7 +87,7 @@ public class PlayerInput : MonoBehaviour
                     if (_flashTimeStamp <= Time.time && flashDirectionCheck() == true)
                     {
                         _flashTimeStamp = Time.time + _playerProperties.GetFlashCooldownValue();
-                        _playerMovement.Flash(InputManager.Movement(playerID).normalized, _playerProperties.GetFlashDistance(), _spawnHeight, _playerProperties.GetFlashThrowingForce(), _playerProperties.GetFlashThrowRotationAddition(), _ballPosession, _playerProperties.GetFlashThrowBeforeFlash());
+                        _playerMovement.Flash(InputManager.Movement(_playerID).normalized, _playerProperties.GetFlashDistance(), _spawnHeight, _playerProperties.GetFlashThrowingForce(), _playerProperties.GetFlashThrowRotationAddition(), _ballPosession, _playerProperties.GetFlashThrowBeforeFlash());
                         FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
                     }
                     break;
@@ -159,14 +109,14 @@ public class PlayerInput : MonoBehaviour
                     if (_columnMovementTimeStamp <= Time.time)
                     {
                         _columnMovementTimeStamp = Time.time + _playerProperties.GetColumnMovementCooldownValue();
-                        _playerActions.MoveColumn("Raise", playerID);
+                        _playerActions.MoveColumn("Raise", _playerID);
                     }
                     break;
                 case "LowerColumn":
                     if (_columnMovementTimeStamp <= Time.time)
                     {
                         _columnMovementTimeStamp = Time.time + _playerProperties.GetColumnMovementCooldownValue();
-                        _playerActions.MoveColumn("Lower", playerID);
+                        _playerActions.MoveColumn("Lower", _playerID);
                     }
                     break;
             }
@@ -180,13 +130,13 @@ public class PlayerInput : MonoBehaviour
     //This will be removed once we have the options screen done I think...
     private void executeInverse()
     {
-        cameraPolarity *= -1;
+        _cameraPolarity *= -1;
     }
     //Implemented by Josh, leave it for now
     private void executePause()
     {
         PauseScreen pauseScreen = GameObject.Find("Manager").GetComponent<PauseScreen>();
-        pauseScreen.DisplayPauseScreen(!pauseScreen.IsPauseScreenActive(), playerID);
+        pauseScreen.DisplayPauseScreen(!pauseScreen.IsPauseScreenActive(), _playerID);
     }
 
     private void lockAxis(ref bool pAxisToLock, bool pState)
@@ -206,12 +156,12 @@ public class PlayerInput : MonoBehaviour
     /// <returns></returns>
     public int GetPlayerID()
     {
-        return playerID;
+        return _playerID;
     }
 
     public void AssignPlayerID(int pPlayerID)
     {
-        playerID = pPlayerID;
+        _playerID = pPlayerID;
     }
     
     public void SetRaycastPosition(Vector3 pRaycastPos)
@@ -222,8 +172,14 @@ public class PlayerInput : MonoBehaviour
     private bool flashDirectionCheck()
     {
         Vector3 forward = transform.forward;
-        Vector3 flashDirection = transform.TransformDirection(InputManager.Movement(playerID).normalized);
+        Vector3 flashDirection = transform.TransformDirection(InputManager.Movement(_playerID).normalized);
 
         return (flashDirection.magnitude > 0 && Vector3.Dot(forward, flashDirection) >= 0);
+    }
+
+    public void AddManaPoints()
+    {
+        _manaPoints = Mathf.Min(_manaPoints + _playerProperties.GetManaValueOnPickUp(), 100.0f);
+        print("_manaPoints: " + _manaPoints);
     }
 }

@@ -64,9 +64,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentColumn == possibleNextColumn)
         {
-            //FMOD
-            //FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
-
             //Smooth camera movement from Josh
             //Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
             //playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
@@ -75,9 +72,6 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            //FMOD
-            //FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
-
             //Smooth camera movement from Josh
             //Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
             //playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);

@@ -66,6 +66,16 @@ public class PlayerCollision : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider pCol)
+    {
+        if(pCol.gameObject.tag == "Mana")
+        {
+            playerInput.AddManaPoints();
+            print("Touching mana");
+            Destroy(pCol.gameObject);
+        }
+    }
+
     //raycast downwards, if there is a column beneath you save it's properties
     private bool detectColumnBelow()
     {

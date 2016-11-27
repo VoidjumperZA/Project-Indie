@@ -24,6 +24,8 @@ public class PlayerProperties : MonoBehaviour
     private float _flashDistance;
     [SerializeField]
     private float _addedGravity;
+    [SerializeField]
+    private float _manaValueOnPickUp;
 
     void Start()
     {
@@ -91,5 +93,10 @@ public class PlayerProperties : MonoBehaviour
     public float GetAddedGravity()
     {
         return _addedGravity;
+    }
+
+    public float GetManaValueOnPickUp()
+    {
+        return _manaValueOnPickUp;
     }
 }
