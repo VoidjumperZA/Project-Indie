@@ -54,7 +54,6 @@ public class PlayerInput : MonoBehaviour
         //Adding functions to the _update delegate
         _update += mouseHandler;
         _update += raycastingColumn;
-        _update += raiseLowerCheck;
         _update += movementHandler;
         //Getting class instances/components of objects. Need to be checked later for conventions
         _playerMovement = GetComponent<PlayerMovement>();
@@ -113,9 +112,23 @@ public class PlayerInput : MonoBehaviour
         faceButtonCheck(InputManager.FlashButton(playerID), ref flashAxisLock, "Flash");
         faceButtonCheck(InputManager.ThrowButton(playerID), ref throwAxisLock, "Throw");
         faceButtonCheck(InputManager.InvertButton(playerID), ref invertAxisLock, "Inverse");
-        faceButtonCheck(InputManager.PauseButton(playerID), ref flashAxisLock, "Pause");
+        faceButtonCheck(InputManager.PauseButton(playerID), ref flashAxisLock, "Pause");//<--------- flashAxisLock?
+        faceButtonCheck(InputManager.RaiseColumn(playerID), ref raiseAxisLock, "RaiseColumn");
+        faceButtonCheck(InputManager.LowerColumn(playerID), ref lowerAxisLock, "LowerColumn");
 
-        print("PlayerID: " + playerID + ", ballPosession:  " + _ballPosession);
+        //print("PlayerID: " + playerID + ", ballPosession:  " + _ballPosession);
+
+        //Notes:
+        //Move raise and lower column to PlayerActions
+        //faceButtonCheck(InputManager.PauseButton(playerID), ref flashAxisLock, "Pause"); <---- using ref flashAxisLock?
+        // move raycasting columns to mouseHandler()?
+        //Try to make a delegate for faceButtonCheck
+        //make sure flash will not happent when standing still + maybe only forward
+
+
+        //DONE
+        //Add raise and lower column to faceButtonCheck
+
     }
 
     private void mouseHandler()
@@ -138,16 +151,13 @@ public class PlayerInput : MonoBehaviour
             switch (pActionName)
             {
                 case "Flash":
-                    //executeFlash();
                     if (_flashTimeStamp <= Time.time)
                     {
                         _flashTimeStamp = Time.time + _playerProperties.GetFlashCooldownValue();
                         _playerMovement.Flash(InputManager.Movement(playerID), _playerProperties.GetFlashDistance(), _columnControl.GetGroundFloorYValue(), _playerProperties.GetFlashThrowingForce(), _playerProperties.GetFlashThrowRotationAddition(), _ballPosession, _playerProperties.GetFlashThrowBeforeFlash());
                     }
-                    //Either set _flashAvailable to false here or try to use ref bool pOptionalVariable, for now leave the cooldown issue for later since need to make another reset method first.
                     break;
                 case "Throw":
-                    //executeThrow();
                     if (_ballPosession) { _playerActions.Throw(_cameraScript.transform.forward); }
                     break;
                 case "Inverse":
@@ -156,6 +166,20 @@ public class PlayerInput : MonoBehaviour
                     break;
                 case "Pause":
                     executePause();
+                    break;
+                case "RaiseColumn":
+                    if (_columnMovementTimeStamp <= Time.time)
+                    {
+                        _columnMovementTimeStamp = Time.time + _playerProperties.GetColumnMovementCooldownValue();
+                        _columnControl.AttemptRaise(playerID, _selectedColumn, _columnProperties);
+                    }
+                    break;
+                case "LowerColumn":
+                    if (_columnMovementTimeStamp <= Time.time)
+                    {
+                        _columnMovementTimeStamp = Time.time + _playerProperties.GetColumnMovementCooldownValue();
+                        _columnControl.AttemptLower(playerID, _selectedColumn, _columnProperties);
+                    }
                     break;
             }
         }
@@ -228,7 +252,6 @@ public class PlayerInput : MonoBehaviour
     {
         cameraPolarity *= -1;
     }
-
     //Implemented by Josh, leave it for now
     private void executePause()
     {
@@ -273,37 +296,6 @@ public class PlayerInput : MonoBehaviour
                 {
                     selectedPentagram.TogglePentagram(false);
                 }
-            }
-        }
-    }
-
-    //check if input is calling for the player to raise or lower a column, then execute
-    private void raiseLowerCheck()
-    {
-        //For now this if statement is here, need to wait untill its in faceButtonCheck
-        if (_columnMovementTimeStamp <= Time.time)
-        {
-            _columnMovementTimeStamp = Time.time + _playerProperties.GetColumnMovementCooldownValue();
-            //raise column
-            if (InputManager.RaiseColumn(playerID) > 0 && raiseAxisLock == false)
-            {
-                _columnControl.AttemptRaise(playerID, _selectedColumn, _columnProperties);
-                lockAxis(ref raiseAxisLock, true);
-            }
-            if (InputManager.RaiseColumn(playerID) == 0)
-            {
-                lockAxis(ref raiseAxisLock, false);
-            }
-
-            //lower column
-            if (InputManager.LowerColumn(playerID) > 0 && lowerAxisLock == false)
-            {
-                _columnControl.AttemptLower(playerID, _selectedColumn, _columnProperties);
-                lockAxis(ref lowerAxisLock, true);
-            }
-            if (InputManager.LowerColumn(playerID) == 0)
-            {
-                lockAxis(ref lowerAxisLock, false);
             }
         }
     }

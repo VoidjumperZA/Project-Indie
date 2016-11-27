@@ -4,8 +4,8 @@ using System.Collections;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody _rigidBody;
-    private Ball _ballScript;
     private Rigidbody _ballRigidbody;
+    private Ball _ballScript;
     private bool _flashThrowBeforeFlash;
 
     private void Start()
@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (_flashThrowBeforeFlash && pBallPosession)
         {
-            FlashThrow(pFlashThrowingForce, pFlashThrowRotationAddition);
+            flashThrow(pFlashThrowingForce, pFlashThrowRotationAddition);
         }
 
         if (currentColumn == possibleNextColumn)
@@ -90,11 +90,11 @@ public class PlayerMovement : MonoBehaviour
 
         if(!_flashThrowBeforeFlash && pBallPosession)
         {
-            FlashThrow(pFlashThrowingForce ,pFlashThrowRotationAddition);
+            flashThrow(pFlashThrowingForce ,pFlashThrowRotationAddition);
         }
     }
 
-    private void FlashThrow(float pFlashThrowingForce ,float pFlashThrowRotationAddition)
+    private void flashThrow(float pFlashThrowingForce ,float pFlashThrowRotationAddition)
     {
         Vector3 Direction = Quaternion.AngleAxis(-pFlashThrowRotationAddition, transform.right) * transform.forward;
         _ballScript.TogglePossession(false);

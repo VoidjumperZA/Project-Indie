@@ -40,7 +40,7 @@ public class PlayerProperties : MonoBehaviour
         //Flash Distance:                   20
         //Added gravity:                    1180000
 
-        //For Dom where to start after dinner: FlashThrow in PlayerMovement, boolean in calling FLash method in PlayerInput, making states/booleans in PlayerInput, fixing Cooldowns, Fmod
+        //For Dom where to start after dinner: making states/booleans in PlayerInput, Fmod
     }
 
     public float GetMovementSpeed()
