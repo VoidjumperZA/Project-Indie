@@ -32,17 +32,21 @@ public class MatchInitialisation : MonoBehaviour
         {
             //T1: 1v1, 1v2
             gameCameras[0].rect.Set(0, 0.5f, 1, 0.5f);
-
+            GameObject.FindGameObjectWithTag("Player_1").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.5f, Screen.height * 0.25f, 0.0f));
             //T1: 1v1
             if (LobbySettings.GetTeam_2PlayerCount() == 1)
             {
                 gameCameras[1].rect.Set(0, 0, 1, 0.5f);
+                GameObject.FindGameObjectWithTag("Player_2").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f));
             }
             //T1: 1v2
             else
             {
                 gameCameras[1].rect.Set(0, 0, 0.5f, 0.5f);
+                GameObject.FindGameObjectWithTag("Player_2").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f));
+
                 gameCameras[2].rect.Set(0.5f, 0, 0.5f, 0.5f);
+                GameObject.FindGameObjectWithTag("Player_3").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f));
             }
         }
 
@@ -56,6 +60,11 @@ public class MatchInitialisation : MonoBehaviour
             gameCameras[1].rect.Set(0.5f, 0.5f, 1, 0.5f);
             gameCameras[2].rect.Set(0, 0, 0.5f, 0.5f);
             gameCameras[3].rect.Set(0.5f, 0, 0.5f, 0.5f);
+
+            GameObject.FindGameObjectWithTag("Player_1").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f));
+            GameObject.FindGameObjectWithTag("Player_2").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f));
+            GameObject.FindGameObjectWithTag("Player_3").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f));
+            GameObject.FindGameObjectWithTag("Player_4").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f));
         }
 
         //If Team 1 has 2 payers while Team 2 also has 2 players
@@ -66,6 +75,11 @@ public class MatchInitialisation : MonoBehaviour
             gameCameras[1].rect.Set(0.5f, 0.5f, 1, 0.5f);
             gameCameras[2].rect.Set(0, 0, 0.5f, 0.5f);
             gameCameras[3].rect.Set(0.5f, 0, 0.5f, 0.5f);
+
+            GameObject.FindGameObjectWithTag("Player_1").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f));
+            GameObject.FindGameObjectWithTag("Player_2").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f));
+            GameObject.FindGameObjectWithTag("Player_3").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f));
+            GameObject.FindGameObjectWithTag("Player_4").GetComponent<PlayerInput>().SetRaycastPosition(new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f));
         }
     }
 
@@ -74,7 +88,7 @@ public class MatchInitialisation : MonoBehaviour
         for (int i = 0; i < LobbySettings.GetNumberOfPlayers(); i++)
         {
             MatchStatistics.AssignPlayerToTeam(i + 1, teamThreshold);
-            if (i + 1 >= LobbySettings.GetTeam_1PlayerCount())
+            if (i + 1 >= LobbySettings.GetTeam_1PlayerCount() && teamThreshold == 1)
             {
                 teamThreshold += 1;
             }

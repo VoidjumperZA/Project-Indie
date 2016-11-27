@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class MainMenuControl : MonoBehaviour
 {
@@ -33,5 +34,10 @@ public class MainMenuControl : MonoBehaviour
     public void ResetNumberOfPlayers()
     {
         LobbySettings.ResetNumberOfPlayers();
+    }
+
+    public void LoadScene()
+    {
+        SceneManager.LoadScene(1);
     }
 }
