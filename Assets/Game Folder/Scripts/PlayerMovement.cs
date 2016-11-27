@@ -3,80 +3,101 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private PlayerProperties playerProperties;
-    private float _actualSpeed;
-
-    //Could be changed for an enum later on, for now we can use a Boolean
-    private bool _ballPosession = false;
-
     private Rigidbody _rigidBody;
+    private Rigidbody _ballRigidbody;
+    private Ball _ballScript;
+    private bool _flashThrowBeforeFlash;
 
     private void Start()
     {
-        playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
         _rigidBody = GetComponent<Rigidbody>();
-        
+        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+        _ballRigidbody = ball.GetComponent<Rigidbody>();
+        _ballScript = ball.GetComponent<Ball>();
     }
 
     /// <summary>
-    /// Move the player in a given direction while applying acceleration.
+    /// Move the player in a given direction.
     /// </summary>
     /// <param name="pDirection"></param>
-    public void Move(Vector3 pDirection)
+    public void Move(Vector3 pDirection, float pMovementSpeed)
     {
-        if (pDirection.magnitude == 0)
+        pDirection.Normalize();
+        Vector3 movement = transform.TransformDirection(pDirection) * pMovementSpeed * Time.deltaTime;
+        _rigidBody.MovePosition(transform.position + movement);
+    }
+
+
+    //NOTES: Flashing works, looks kinda oke actually, not sure if we need the smoothcamera, need feedback on this.
+    //Fmod needs to be implemented, for now focus on other stuff, fix this later.
+    //We need: - int PlayerID, float groundFloorValue, bool pBallposession
+    public void Flash(Vector3 pFlashDirection, float pFlashDistance, float pGroundFloorYValue, float pFlashThrowingForce, float pFlashThrowRotationAddition, bool pBallPosession, bool pFlashThrowBeforeFlash)
+    {
+        pFlashDirection.Normalize();
+
+        //get our current column and the next one we could possibly land on
+        GameObject currentColumn = null;
+        GameObject possibleNextColumn = null;
+
+        //fire a ray to select our current column
+        Ray firstRay = new Ray(transform.position, -transform.up);
+        RaycastHit firstHitInfo;
+        if (Physics.Raycast(firstRay, out firstHitInfo))
         {
-            _actualSpeed = 0.0f;
+            currentColumn = firstHitInfo.collider.gameObject;
+        }
+
+        //Create the positions of where we'll be after a flash
+        Vector3 afterFlashFailPosition = transform.position + (transform.TransformVector(pFlashDirection * pFlashDistance));
+        Vector3 afterFlashSucceedPosition = afterFlashFailPosition;
+        afterFlashSucceedPosition.y = pGroundFloorYValue;
+
+        //fire a ray to find our next possible column
+        Ray secondRay = new Ray(afterFlashFailPosition, -transform.up);
+        RaycastHit secondHitInfo;
+        if (Physics.Raycast(secondRay, out secondHitInfo))
+        {
+            possibleNextColumn = secondHitInfo.collider.gameObject;
+        }
+
+        if (_flashThrowBeforeFlash && pBallPosession)
+        {
+            flashThrow(pFlashThrowingForce, pFlashThrowRotationAddition);
+        }
+
+        if (currentColumn == possibleNextColumn)
+        {
+            //FMOD
+            //FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
+
+            //Smooth camera movement from Josh
+            //Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
+            //playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
+
+            transform.position = afterFlashFailPosition;
         }
         else
         {
-            _actualSpeed += playerProperties.GetAccelerationSpeed();
-            _actualSpeed = Mathf.Min(playerProperties.GetMaxMovementSpeed(), _actualSpeed);
-        }
-        transform.Translate(pDirection * _actualSpeed * Time.deltaTime);
-    }
+            //FMOD
+            //FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
 
-    /// <summary>
-    /// Release the ball in the direction aimed, putting the ball back into play.
-    /// </summary>
-    /// <param name="pDirection"></param>
-    public void Throw(Vector3 pDirection, bool pForced)
-    {
-        //get the ball's gameObject
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
-        ball.GetComponent<Ball>().TogglePossession(false);
-        if (pForced == false)
+            //Smooth camera movement from Josh
+            //Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
+            //playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
+
+            transform.position = afterFlashSucceedPosition;
+        }
+
+        if(!_flashThrowBeforeFlash && pBallPosession)
         {
-            pDirection = Quaternion.AngleAxis(-playerProperties.GetThrowRotationAddition(), transform.right) * pDirection;
+            flashThrow(pFlashThrowingForce ,pFlashThrowRotationAddition);
         }
-        else
-        {
-            pDirection = Quaternion.AngleAxis(-playerProperties.GetForcedThrowRotationAddition(), transform.right) * pDirection;
-        }
-        ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
     }
 
-    public void Throw(Vector3 pDirection)
+    private void flashThrow(float pFlashThrowingForce ,float pFlashThrowRotationAddition)
     {
-        //get the ball's gameObject
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
-        ball.GetComponent<Ball>().TogglePossession(false);
-        ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
-    }
-
-    /// <summary>
-    /// Teleport the player forward a short amount while also throwing the ball ahead of them.
-    /// </summary>
-    public void Flash(Vector3 pPosition)
-    {
-        //raycast down and look which column you are hitting, then look at the position after the flash, raycast down and see if it is another column
-        transform.position = pPosition;
-    }
-
-    public float GetFlashDistance()
-    {
-        return playerProperties.GetFlashDistance();
+        Vector3 Direction = Quaternion.AngleAxis(-pFlashThrowRotationAddition, transform.right) * transform.forward;
+        _ballScript.TogglePossession(false);
+        _ballRigidbody.AddForce(Direction * pFlashThrowingForce);
     }
 }

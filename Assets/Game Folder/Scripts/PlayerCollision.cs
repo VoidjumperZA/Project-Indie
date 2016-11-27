@@ -40,7 +40,7 @@ public class PlayerCollision : MonoBehaviour
 
                     //However, it is still inside the column and trapped on the otehr side of the glass, it first
                     //needs to be moved away (renderer.bounds.extends?) before being thrown. Good luck Dom :)
-                    playerMovement.Throw(deltaFromBallToColumnUser);                    
+                    playerActions.DeathThrow(deltaFromBallToColumnUser);                    
                 }
                 else if (pCol.gameObject.tag == "LowerBoundary")
                 {

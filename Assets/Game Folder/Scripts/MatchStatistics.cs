@@ -12,7 +12,10 @@ public static class MatchStatistics
     private static Dictionary<int, int> playersSquished = new Dictionary<int, int>();       //(Player, Number of enemies squished)
     private static Dictionary<int, int> playersDropped = new Dictionary<int, int>();        //(Player, Number of enemies dropped)
     private static Dictionary<int, int> deaths = new Dictionary<int, int>();                //(Player, Deaths)
-   
+    private static Dictionary<int, int> assists = new Dictionary<int, int>();               //(Player, Number of Assists)
+    private static Dictionary<int, float> playerPossession = new Dictionary<int, float>();      //(Player, % of ball possession)
+    private static Dictionary<int, float> teamPossession = new Dictionary<int, float>();        //(Team, % of ball possession)
+
     /// <summary>
     /// Should be called on match creation. Creats a dictionary to store goals for Team 1 and Team 2.
     /// </summary>
@@ -36,11 +39,14 @@ public static class MatchStatistics
         playersSquished.Add(pPlayerID, 0);
         playersDropped.Add(pPlayerID, 0);
         deaths.Add(pPlayerID, 0);
+        assists.Add(pPlayerID, 0);
+        playerPossession.Add(pPlayerID, 0.0f);
+        teamPossession.Add(pPlayerID, 0.0f);
     }
 
     //adds a death to the tally for the spesified player
     /// <summary>
-    /// Adds a death to the tally for the spesified player.
+    /// Adds a death to the tally for the spesified player. K: Player | V: Deaths
     /// </summary>
     /// <param name="pPlayerID"></param>
     /// <returns></returns>
@@ -51,7 +57,7 @@ public static class MatchStatistics
 
     //adds a goal to the tally for the spesified player
     /// <summary>
-    /// Adds a goal to the tally for the spesified player.
+    /// Adds a goal to the tally for the spesified player. K: Player | V: Goals Scored
     /// </summary>
     /// <param name="pPlayerID"></param>
     /// <returns></returns>
@@ -66,7 +72,7 @@ public static class MatchStatistics
     }
 
     /// <summary>
-    /// Add a goal to a team with no player getting the attributation for the goal.
+    /// Add a goal to a team with no player getting the attributation for the goal. 
     /// </summary>
     /// <param name="pTeamID"></param>
     public static void AddUnattributedGoal(int pTeamID)
@@ -76,7 +82,7 @@ public static class MatchStatistics
 
     //adds a count to the tally of squished players for the spesified player
     /// <summary>
-    /// Adds a count to the tally of squished players for the spesified player.
+    /// Adds a count to the tally of squished players for the spesified player. K: Player | V: No. Players Squished
     /// </summary>
     /// <param name="pPlayerID"></param>
     /// <returns></returns>
@@ -87,7 +93,7 @@ public static class MatchStatistics
 
     //adds a count to the tally of dropped players for the spesified player
     /// <summary>
-    /// Adds a count to the tally of dropped players for the spesified player.
+    /// Adds a count to the tally of dropped players for the spesified player. K: Player | V: No. Players Dropped
     /// </summary>
     /// <param name="pPlayerID"></param>
     /// <returns></returns>
@@ -96,10 +102,41 @@ public static class MatchStatistics
         IncrementItemByOne(playersDropped, pPlayerID);
     }
 
+    ////adds a count to the tally of assists that player has gotten while helping to score
+    /// <summary>
+    /// Add an assist to a player for helping score a goal. K: Player | V: Assists
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    public static void AddAssist(int pPlayerID)
+    {
+        IncrementItemByOne(assists, pPlayerID);
+    }
+
+    //the percentage of match time the ball was held by the spesified player
+    /// <summary>
+    /// Update the percentage of match time the ball was held by the give player. The value should only be the delta of the previous % to the current %.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <param name="pPercent"></param>
+    public static void UpdatePlayerPossession(int pPlayerID, float pPercent)
+    {
+        UpdateItem(playerPossession, pPlayerID, pPercent);
+    }
+
+    //the percentage of match time the ball was in possession by one team
+    /// <summary>
+    /// /// Update the percentage of match time the ball was held by one particular team. The value should only be the delta of the previous % to the current %.
+    /// </summary>
+    /// <param name="pTeamID"></param>
+    /// <param name="pPercent"></param>
+    public static void UpdateTeamPossession(int pTeamID, float pPercent)
+    {
+        UpdateItem(playerPossession, pTeamID, pPercent);
+    }
 
     //returns the number of goals that team has
     /// <summary>
-    /// Returns the number of goals that team has.
+    /// Returns the number of goals that team has. K: Team | V: No. Goals
     /// </summary>
     /// <param name="pTeamID"></param>
     /// <returns></returns>
@@ -110,7 +147,7 @@ public static class MatchStatistics
 
     //returns a vec2 of the goals of both teams
     /// <summary>
-    /// Returns a Vector2 with the x element being Team 1's goals and the y being Team 2's.
+    /// Returns a Vector2 with the x element being Team 1's goals and the y being Team 2's. 
     /// </summary>
     /// <returns></returns>
     public static Vector2 GetMatchGoals()
@@ -176,6 +213,36 @@ public static class MatchStatistics
         return ReturnDictionaryValue(teamInfo, pPlayerID);
     }
 
+    /// <summary>
+    /// Returns the number of assists that player has scored.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static int GetPlayerAssists(int pPlayerID)
+    {
+        return ReturnDictionaryValue(assists, pPlayerID);
+    }
+
+    /// <summary>
+    /// Returns the percentage possession that player has
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static float GetPlayerPossession(int pPlayerID)
+    {
+        return ReturnDictionaryValue(playerPossession, pPlayerID);
+    }
+
+    /// <summary>
+    /// Returns the percentage possession for that team.
+    /// </summary>
+    /// <param name="pTeamID"></param>
+    /// <returns></returns>
+    public static float GetTeamPossession(int pTeamID)
+    {
+        return ReturnDictionaryValue(teamPossession, pTeamID);
+    }
+
     //internal method for incrementing a value of a spesified statistic
     private static void IncrementItemByOne(Dictionary<int, int> pDictionary, int pKey)
     {
@@ -184,9 +251,25 @@ public static class MatchStatistics
         pDictionary[pKey] = numberOfItems + 1;
     }
 
+    //update dictionary in the case of floats
+    private static void UpdateItem(Dictionary<int, float> pDictionary, int pKey, float pValueDelta)
+    {
+        float numberOfItems;
+        pDictionary.TryGetValue(pKey, out numberOfItems);
+        pDictionary[pKey] = numberOfItems + pValueDelta;
+    }
+
     private static int ReturnDictionaryValue(Dictionary<int, int> pDictionary, int pKey)
     {
         int value;
+        pDictionary.TryGetValue(pKey, out value);
+        return value;
+    }
+
+    //overload for floats
+    private static float ReturnDictionaryValue(Dictionary<int, float> pDictionary, int pKey)
+    {
+        float value;
         pDictionary.TryGetValue(pKey, out value);
         return value;
     }

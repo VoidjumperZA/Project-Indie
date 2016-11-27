@@ -4,47 +4,32 @@ using System.Collections;
 
 public class PlayerInput : MonoBehaviour
 {
-    //Mandatory
+    //Receiving object references through inspector
     [SerializeField]
-    private Camera playerCamera;
-    [SerializeField]
-    private GameObject columnControlManager;
-    [SerializeField]
-    private Image crosshairs;
+    private Camera _playerCamera;
 
-    private enum PlayerState
-    {
-        NORMAL,
-        CARRYINGBALL
-    }
-
-    private PlayerState _state = PlayerState.NORMAL;
-
+    //Delegates
     private delegate void InputUpdate();
     private event InputUpdate _update;
 
-    private PlayerMovement _movement;
-    private ColumnControl columnControl;
+    //Class instances
+    private ColumnControl _columnControl;
+    private PlayerMovement _playerMovement;
+    private PlayerActions _playerActions;
     private PlayerCamera _cameraScript;
-    private PlayerProperties _playerproperties;
+    private PlayerProperties _playerProperties;
 
-    // FMOD
-
-    string flashSound = "event:/Flash";
-    string ballShootSound = "event:/BallShoot";
-    private FMOD_StudioEventEmitter _eventemitter;
-
-    //
-
-
+    //Need to be checked if needed.....
     private GameObject _selectedColumn;
     private ColumnProperties _columnProperties;
+    private Pentagram selectedPentagram;
 
-    private int playerID;
-    private int temp_TeamID;
-    private int cameraPolarity = 1;
-    private Vector3 _raycastPos;
+    //Vytautas's' FMOD implementation
+    public string flashSound = "event:/Flash";
+    public string ballShootSound = "event:/BallShoot";
+    private FMOD_StudioEventEmitter _eventemitter;
 
+    //Booleans for locking axis, enabling OnButtonRelease behaviour-like
     private bool flashAxisLock = false;
     private bool throwAxisLock = false;
     private bool raiseAxisLock = false;
@@ -53,27 +38,32 @@ public class PlayerInput : MonoBehaviour
     private bool pauseAxisLock = false;
     private bool scoreboardAxisLock = false;
 
-    private bool _flashAvailable = true;
-    private bool _columnMovementAvailable = true;
-    private float _flashCounter = 0.0f;
-    private float _columnMovementCounter = 0.0f;
+    //Individual player stats
+    private int playerID;
+    private int temp_TeamID;
+    private int cameraPolarity = 1;
+    private Vector3 _raycastPos;
+    private bool _ballPosession = false;
+
+    //Cooldown values
+    private float _flashTimeStamp;
+    private float _columnMovementTimeStamp;
 
     private void Start()
     {
+        //Adding functions to the _update delegate
         _update += mouseHandler;
         _update += raycastingColumn;
-        _update += raiseLowerCheck;
-        _update += flashCheck;
         _update += movementHandler;
-        _update += inversionCheck;
-        _update += pauseCheck;
-        _update += flashCooldownResetter;
-        _update += columnMovementCooldownResetter;
+        //Getting class instances/components of objects. Need to be checked later for conventions
+        _playerMovement = GetComponent<PlayerMovement>();
+        _playerActions = GetComponent<PlayerActions>();
+        _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
+        _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
+        _columnControl = GameObject.Find("Manager").GetComponent<ColumnControl>();
 
-        _movement = GetComponent<PlayerMovement>();
-        _cameraScript = playerCamera.GetComponent<PlayerCamera>();
-        columnControl = columnControlManager.GetComponent<ColumnControl>();
-        _playerproperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
+        _flashTimeStamp = Time.time;
+        _columnMovementTimeStamp = Time.time;
 
         //assign the player and ID based on his tag
         switch (gameObject.tag)
@@ -108,9 +98,37 @@ public class PlayerInput : MonoBehaviour
         MatchStatistics.AssignPlayerToTeam(playerID, temp_TeamID);
     }
 
+    //Where is this for?
+    private void PlayerInput__update()
+    {
+        throw new System.NotImplementedException();
+    }
+
     private void Update()
     {
         _update();
+
+        //I would put these on the delegate but I'm not sure how to do that with parameters
+        faceButtonCheck(InputManager.FlashButton(playerID), ref flashAxisLock, "Flash");
+        faceButtonCheck(InputManager.ThrowButton(playerID), ref throwAxisLock, "Throw");
+        faceButtonCheck(InputManager.InvertButton(playerID), ref invertAxisLock, "Inverse");
+        faceButtonCheck(InputManager.PauseButton(playerID), ref flashAxisLock, "Pause");//<--------- flashAxisLock?
+        faceButtonCheck(InputManager.RaiseColumn(playerID), ref raiseAxisLock, "RaiseColumn");
+        faceButtonCheck(InputManager.LowerColumn(playerID), ref lowerAxisLock, "LowerColumn");
+
+        //print("PlayerID: " + playerID + ", ballPosession:  " + _ballPosession);
+
+        //Notes:
+        //Move raise and lower column to PlayerActions
+        //faceButtonCheck(InputManager.PauseButton(playerID), ref flashAxisLock, "Pause"); <---- using ref flashAxisLock?
+        // move raycasting columns to mouseHandler()?
+        //Try to make a delegate for faceButtonCheck
+        //make sure flash will not happent when standing still + maybe only forward
+
+
+        //DONE
+        //Add raise and lower column to faceButtonCheck
+
     }
 
     private void mouseHandler()
@@ -120,69 +138,50 @@ public class PlayerInput : MonoBehaviour
 
     private void movementHandler()
     {
-        _movement.Move(InputManager.Movement(playerID));
-    }
-    
-    //check if input is calling for the player to flash, then execute
-    private void flashCheck()
-    {
-        //Maybe make a difference vector and translate for the trail effect possibly?
-        if (InputManager.FlashButton(playerID) > 0 && flashAxisLock == false && _flashAvailable == true)
-        {
-            _flashAvailable = false;
-            lockAxis(ref flashAxisLock, true);
-            FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
-            print("P" + playerID + " is flashing.");
-
-            GameObject currentColumn = null;
-            GameObject possibleNextColumn = null;
-            Ray firstRay = new Ray(transform.position, -transform.up);
-            RaycastHit firstHitInfo;
-            if (Physics.Raycast(firstRay, out firstHitInfo))
-            {
-                currentColumn = firstHitInfo.collider.gameObject;
-            }
-            Vector3 afterFlashFailPosition = transform.position + (transform.TransformVector(InputManager.Movement(playerID)) * _movement.GetFlashDistance());
-            Vector3 afterFlashSucceedPosition = afterFlashFailPosition;
-            afterFlashSucceedPosition.y = columnControl.GetGroundFloorYValue();
-            Ray secondRay = new Ray(afterFlashFailPosition, -transform.up);
-            RaycastHit secondHitInfo;
-            if (Physics.Raycast(secondRay, out secondHitInfo))
-            {
-                possibleNextColumn = secondHitInfo.collider.gameObject;
-            }
-
-            if (currentColumn == possibleNextColumn)
-            {
-                _movement.Flash(afterFlashFailPosition);
-                print("fail");
-            }
-            else
-            {
-                _movement.Flash(afterFlashSucceedPosition);
-                print("succeed");
-            }
-            if (_state == PlayerState.CARRYINGBALL)
-            {
-                _movement.Throw(transform.forward, true);
-                Able2Throw(false);
-            }
-        }
-        if (InputManager.FlashButton(playerID) == 0)
-        {
-            lockAxis(ref flashAxisLock, false);
-        }
+        _playerMovement.Move(InputManager.Movement(playerID), _playerProperties.GetMovementSpeed());
     }
 
-
-    private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock)
+    private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
     {
         if (pButtonPressed > 0 && pAxisLock == false)
         {
             lockAxis(ref pAxisLock, true);
 
-            //DELEGATE: ?
-            //_movement.Throw(_cameraScript.gameObject.transform.forward);
+            //execute the appropriate method for the call
+            switch (pActionName)
+            {
+                case "Flash":
+                    if (_flashTimeStamp <= Time.time)
+                    {
+                        _flashTimeStamp = Time.time + _playerProperties.GetFlashCooldownValue();
+                        _playerMovement.Flash(InputManager.Movement(playerID), _playerProperties.GetFlashDistance(), _columnControl.GetGroundFloorYValue(), _playerProperties.GetFlashThrowingForce(), _playerProperties.GetFlashThrowRotationAddition(), _ballPosession, _playerProperties.GetFlashThrowBeforeFlash());
+                    }
+                    break;
+                case "Throw":
+                    if (_ballPosession) { _playerActions.Throw(_cameraScript.transform.forward); }
+                    break;
+                case "Inverse":
+                    //This will be removed once we have the options screen done I think...
+                    executeInverse();
+                    break;
+                case "Pause":
+                    executePause();
+                    break;
+                case "RaiseColumn":
+                    if (_columnMovementTimeStamp <= Time.time)
+                    {
+                        _columnMovementTimeStamp = Time.time + _playerProperties.GetColumnMovementCooldownValue();
+                        _columnControl.AttemptRaise(playerID, _selectedColumn, _columnProperties);
+                    }
+                    break;
+                case "LowerColumn":
+                    if (_columnMovementTimeStamp <= Time.time)
+                    {
+                        _columnMovementTimeStamp = Time.time + _playerProperties.GetColumnMovementCooldownValue();
+                        _columnControl.AttemptLower(playerID, _selectedColumn, _columnProperties);
+                    }
+                    break;
+            }
         }
         if (pButtonPressed == 0)
         {
@@ -190,65 +189,81 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    //Can be removed if PlayerMovement's Flash works 100% with FMOD, this is basically reference material.
     private void executeFlash()
     {
+        //_flashAvailable = false;
 
+        ////get our current column and the next one we could possibly land on
+        //GameObject currentColumn = null;
+        //GameObject possibleNextColumn = null;
+
+        ////fire a ray to select our current column
+        //Ray firstRay = new Ray(transform.position, -transform.up);
+        //RaycastHit firstHitInfo;
+        //if (Physics.Raycast(firstRay, out firstHitInfo))
+        //{
+        //    currentColumn = firstHitInfo.collider.gameObject;
+        //}
+
+        ////Create the positions of where we'll be after a flash
+        //Vector3 afterFlashFailPosition = transform.position + (transform.TransformVector(InputManager.Movement(playerID)) * playerActions.GetFlashDistance());
+        //Vector3 afterFlashSucceedPosition = afterFlashFailPosition;
+        //afterFlashSucceedPosition.y = columnControl.GetGroundFloorYValue();
+
+        ////fire a ray to find our next possible column
+        //Ray secondRay = new Ray(afterFlashFailPosition, -transform.up);
+        //RaycastHit secondHitInfo;
+        //if (Physics.Raycast(secondRay, out secondHitInfo))
+        //{
+        //    possibleNextColumn = secondHitInfo.collider.gameObject;
+        //}
+
+        //if (currentColumn == possibleNextColumn)
+        //{
+        //    FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
+        //    Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
+        //    playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
+        //    playerActions.Flash(afterFlashFailPosition);
+        //}
+        //else
+        //{
+        //    FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
+        //    Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
+        //    playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
+        //    playerActions.Flash(afterFlashSucceedPosition);
+        //}
+        //if (_state == PlayerState.CARRYINGBALL)
+        //{
+        //    playerActions.Throw(transform.forward, true);
+        //    Able2Throw(false);
+        //}
     }
-
+    //Can be removed if PlayerActions's Throw works 100% with FMOD, this is basically reference material.
     private void executeThrow()
     {
-        //_movement.Throw(_cameraScript.gameObject.transform.forward);
+        //playerActions.Throw(_cameraScript.gameObject.transform.forward);
+        //FMODUnity.RuntimeManager.PlayOneShot(ballShootSound, _cameraScript.gameObject.transform.position);
+        //Able2Throw(false);
     }
 
-    //check if input is calling for the player to throw, then execute
-    private void throwCheck()
+    //This will be removed once we have the options screen done I think...
+    private void executeInverse()
     {
-        if (InputManager.ThrowButton(playerID) > 0 && throwAxisLock == false)
-        {
-            lockAxis(ref throwAxisLock, true);
-            print("P" + playerID + " is throwing.");
-            _movement.Throw(_cameraScript.gameObject.transform.forward, false);
-            FMODUnity.RuntimeManager.PlayOneShot(ballShootSound, _cameraScript.gameObject.transform.position);
-            Able2Throw(false);
-        }
-        if (InputManager.ThrowButton(playerID) == 0)
-        {
-            lockAxis(ref throwAxisLock, false);
-        }
+        cameraPolarity *= -1;
     }
-
-    private void inversionCheck()
+    //Implemented by Josh, leave it for now
+    private void executePause()
     {
-        if (InputManager.InvertButton(playerID) > 0 && invertAxisLock == false)
-        {
-            lockAxis(ref invertAxisLock, true);
-            cameraPolarity *= -1;
-        }
-        if (InputManager.InvertButton(playerID) == 0)
-        {
-            lockAxis(ref invertAxisLock, false);
-        }
-    }
-
-    private void pauseCheck()
-    {
-        if (InputManager.PauseButton(playerID) > 0 && pauseAxisLock == false)
-        {
-            lockAxis(ref pauseAxisLock, true);
-            PauseScreen pauseScreen = GameObject.Find("Manager").GetComponent<PauseScreen>();
-            pauseScreen.DisplayPauseScreen(!pauseScreen.IsPauseScreenActive(), playerID);
-        }
-        if (InputManager.PauseButton(playerID) == 0)
-        {
-            lockAxis(ref pauseAxisLock, false);
-        }
+        PauseScreen pauseScreen = GameObject.Find("Manager").GetComponent<PauseScreen>();
+        pauseScreen.DisplayPauseScreen(!pauseScreen.IsPauseScreenActive(), playerID);
     }
 
     //raycast gameobjects and if they're columns, set them as the selected column
     private void raycastingColumn()
     {
         RaycastHit raycastHit;
-        Ray ray = playerCamera.ScreenPointToRay(_raycastPos); //Fixed it :D
+        Ray ray = _playerCamera.ScreenPointToRay(_raycastPos);
 
         if (Physics.Raycast(ray, out raycastHit))
         {
@@ -256,40 +271,32 @@ public class PlayerInput : MonoBehaviour
             {
                 _selectedColumn = raycastHit.collider.gameObject;
                 _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
+
+                if (_columnProperties.GetColumnType() == 0)
+                {
+                    //if we have a pentagram already, and it's not the same one we're targeting, switch the old one off
+                    Pentagram newSelectedPenta = _selectedColumn.GetComponentInChildren(typeof(Pentagram), true) as Pentagram;
+                    if (selectedPentagram != null && selectedPentagram != newSelectedPenta)
+                    {
+                        selectedPentagram.TogglePentagram(false);
+                    }
+
+                    selectedPentagram = newSelectedPenta;
+                    if (selectedPentagram.IsPentagramActive() != true)
+                    {
+                        selectedPentagram.TogglePentagram(true, gameObject.transform);
+                    }
+                }
             }
             else
             {
                 _selectedColumn = null;
                 _columnProperties = null;
+                if (selectedPentagram != null)
+                {
+                    selectedPentagram.TogglePentagram(false);
+                }
             }
-        }
-    }
-
-    //check if input is calling for the player to raise or lower a column, then execute
-    private void raiseLowerCheck()
-    {
-        //raise column
-        if (InputManager.RaiseColumn(playerID) > 0 && raiseAxisLock == false && _columnMovementAvailable == true)
-        {
-            _columnMovementAvailable = false;
-            columnControl.AttemptRaise(playerID, _selectedColumn, _columnProperties);
-            lockAxis(ref raiseAxisLock, true);
-        }
-        if (InputManager.RaiseColumn(playerID) == 0)
-        {
-            lockAxis(ref raiseAxisLock, false);
-        }
-
-        //lower column
-        if (InputManager.LowerColumn(playerID) > 0 && lowerAxisLock == false && _columnMovementAvailable == true)
-        {
-            _columnMovementAvailable = false;
-            columnControl.AttemptLower(playerID, _selectedColumn, _columnProperties);
-            lockAxis(ref lowerAxisLock, true);
-        }
-        if (InputManager.LowerColumn(playerID) == 0)
-        {
-            lockAxis(ref lowerAxisLock, false);
         }
     }
 
@@ -297,6 +304,12 @@ public class PlayerInput : MonoBehaviour
     {
         pAxisToLock = pState;
     }
+    public void SetBallPosession(bool pBool)
+    {
+        _ballPosession = pBool;
+    }
+
+    //Not sure if these should be in PlayerInput at all, same for the values ofcourse
 
     /// <summary>
     /// Int attached to the PlayerInput script spesificing which player this instance is listed as.
@@ -314,45 +327,5 @@ public class PlayerInput : MonoBehaviour
     public int GetPlayerTeam()
     {
         return temp_TeamID;
-    }
-
-    public void Able2Throw(bool pBool)
-    {
-        if (pBool == false)
-        {
-            _update -= throwCheck;
-            _state = PlayerState.NORMAL;
-        }
-        else
-        {
-            _update += throwCheck;
-            _state = PlayerState.CARRYINGBALL;
-        }
-    }
-
-    private void flashCooldownResetter()
-    {
-        if(_flashAvailable == false)
-        {
-            _flashCounter++;
-        }
-        if(_flashCounter >= _playerproperties.GetFlashCooldownValue())
-        {
-            _flashAvailable = true;
-            _flashCounter = 0.0f;
-        }
-    }
-
-    private void columnMovementCooldownResetter()
-    {
-        if (_columnMovementAvailable == false)
-        {
-            _columnMovementCounter++;
-        }
-        if (_columnMovementCounter >= _playerproperties.GetColumnMovementCooldownValue())
-        {
-            _columnMovementAvailable = true;
-            _columnMovementCounter = 0.0f;
-        }
     }
 }
