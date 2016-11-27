@@ -50,7 +50,7 @@ public class PlayerInput : MonoBehaviour
         //Setting cooldown values
         _flashTimeStamp = Time.time;
         _columnMovementTimeStamp = Time.time;
-<<<<<<< HEAD
+
         /*
 =======
 
@@ -96,14 +96,6 @@ public class PlayerInput : MonoBehaviour
         //Somehow read the team, probably assigned through UI before the match starts
 <<<<<<< HEAD
         MatchStatistics.AssignPlayerToTeam(playerID, temp_TeamID);*/
-    }
-
-    //Where is this for?
-    private void PlayerInput__update()
-    {
-        throw new System.NotImplementedException();
-=======
->>>>>>> 098abcf377c8abc46ce44183c1c615611bc67f7d
     }
 
     private void Update()
