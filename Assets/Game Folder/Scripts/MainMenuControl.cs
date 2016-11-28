@@ -77,6 +77,11 @@ public class MainMenuControl : MonoBehaviour
         LobbySettings.SetCooldownModifier(pModifier);
     }
 
+    public void SetMatchTimeInMinutes(int pDuration)
+    {
+        LobbySettings.SetMatchTimeInMinutes(pDuration);
+    }
+
     public void LoadScene(int pSceneToLoad)
     {
         SceneManager.LoadScene(LobbySettings.GetSceneToLoad());
