@@ -57,7 +57,7 @@ public class PlayerInput : MonoBehaviour
         //Setting individual player values
         _cameraPolarity = 1;
         _spawnHeight = transform.position.y;
-        _manaPoints = 0.0f;
+        _manaPoints = _playerProperties.GetStartingManaValue();
         _ballPosession = false;
         //Sending the right camera object and raycast position to _playerActions, so it doesn't need an instance of _playerInput
 
@@ -116,9 +116,10 @@ public class PlayerInput : MonoBehaviour
             switch (pActionName)
             {
                 case "Flash":
-                    if (_flashTimeStamp <= Time.time && flashDirectionCheck() == true)
+                    if (_flashTimeStamp <= Time.time && _manaPoints >= _playerProperties.GetFlashManaCost() && flashDirectionCheck() == true)
                     {
                         _flashTimeStamp = Time.time + _playerProperties.GetFlashCooldownValue();
+                        _manaPoints -= _playerProperties.GetFlashManaCost();
                         _playerMovement.Flash(InputManager.Movement(_playerID).normalized, _playerProperties.GetFlashDistance(), _spawnHeight, _playerProperties.GetFlashThrowingForce(), _playerProperties.GetFlashThrowRotationAddition(), _ballPosession, _playerProperties.GetFlashThrowBeforeFlash());
                         FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
                     }
@@ -212,7 +213,7 @@ public class PlayerInput : MonoBehaviour
 
     public void AddManaPoints()
     {
-        _manaPoints = Mathf.Min(_manaPoints + _playerProperties.GetManaValueOnPickUp(), 100.0f);
+        _manaPoints = Mathf.Min(_manaPoints + _playerProperties.GetManaValueOnPickUp(), _playerProperties.GetMaxManaValue());
         print("_manaPoints: " + _manaPoints);
     }
 }
