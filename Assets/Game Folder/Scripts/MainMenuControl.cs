@@ -36,8 +36,8 @@ public class MainMenuControl : MonoBehaviour
         LobbySettings.ResetNumberOfPlayers();
     }
 
-    public void LoadScene()
+    public void LoadScene(int pSceneToLoad)
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(pSceneToLoad);
     }
 }
