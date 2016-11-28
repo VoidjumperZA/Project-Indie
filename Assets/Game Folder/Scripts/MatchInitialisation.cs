@@ -200,6 +200,7 @@ public class MatchInitialisation : MonoBehaviour
         }
     }
 
+    
     private void assignPlayerIDsAndRaycasts()
     {
         string tagName = "Player_";
@@ -237,13 +238,28 @@ public class MatchInitialisation : MonoBehaviour
         GameObject.Find("Manager").GetComponent<PauseScreen>().SetCrosshairs(allCrosshairs.ToArray());
     }
 
+    //activates characters and sets their positions correctly
     private void setCorrectPlayerPositions()
     {
-        for (int i = 0; i < LobbySettings.GetNumberOfPlayers(); i++)
+        int teamOneMembersLeftToSpawn = LobbySettings.GetTeam_1PlayerCount();
+        int teamTwoMembersLeftToSpawn = LobbySettings.GetTeam_2PlayerCount();
+
+        for (int i = 0; i < LobbySettings.GetTeam_1PlayerCount(); i++)
         {
             //Activate the player
-            GameObject player = GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayer(i + 1);
-            player.SetActive(true);
+            Debug.Log("There are " + LobbySettings.GetTeam_1PlayerCount() + " players on blue team, and we're activating ActivePlayer element " + i);
+            GameObject player = GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayer(i + 1); //plus 1 so it's the playerID not the element number
+            player.gameObject.SetActive(true);
+            //player.transform.position = new Vector3(teamSpawns[LobbySettings.Get);
+
+        }
+
+        for (int i = 0; i < LobbySettings.GetTeam_2PlayerCount(); i++)
+        {
+            //Activate the player
+            Debug.Log("There are " + LobbySettings.GetTeam_2PlayerCount() + " players on red team, and we're activating ActivePlayer element " + i);
+            GameObject player = GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayer(i + 3); //plus 2 for max two blue members and one more because playerIDs start from 1
+            player.gameObject.SetActive(true);
             //player.transform.position = new Vector3(teamSpawns[LobbySettings.Get);
 
         }
