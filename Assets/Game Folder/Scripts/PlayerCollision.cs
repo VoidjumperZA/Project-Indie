@@ -71,8 +71,7 @@ public class PlayerCollision : MonoBehaviour
         if(pCol.gameObject.tag == "Mana")
         {
             playerInput.AddManaPoints();
-            print("Touching mana");
-            Destroy(pCol.gameObject);
+            columnProperties.hitManaObject();
         }
     }
 

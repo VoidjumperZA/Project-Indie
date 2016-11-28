@@ -5,8 +5,12 @@ public class ColumnProperties : MonoBehaviour
 {
     [SerializeField]
     private bool _hasManaObject;
-    GameObject _manaObject;
+    [SerializeField]
+    private float _manaObjectRespawnCooldownValue;
+    GameObject _manaObjectPrefab;
     Rigidbody _rigidBody;
+    private float _manaObjectRespawnTimeStamp;
+    GameObject _newManaObject;
 
     private enum ColumnType { Dynamic, Static };
     public enum ColumnStatus { Free, Locked };
@@ -47,17 +51,33 @@ public class ColumnProperties : MonoBehaviour
     {
         _rigidBody = GetComponent<Rigidbody>();
         columnStatus = ColumnStatus.Free;
-        _manaObject = Resources.Load("ManaObject") as GameObject;
+        _manaObjectPrefab = Resources.Load("ManaObject") as GameObject;
+        _manaObjectRespawnTimeStamp = Time.time;
         if (_hasManaObject)
         {
-            GameObject newManaObject = Instantiate(_manaObject);
-            newManaObject.transform.SetParent(transform);
-            newManaObject.transform.position = new Vector3(transform.position.x, GetComponent<MeshRenderer>().bounds.extents.y * (2.0f - 0.25f), transform.position.z);
+            _newManaObject = Instantiate(_manaObjectPrefab);
+            _newManaObject.transform.SetParent(transform);
+            _newManaObject.transform.position = new Vector3(transform.position.x, GetComponent<MeshRenderer>().bounds.extents.y * (2.0f - 0.25f), transform.position.z);
         }
+    }
+
+    private void respawnManaObject()
+    {
+        if(_newManaObject.activeSelf == false && _manaObjectRespawnTimeStamp <= Time.time)
+        {
+            _newManaObject.SetActive(true);
+        } 
+    }
+
+    public void hitManaObject()
+    {
+        _newManaObject.SetActive(false);
+        _manaObjectRespawnTimeStamp = Time.time + _manaObjectRespawnCooldownValue;
     }
 
     private void Update()
     {
+        respawnManaObject();
         updateColumnPosition();
         if (_atBaseLevel == false)
         {
