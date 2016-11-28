@@ -251,6 +251,25 @@ public static class MatchStatistics
         return ReturnDictionaryValue(teamPossession, pTeamID);
     }
 
+    /// <summary>
+    /// Returns the amount of 'hitpoints' left on the Lifefire. Should end the game when zero.
+    /// </summary>
+    /// <param name="pTeamID"></param>
+    /// <returns></returns>
+    public static float GetLifeFireLeft(int pTeamID)
+    {
+        return ReturnDictionaryValue(lifeFireLeft, pTeamID);
+    }
+
+    /// <summary>
+    /// Return an integer with the amount of minutes the match lasts.
+    /// </summary>
+    /// <returns></returns>
+    public static float GetMatchTimeInMinutes()
+    {
+        return matchTimeInMinutes;
+    }
+
     //internal method for incrementing a value of a spesified statistic
     private static void IncrementItemByOne(Dictionary<int, int> pDictionary, int pKey)
     {
