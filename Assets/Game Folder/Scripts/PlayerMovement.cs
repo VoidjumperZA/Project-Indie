@@ -26,6 +26,11 @@ public class PlayerMovement : MonoBehaviour
         _rigidBody.MovePosition(transform.position + movement);
     }
 
+    public void Jump(float pJumpForce)
+    {
+        Vector3 force = transform.up * pJumpForce;
+        _rigidBody.AddRelativeForce(force, ForceMode.Impulse);
+    }
 
     //NOTES: Flashing works, looks kinda oke actually, not sure if we need the smoothcamera, need feedback on this.
     //Fmod needs to be implemented, for now focus on other stuff, fix this later.

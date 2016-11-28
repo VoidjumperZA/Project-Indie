@@ -23,6 +23,7 @@ public class PlayerInput : MonoBehaviour
     private FMOD_StudioEventEmitter _eventemitter;
 
     //Booleans for locking axis, enabling OnButtonRelease behaviour-like
+    private bool jumpAxisLock = false;
     private bool flashAxisLock = false;
     private bool throwAxisLock = false;
     private bool raiseAxisLock = false;
@@ -41,6 +42,7 @@ public class PlayerInput : MonoBehaviour
     private Vector3 _raycastPos;
 
     //Cooldown variables
+    private float _jumpTimeStamp;
     private float _flashTimeStamp;
     private float _columnMovementTimeStamp;
 
@@ -52,6 +54,7 @@ public class PlayerInput : MonoBehaviour
         _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
         _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
         //Setting cooldown values
+        _jumpTimeStamp = Time.time;
         _flashTimeStamp = Time.time;
         _columnMovementTimeStamp = Time.time;
         //Setting individual player values
@@ -98,6 +101,7 @@ public class PlayerInput : MonoBehaviour
         //Send input to the PlayerMovement script
         _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
         //faceButtonCheck methods which basically acts as activate on button release
+        //faceButtonCheck(InputManager.JumpButton(_playerID), ref jumpAxisLock, "Jump");
         faceButtonCheck(InputManager.FlashButton(_playerID), ref flashAxisLock, "Flash");
         faceButtonCheck(InputManager.ThrowButton(_playerID), ref throwAxisLock, "Throw");
         faceButtonCheck(InputManager.InvertButton(_playerID), ref invertAxisLock, "Inverse");
@@ -115,6 +119,14 @@ public class PlayerInput : MonoBehaviour
             //execute the appropriate method for the call
             switch (pActionName)
             {
+                case "Jump":
+                    //Add a bool for grounded
+                    if (_jumpTimeStamp <= Time.time)
+                    {
+                        _jumpTimeStamp = Time.time + _playerProperties.GetJumpCooldownValue();
+                        _playerMovement.Jump(_playerProperties.GetJumpForce());
+                    }
+                    break;
                 case "Flash":
                     if (_flashTimeStamp <= Time.time && _manaPoints >= _playerProperties.GetFlashManaCost() && flashDirectionCheck() == true)
                     {

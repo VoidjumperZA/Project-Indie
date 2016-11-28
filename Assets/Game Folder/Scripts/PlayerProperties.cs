@@ -32,6 +32,11 @@ public class PlayerProperties : MonoBehaviour
     private float _startingManaValue;
     [SerializeField]
     private float _flashManaCost;
+    [SerializeField]
+    private float _jumpForce;
+    [SerializeField]
+    private float _jumpCooldownValue;
+
 
     public float GetMovementSpeed()
     {
@@ -101,5 +106,15 @@ public class PlayerProperties : MonoBehaviour
     public float GetFlashManaCost()
     {
         return _flashManaCost;
+    }
+
+    public float GetJumpForce()
+    {
+        return _jumpForce;
+    }
+
+    public float GetJumpCooldownValue()
+    {
+        return _jumpCooldownValue;
     }
 }
