@@ -35,14 +35,14 @@ public class MatchInitialisation : MonoBehaviour
         if (LobbySettings.GetTeam_1PlayerCount() == 1 && LobbySettings.GetTeam_2PlayerCount() < 3)
         {
             gameCameras[0].rect = new Rect(0, 0.5f, 1, 0.5f);
-            raycastPositions[0] = new Vector3(Screen.width * 0.5f, Screen.height * 0.25f, 0.0f);
+            raycastPositions[0] = new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f);
             Debug.Log("Setting Camera 0 for 1v1 | 1v2 - Top Half");
         }
         // 1v3 | 2v2  -  Top Left
         else
         {
             gameCameras[0].rect = new Rect(0, 0.5f, 0.5f, 0.5f);
-            raycastPositions[0] = new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f);
+            raycastPositions[0] = new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f);
             Debug.Log("Setting Camera 0 for 1v3 | 2v2 - Top Left, screen width is " + Screen.width + " and screen height is " + Screen.height);
         }
 
@@ -54,7 +54,7 @@ public class MatchInitialisation : MonoBehaviour
         if (LobbySettings.GetTeam_1PlayerCount()  == 1 && LobbySettings.GetTeam_2PlayerCount() == 1)
         {
             gameCameras[1].rect = new Rect(0, 0, 1, 0.5f);
-            raycastPositions[1] = new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f);
+            raycastPositions[1] = new Vector3(Screen.width * 0.5f, Screen.height * 0.25f, 0.0f);
             Debug.Log("Setting Camera 1 for 1v1 - Bottom Half");
         }
 
@@ -62,7 +62,7 @@ public class MatchInitialisation : MonoBehaviour
         if (LobbySettings.GetTeam_1PlayerCount() == 1 && LobbySettings.GetTeam_2PlayerCount() == 2)
         {
             gameCameras[1].rect = new Rect(0, 0, 0.5f, 0.5f);
-            raycastPositions[1] = new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f);
+            raycastPositions[1] = new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f);
             Debug.Log("Setting Camera 1 for 1v2 - Bottom Left");
         }
 
@@ -70,7 +70,7 @@ public class MatchInitialisation : MonoBehaviour
         if (LobbySettings.GetTeam_1PlayerCount() == 1 && LobbySettings.GetTeam_2PlayerCount() == 3)
         {
             gameCameras[1].rect = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
-            raycastPositions[1] = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
+            raycastPositions[1] = new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f);
             Debug.Log("Setting Camera 1 for 1v3 - Top Right");
         }
 
@@ -78,7 +78,7 @@ public class MatchInitialisation : MonoBehaviour
         if (LobbySettings.GetTeam_1PlayerCount() == 2 && LobbySettings.GetTeam_2PlayerCount() == 2)
         {
             gameCameras[1].rect = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
-            raycastPositions[1] = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
+            raycastPositions[1] = new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f);
             Debug.Log("Setting Camera 1 for 2v2 - Top Right");
         }
 
@@ -98,7 +98,7 @@ public class MatchInitialisation : MonoBehaviour
         if (LobbySettings.GetTeam_1PlayerCount() == 1 && LobbySettings.GetTeam_2PlayerCount() == 2)
         {
             gameCameras[2].rect = new Rect(0.5f, 0, 0.5f, 0.5f);
-            raycastPositions[2] = new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f);
+            raycastPositions[2] = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
             Debug.Log("Setting Camera 2 for 1v2 - Bottom Right");
         }
 
@@ -106,7 +106,7 @@ public class MatchInitialisation : MonoBehaviour
         if (LobbySettings.GetTeam_1PlayerCount() == 1 && LobbySettings.GetTeam_2PlayerCount() == 3)
         {
             gameCameras[2].rect = new Rect(0, 0, 0.5f, 0.5f);
-            raycastPositions[2] = new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f);
+            raycastPositions[2] = new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f);
             Debug.Log("Setting Camera 2 for 1v3 - Bottom Left");
         }
 
@@ -114,7 +114,7 @@ public class MatchInitialisation : MonoBehaviour
         if (LobbySettings.GetTeam_1PlayerCount() == 2 && LobbySettings.GetTeam_2PlayerCount() == 2)
         {
             gameCameras[2].rect = new Rect(0, 0, 0.5f, 0.5f);
-            raycastPositions[2] = new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f);
+            raycastPositions[2] = new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f);
             Debug.Log("Setting Camera 2 for 2v2 - Bottom Left");
         }
 
@@ -142,7 +142,7 @@ public class MatchInitialisation : MonoBehaviour
         if (LobbySettings.GetTeam_1PlayerCount() == 1 && LobbySettings.GetTeam_2PlayerCount() == 3)
         {
             gameCameras[3].rect = new Rect(0.5f, 0, 0.5f, 0.5f);
-            raycastPositions[3] = new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f);
+            raycastPositions[3] = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
             Debug.Log("Setting Camera 3 for 1v3 - Bottom Right");
         }
 
@@ -150,7 +150,7 @@ public class MatchInitialisation : MonoBehaviour
         if (LobbySettings.GetTeam_1PlayerCount() == 2 && LobbySettings.GetTeam_2PlayerCount() == 2)
         {
             gameCameras[3].rect = new Rect(0.5f, 0, 0.5f, 0.5f);
-            raycastPositions[3] = new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f);
+            raycastPositions[3] = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
             Debug.Log("Setting Camera 3 for 2v2 - Bottom Right");
         }
     }
