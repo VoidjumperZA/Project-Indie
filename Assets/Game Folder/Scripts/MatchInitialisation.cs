@@ -15,7 +15,7 @@ public class MatchInitialisation : MonoBehaviour
     private Image redCrosshair;
 
     [SerializeField]
-    private GameObject teamSpawns;
+    private GameObject[] teamSpawns;
 
     private List<Image> allCrosshairs = new List<Image>();
 
