@@ -39,11 +39,14 @@ public class Ball : MonoBehaviour
         PlayerMovement movement = pCollision.gameObject.GetComponent<PlayerMovement>();
         if (movement != null)
         {
+            //This is for the steal ball bug
+            if(currentOwner != null)
+            {
+                currentOwnerID.SetBallPosession(false);
+            }
             currentOwner = movement.gameObject;
             currentOwnerID = movement.gameObject.GetComponent<PlayerInput>();
-            //This one
-            //currentOwnerID.SetBallPosession(true);
-            //THis one
+
             TogglePossession(true);
 
             try
@@ -120,7 +123,7 @@ public class Ball : MonoBehaviour
     public void TogglePossession(bool pState)
     {
         if (currentOwnerID != null) { currentOwnerID.SetBallPosession(pState); }
-        print("Test");
+        print("inside Ball script.TogglePosession(), pState = " + pState);
         if (pState == true)
         {
             inPossession = true;
