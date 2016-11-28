@@ -36,6 +36,8 @@ public class PlayerProperties : MonoBehaviour
     private float _jumpForce;
     [SerializeField]
     private float _jumpCooldownValue;
+    [SerializeField]
+    private float _ballPosessionTime;
 
 
     public float GetMovementSpeed()
@@ -116,5 +118,10 @@ public class PlayerProperties : MonoBehaviour
     public float GetJumpCooldownValue()
     {
         return _jumpCooldownValue;
+    }
+
+    public float GetBallPosessionTime()
+    {
+        return _ballPosessionTime;
     }
 }

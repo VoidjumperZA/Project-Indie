@@ -45,6 +45,7 @@ public class PlayerInput : MonoBehaviour
     private float _jumpTimeStamp;
     private float _flashTimeStamp;
     private float _columnMovementTimeStamp;
+    private float _forcedThrowTimeStamp;
 
     private void Start()
     {
@@ -57,6 +58,7 @@ public class PlayerInput : MonoBehaviour
         _jumpTimeStamp = Time.time;
         _flashTimeStamp = Time.time;
         _columnMovementTimeStamp = Time.time;
+        _forcedThrowTimeStamp = Time.time;
         //Setting individual player values
         _cameraPolarity = 1;
         _spawnHeight = transform.position.y;
@@ -108,6 +110,8 @@ public class PlayerInput : MonoBehaviour
         faceButtonCheck(InputManager.PauseButton(_playerID), ref pauseAxisLock, "Pause");
         faceButtonCheck(InputManager.RaiseColumn(_playerID), ref raiseAxisLock, "RaiseColumn");
         faceButtonCheck(InputManager.LowerColumn(_playerID), ref lowerAxisLock, "LowerColumn");
+
+        forcedThrowHandler();
     }
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
@@ -188,9 +192,23 @@ public class PlayerInput : MonoBehaviour
     {
         pAxisToLock = pState;
     }
+    //This needs more data regarding force throwing
     public void SetBallPosession(bool pBool)
     {
         _ballPosession = pBool;
+        if(pBool == true)
+        {
+            _forcedThrowTimeStamp = Time.time + _playerProperties.GetBallPosessionTime();
+        }
+        //_playerActions.StartForcedThrowTimer();
+    }
+
+    private void forcedThrowHandler()
+    {
+        if(_ballPosession == true && _forcedThrowTimeStamp <= Time.time)
+        {
+            _playerActions.ForcedThrow(transform.forward);
+        }
     }
 
     //Not sure if these should be in PlayerInput at all, same for the values ofcourse

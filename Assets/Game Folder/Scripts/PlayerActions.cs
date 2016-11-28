@@ -23,6 +23,8 @@ public class PlayerActions : MonoBehaviour
     private Camera _camera;
     private Vector3 _raycastPos;
 
+    
+
     private void Start()
     {
         playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
@@ -34,6 +36,8 @@ public class PlayerActions : MonoBehaviour
         _rigidBody = gameObject.GetComponent<Rigidbody>();
 
         _columnControl = GameObject.Find("Manager").GetComponent<ColumnControl>();
+
+        
     }
 
 
@@ -44,6 +48,9 @@ public class PlayerActions : MonoBehaviour
         {
             applyAddedGravity();
         }
+
+
+
     }
 
     public void MoveColumn(string pRaiseOrLower, int pPlayerID)
@@ -136,6 +143,18 @@ public class PlayerActions : MonoBehaviour
         pDirection = Quaternion.AngleAxis(-playerProperties.GetThrowRotationAddition(), gameObject.transform.right) * pDirection;
 
         ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
+    }
+
+    //For now ForcedThrow uses FlashRotationAddition and FlashThrowingForce
+    public void ForcedThrow(Vector3 pDirection)
+    {
+        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
+        ball.GetComponent<Ball>().TogglePossession(false);
+
+        pDirection = Quaternion.AngleAxis(-playerProperties.GetFlashThrowRotationAddition(), gameObject.transform.right) * pDirection;
+
+        ballRigidbody.AddForce(pDirection * playerProperties.GetFlashThrowingForce());
     }
 
     //Need to change name and determine if this needs to be in PlayerActions
