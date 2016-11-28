@@ -7,7 +7,13 @@ public class SimpleRotate : MonoBehaviour
     private bool overrideAutomaticRotation;
 
     [SerializeField]
-    private float newRotationSpeed;
+    private float newRotationSpeedX;
+
+    [SerializeField]
+    private float newRotationSpeedY;
+
+    [SerializeField]
+    private float newRotationSpeedZ;
     // Use this for initialization
     void Start()
     {
@@ -36,6 +42,6 @@ public class SimpleRotate : MonoBehaviour
     //this is primarly used to control the game camera's rotation
     private void rotateWithValue()
     {
-        transform.Rotate(0, newRotationSpeed, 0);
+        transform.Rotate(newRotationSpeedX, newRotationSpeedY, newRotationSpeedZ);
     }
 }
