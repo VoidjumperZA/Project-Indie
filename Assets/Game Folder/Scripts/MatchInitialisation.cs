@@ -29,6 +29,7 @@ public class MatchInitialisation : MonoBehaviour
 
         setCameraDimensions();
         assignPlayersToTeams();
+        setCorrectPlayerPositions();
         assignPlayerIDsAndRaycasts();
         passCrosshairsToUIManager();
     }
