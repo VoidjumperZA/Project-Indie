@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _rigidBody;
     private Rigidbody _ballRigidbody;
     private Ball _ballScript;
+    private PlayerCamera _playerCamera;
     private bool _flashThrowBeforeFlash;
 
     private void Start()
@@ -14,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         _ballRigidbody = ball.GetComponent<Rigidbody>();
         _ballScript = ball.GetComponent<Ball>();
+        //PLAYER HAS NO CAMERA ATTACHED YOU IDIOT
+        _playerCamera = GetComponent<PlayerCamera>();
     }
 
     /// <summary>
@@ -65,32 +68,22 @@ public class PlayerMovement : MonoBehaviour
         if (_flashThrowBeforeFlash && pBallPosession)
         {
             flashThrow(pFlashThrowingForce, pFlashThrowRotationAddition);
+            print("flash throw before flash");
         }
 
-        if (currentColumn == possibleNextColumn)
-        {
-            //Smooth camera movement from Josh
-            //Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
-            //playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
+        //Do we flash on the same column? yes-> afterFlashFailPosition, no-> afterFlashSucceedPosition 
+        transform.position = currentColumn == possibleNextColumn ? afterFlashFailPosition : afterFlashSucceedPosition;
 
-            transform.position = afterFlashFailPosition;
-        }
-        else
-        {
-            //Smooth camera movement from Josh
-            //Vector3 deltaToPlayer = playerCamera.transform.position - gameObject.transform.position;
-            //playerCamera.GetComponent<PlayerCamera>().ToggleSmoothFollow(true, deltaToPlayer, playerCamera.transform.position);
+        _playerCamera.ActivateSmoothFollowOnFlash();
 
-            transform.position = afterFlashSucceedPosition;
-        }
-
-        if(!_flashThrowBeforeFlash && pBallPosession)
+        if (!_flashThrowBeforeFlash && pBallPosession)
         {
-            flashThrow(pFlashThrowingForce ,pFlashThrowRotationAddition);
+            flashThrow(pFlashThrowingForce, pFlashThrowRotationAddition);
+            print("flash throw after flash");
         }
     }
 
-    private void flashThrow(float pFlashThrowingForce ,float pFlashThrowRotationAddition)
+    private void flashThrow(float pFlashThrowingForce, float pFlashThrowRotationAddition)
     {
         Vector3 Direction = Quaternion.AngleAxis(-pFlashThrowRotationAddition, transform.right) * transform.forward;
         _ballScript.TogglePossession(false);

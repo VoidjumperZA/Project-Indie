@@ -7,35 +7,39 @@ public class PlayerProperties : MonoBehaviour
     [SerializeField]
     private float _MovementSpeed;
     [SerializeField]
+    private float _jumpForce;
+    [SerializeField]
     private float _throwingForce;
-    [SerializeField]
-    private float _throwRotationAddition;
-    [SerializeField]
-    private bool _flashThrowBeforeFlash;
     [SerializeField]
     private float _flashThrowingForce;
     [SerializeField]
+    private float _forcedThrowingForce;
+    [SerializeField]
+    private float _throwRotationAddition;
+    [SerializeField]
     private float _flashThrowRotationAddition;
     [SerializeField]
-    private float _columnMovementCooldownValue;
+    private float _forcedThrowRotationAddition;
     [SerializeField]
-    private float _flashCooldownValue;
+    private bool _flashThrowBeforeFlash;
     [SerializeField]
     private float _flashDistance;
     [SerializeField]
-    private float _addedGravity;
-    [SerializeField]
-    private float _manaValueOnPickUp;
-    [SerializeField]
-    private float _maxManaValue;
+    private float _flashManaCost;
     [SerializeField]
     private float _startingManaValue;
     [SerializeField]
-    private float _flashManaCost;
+    private float _maxManaValue;
     [SerializeField]
-    private float _jumpForce;
+    private float _manaValueOnPickUp;
     [SerializeField]
     private float _jumpCooldownValue;
+    [SerializeField]
+    private float _flashCooldownValue;
+    [SerializeField]
+    private float _columnMovementCooldownValue;
+    [SerializeField]
+    private float _addedGravity;
     [SerializeField]
     private float _ballPosessionTime;
 
@@ -123,5 +127,15 @@ public class PlayerProperties : MonoBehaviour
     public float GetBallPosessionTime()
     {
         return _ballPosessionTime;
+    }
+
+    public float GetForcedThrowingForce()
+    {
+        return _forcedThrowingForce;
+    }
+
+    public float GetForcedThrowRotationAddition()
+    {
+        return _forcedThrowRotationAddition;
     }
 }
