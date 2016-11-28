@@ -4,6 +4,9 @@ using System.Collections;
 
 public class PlayerInput : MonoBehaviour
 {
+    [SerializeField]
+    private bool _switchStatementOn;
+
     //Receiving object references through inspector
     [SerializeField]
     private Camera _playerCamera;
@@ -20,6 +23,7 @@ public class PlayerInput : MonoBehaviour
     private FMOD_StudioEventEmitter _eventemitter;
 
     //Booleans for locking axis, enabling OnButtonRelease behaviour-like
+    private bool jumpAxisLock = false;
     private bool flashAxisLock = false;
     private bool throwAxisLock = false;
     private bool raiseAxisLock = false;
@@ -38,6 +42,7 @@ public class PlayerInput : MonoBehaviour
     private Vector3 _raycastPos;
 
     //Cooldown variables
+    private float _jumpTimeStamp;
     private float _flashTimeStamp;
     private float _columnMovementTimeStamp;
 
@@ -49,40 +54,44 @@ public class PlayerInput : MonoBehaviour
         _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
         _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
         //Setting cooldown values
+        _jumpTimeStamp = Time.time;
         _flashTimeStamp = Time.time;
         _columnMovementTimeStamp = Time.time;
         //Setting individual player values
         _cameraPolarity = 1;
         _spawnHeight = transform.position.y;
-        _manaPoints = 0.0f;
+        _manaPoints = _playerProperties.GetStartingManaValue();
         _ballPosession = false;
         //Sending the right camera object and raycast position to _playerActions, so it doesn't need an instance of _playerInput
 
-        //Temporarily switch statement
-        switch(gameObject.tag)
+        if (_switchStatementOn)
         {
-            case "Player_1":
-                _playerID = 1;
-                _temp_TeamID = 1;
-                _raycastPos = new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f);
-                break;
-            case "Player_2":
-                _playerID = 2;
-                _temp_TeamID = 1;
-                _raycastPos = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
-                break;
-            case "Player_3":
-                _playerID = 3;
-                _temp_TeamID = 2;
-                _raycastPos = new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f);
-                break;
-            case "Player_4":
-                _playerID = 4;
-                _temp_TeamID = 2;
-                _raycastPos = new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f);
-                break;
+            //Temporarily switch statement
+            switch (gameObject.tag)
+            {
+                case "Player_1":
+                    _playerID = 1;
+                    _temp_TeamID = 1;
+                    _raycastPos = new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f);
+                    break;
+                case "Player_2":
+                    _playerID = 2;
+                    _temp_TeamID = 1;
+                    _raycastPos = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
+                    break;
+                case "Player_3":
+                    _playerID = 3;
+                    _temp_TeamID = 2;
+                    _raycastPos = new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f);
+                    break;
+                case "Player_4":
+                    _playerID = 4;
+                    _temp_TeamID = 2;
+                    _raycastPos = new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f);
+                    break;
+            }
+            _playerActions.SetCameraAndRaycastPos(_playerCamera, _raycastPos);
         }
-        _playerActions.SetCameraAndRaycastPos(_playerCamera, _raycastPos);
     }
 
     private void Update()
@@ -92,6 +101,7 @@ public class PlayerInput : MonoBehaviour
         //Send input to the PlayerMovement script
         _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
         //faceButtonCheck methods which basically acts as activate on button release
+        //faceButtonCheck(InputManager.JumpButton(_playerID), ref jumpAxisLock, "Jump");
         faceButtonCheck(InputManager.FlashButton(_playerID), ref flashAxisLock, "Flash");
         faceButtonCheck(InputManager.ThrowButton(_playerID), ref throwAxisLock, "Throw");
         faceButtonCheck(InputManager.InvertButton(_playerID), ref invertAxisLock, "Inverse");
@@ -109,10 +119,19 @@ public class PlayerInput : MonoBehaviour
             //execute the appropriate method for the call
             switch (pActionName)
             {
+                case "Jump":
+                    //Add a bool for grounded
+                    if (_jumpTimeStamp <= Time.time)
+                    {
+                        _jumpTimeStamp = Time.time + _playerProperties.GetJumpCooldownValue();
+                        _playerMovement.Jump(_playerProperties.GetJumpForce());
+                    }
+                    break;
                 case "Flash":
-                    if (_flashTimeStamp <= Time.time && flashDirectionCheck() == true)
+                    if (_flashTimeStamp <= Time.time && _manaPoints >= _playerProperties.GetFlashManaCost() && flashDirectionCheck() == true)
                     {
                         _flashTimeStamp = Time.time + _playerProperties.GetFlashCooldownValue();
+                        _manaPoints -= _playerProperties.GetFlashManaCost();
                         _playerMovement.Flash(InputManager.Movement(_playerID).normalized, _playerProperties.GetFlashDistance(), _spawnHeight, _playerProperties.GetFlashThrowingForce(), _playerProperties.GetFlashThrowRotationAddition(), _ballPosession, _playerProperties.GetFlashThrowBeforeFlash());
                         FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
                     }
@@ -189,12 +208,10 @@ public class PlayerInput : MonoBehaviour
     {
         _playerID = pPlayerID;
     }
-    
+
     public void SetRaycastPosition(Vector3 pRaycastPos)
     {
         _raycastPos = pRaycastPos;
-        _playerActions = GetComponent<PlayerActions>();
-        Debug.Log("playerActions is " + (_playerActions == null) + " | playerCamera is " + (_playerCamera == null) + "raycastPos is " + (_raycastPos == null) + "");
         _playerActions.SetCameraAndRaycastPos(_playerCamera, _raycastPos);
     }
 
@@ -208,7 +225,7 @@ public class PlayerInput : MonoBehaviour
 
     public void AddManaPoints()
     {
-        _manaPoints = Mathf.Min(_manaPoints + _playerProperties.GetManaValueOnPickUp(), 100.0f);
+        _manaPoints = Mathf.Min(_manaPoints + _playerProperties.GetManaValueOnPickUp(), _playerProperties.GetMaxManaValue());
         print("_manaPoints: " + _manaPoints);
     }
 }
