@@ -5,12 +5,14 @@ public static class LobbySettings
 {
     private enum MatchTimeOfDay { Daytime, Nighttime };
     private enum CooldownModifiers { Standard, Short, Long };
-    private enum GoalsToWin { Five, One, Two, Ten, Fifteen, Twenty };
-    private enum MatchTime { FiveMinutes, TwoMinutes, TenMinutes, FifteenMinutes}
+    //private enum GoalsToWin { Five, One, Two, Ten, Fifteen, Twenty };
+    //private enum MatchTime { FiveMinutes, TwoMinutes, TenMinutes, FifteenMinutes}
 
     private static int team_1PlayerCount;
     private static int team_2PlayerCount;
     private static int numberOfPlayers;
+    private static int matchTimeInMinutes;
+    private static int goalsToWin;
 
     public static void SetTeamPlayerCount(int pTeam, int pPlayerCount)
     {
@@ -24,6 +26,16 @@ public static class LobbySettings
             team_2PlayerCount = pPlayerCount;
             numberOfPlayers += pPlayerCount;
         }
+    }
+
+    public static void SetMatchTimeInMinutes(int pMinutes)
+    {
+        matchTimeInMinutes = pMinutes;
+    }
+
+    public static void SetGoalsToWin(int pGoalsToWin)
+    {
+        goalsToWin = pGoalsToWin;
     }
 
     public static void ResetNumberOfPlayers()
@@ -46,6 +58,15 @@ public static class LobbySettings
         return team_2PlayerCount;
     }
 
+    public static int GetMatchTimeInMinutes()
+    {
+        return matchTimeInMinutes;
+    }
+
+    public static int GetGoalsToWin()
+    {
+        return goalsToWin;
+    }
 
 
     public static void ResetLobbySettingsData()

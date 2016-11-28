@@ -14,6 +14,9 @@ public class MatchInitialisation : MonoBehaviour
     [SerializeField]
     private Image redCrosshair;
 
+    [SerializeField]
+    private GameObject teamSpawns;
+
     private List<Image> allCrosshairs = new List<Image>();
 
     private int teamID = 1;
@@ -231,6 +234,18 @@ public class MatchInitialisation : MonoBehaviour
     private void passCrosshairsToUIManager()
     {
         GameObject.Find("Manager").GetComponent<PauseScreen>().SetCrosshairs(allCrosshairs.ToArray());
+    }
+
+    private void setCorrectPlayerPositions()
+    {
+        for (int i = 0; i < LobbySettings.GetNumberOfPlayers(); i++)
+        {
+            //Activate the player
+            GameObject player = GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayer(i + 1);
+            player.SetActive(true);
+            //player.transform.position = new Vector3(teamSpawns[LobbySettings.Get);
+
+        }
     }
 
 

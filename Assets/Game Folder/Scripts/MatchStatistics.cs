@@ -7,6 +7,7 @@ public static class MatchStatistics
     private static int T1_Score;
     private static int T2_Score;
     private static Dictionary<int, int> matchGoals = new Dictionary<int, int>();            //(Team,   Goals)
+    private static Dictionary<int, int> lifeFireLeft = new Dictionary<int, int>();          //(Team,   LifeFire)
     private static Dictionary<int, int> teamInfo = new Dictionary<int, int>();              //(Player, Team)
     private static Dictionary<int, int> goalsScored = new Dictionary<int, int>();           //(Player, Goals Scored)
     private static Dictionary<int, int> playersSquished = new Dictionary<int, int>();       //(Player, Number of enemies squished)
@@ -15,6 +16,7 @@ public static class MatchStatistics
     private static Dictionary<int, int> assists = new Dictionary<int, int>();               //(Player, Number of Assists)
     private static Dictionary<int, float> playerPossession = new Dictionary<int, float>();      //(Player, % of ball possession)
     private static Dictionary<int, float> teamPossession = new Dictionary<int, float>();        //(Team, % of ball possession)
+    private static int matchTimeInMinutes;
 
     /// <summary>
     /// Should be called on match creation. Creats a dictionary to store goals for Team 1 and Team 2.
@@ -23,6 +25,11 @@ public static class MatchStatistics
     {
         matchGoals.Add(1, 0);
         matchGoals.Add(2, 0);
+
+        lifeFireLeft.Add(1, LobbySettings.GetGoalsToWin());
+        lifeFireLeft.Add(2, LobbySettings.GetGoalsToWin());
+
+        matchTimeInMinutes = LobbySettings.GetMatchTimeInMinutes();
     }
 
     //assigns a player to a team
@@ -69,6 +76,7 @@ public static class MatchStatistics
         int playerTeam;
         teamInfo.TryGetValue(pPlayerID, out playerTeam);
         IncrementItemByOne(matchGoals, playerTeam);
+        ReduceItemByOne(lifeFireLeft, playerTeam);
     }
 
     /// <summary>
@@ -249,6 +257,14 @@ public static class MatchStatistics
         int numberOfItems;
         pDictionary.TryGetValue(pKey, out numberOfItems);
         pDictionary[pKey] = numberOfItems + 1;
+    }
+
+    //internal method for incrementing a value of a spesified statistic
+    private static void ReduceItemByOne(Dictionary<int, int> pDictionary, int pKey)
+    {
+        int numberOfItems;
+        pDictionary.TryGetValue(pKey, out numberOfItems);
+        pDictionary[pKey] = numberOfItems - 1;
     }
 
     //update dictionary in the case of floats
