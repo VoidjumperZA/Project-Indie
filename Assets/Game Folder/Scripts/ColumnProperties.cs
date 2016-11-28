@@ -63,10 +63,13 @@ public class ColumnProperties : MonoBehaviour
 
     private void respawnManaObject()
     {
-        if(_newManaObject.activeSelf == false && _manaObjectRespawnTimeStamp <= Time.time)
+        if (_newManaObject != null)
         {
-            _newManaObject.SetActive(true);
-        } 
+            if (_newManaObject.activeSelf == false && _manaObjectRespawnTimeStamp <= Time.time)
+            {
+                _newManaObject.SetActive(true);
+            }
+        }
     }
 
     public void hitManaObject()
