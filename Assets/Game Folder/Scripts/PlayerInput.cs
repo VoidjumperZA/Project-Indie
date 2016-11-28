@@ -212,6 +212,7 @@ public class PlayerInput : MonoBehaviour
     public void SetRaycastPosition(Vector3 pRaycastPos)
     {
         _raycastPos = pRaycastPos;
+        _playerActions = GetComponent<PlayerActions>();
         _playerActions.SetCameraAndRaycastPos(_playerCamera, _raycastPos);
     }
 

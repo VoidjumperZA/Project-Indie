@@ -13,7 +13,10 @@ public class SimpleLookAt : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gameObject.transform.rotation = player.gameObject.transform.rotation;
+        if (player != null)
+        {
+            gameObject.transform.rotation = player.gameObject.transform.rotation;
+        }
     }
 
     public void AssignPlayer(Transform pPlayer)

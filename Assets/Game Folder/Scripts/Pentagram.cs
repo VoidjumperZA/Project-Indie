@@ -31,7 +31,7 @@ public class Pentagram : MonoBehaviour
 
     public void MovePentagram(Transform pColumnTransform)
     {
-        gameObject.transform.position = new Vector3(pColumnTransform.position.x, 0, pColumnTransform.position.z);
+        gameObject.transform.position = new Vector3(pColumnTransform.position.x, gameObject.transform.position.y, pColumnTransform.position.z);
     }
 
     public bool IsPentagramActive()
