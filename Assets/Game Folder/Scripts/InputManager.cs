@@ -108,6 +108,16 @@ public static class InputManager
         return determineMovementAxes(pPlayerID, "ThrowButton");
     }
 
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static float JumpButton(int pPlayerID)
+    {
+        return determineMovementAxes(pPlayerID, "JumpButton");
+    }
+
     //QUICK FIX: PLEASE DELETE
     public static float InvertButton(int pPlayerID)
     {

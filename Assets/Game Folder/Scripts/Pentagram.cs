@@ -29,6 +29,11 @@ public class Pentagram : MonoBehaviour
         gameObject.SetActive(pState);
     }
 
+    public void MovePentagram(Transform pColumnTransform)
+    {
+        gameObject.transform.position = new Vector3(pColumnTransform.position.x, 0, pColumnTransform.position.z);
+    }
+
     public bool IsPentagramActive()
     {
         return gameObject.activeSelf;

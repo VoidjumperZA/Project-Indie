@@ -3,6 +3,10 @@ using System.Collections;
 
 public class PlayerActions : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject selectionPentagramGameObject;
+
+    private Pentagram selectionPentagram;
     private PlayerProperties playerProperties;
 
     private Vector3 _spawnPosition;
@@ -15,7 +19,6 @@ public class PlayerActions : MonoBehaviour
     private ColumnControl _columnControl;
     private GameObject _selectedColumn;
     private ColumnProperties _columnProperties;
-    private Pentagram selectedPentagram;
 
     private Camera _camera;
     private Vector3 _raycastPos;
@@ -23,6 +26,7 @@ public class PlayerActions : MonoBehaviour
     private void Start()
     {
         playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
+        selectionPentagram = selectionPentagramGameObject.GetComponent<Pentagram>();
 
         _spawnPosition = transform.position;
         _spawnRotation = transform.rotation;
@@ -64,26 +68,32 @@ public class PlayerActions : MonoBehaviour
                 if (_columnProperties.GetColumnType() == 0)
                 {
                     //if we have a pentagram already, and it's not the same one we're targeting, switch the old one off
-                    Pentagram newSelectedPenta = _selectedColumn.GetComponentInChildren(typeof(Pentagram), true) as Pentagram;
-                    if (selectedPentagram != null && selectedPentagram != newSelectedPenta)
-                    {
-                        selectedPentagram.TogglePentagram(false);
-                    }
+                    //Pentagram newSelectedPenta = _selectedColumn.GetComponentInChildren(typeof(Pentagram), true) as Pentagram;
+                    //if (selectionPentagram != null && selectionPentagram != newSelectedPenta)
+                    //{
+                    //    selectionPentagram.TogglePentagram(false);
+                    //}
 
-                    selectedPentagram = newSelectedPenta;
-                    if (selectedPentagram.IsPentagramActive() != true)
-                    {
-                        selectedPentagram.TogglePentagram(true, gameObject.transform);
-                    }
+                    //selectionPentagram = newSelectedPenta;
+                    //if (selectionPentagram.IsPentagramActive() != true)
+                    //{
+                    //selectionPentagram.TogglePentagram(true, gameObject.transform);
+                    //}
+                    selectionPentagram.TogglePentagram(true, gameObject.transform);
+                    selectionPentagram.MovePentagram(_selectedColumn.transform);
+                }
+                else
+                {
+                    selectionPentagram.TogglePentagram(false);
                 }
             }
             else
             {
                 _selectedColumn = null;
                 _columnProperties = null;
-                if (selectedPentagram != null)
+                if (selectionPentagram != null)
                 {
-                    selectedPentagram.TogglePentagram(false);
+                    selectionPentagram.TogglePentagram(false);
                 }
             }
         }
