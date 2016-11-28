@@ -167,6 +167,8 @@ public class PlayerInput : MonoBehaviour
     public void SetRaycastPosition(Vector3 pRaycastPos)
     {
         _raycastPos = pRaycastPos;
+        _playerActions = GetComponent<PlayerActions>();
+        Debug.Log("playerActions is " + (_playerActions == null) + " | playerCamera is " + (_playerCamera == null) + "raycastPos is " + (_raycastPos == null) + "");
         _playerActions.SetCameraAndRaycastPos(_playerCamera, _raycastPos);
     }
 
