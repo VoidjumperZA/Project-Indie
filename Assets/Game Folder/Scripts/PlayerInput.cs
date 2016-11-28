@@ -101,7 +101,7 @@ public class PlayerInput : MonoBehaviour
         //Send input to the PlayerMovement script
         _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
         //faceButtonCheck methods which basically acts as activate on button release
-        //faceButtonCheck(InputManager.JumpButton(_playerID), ref jumpAxisLock, "Jump");
+        faceButtonCheck(InputManager.JumpButton(_playerID), ref jumpAxisLock, "Jump");
         faceButtonCheck(InputManager.FlashButton(_playerID), ref flashAxisLock, "Flash");
         faceButtonCheck(InputManager.ThrowButton(_playerID), ref throwAxisLock, "Throw");
         faceButtonCheck(InputManager.InvertButton(_playerID), ref invertAxisLock, "Inverse");
