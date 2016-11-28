@@ -1,10 +1,20 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MatchInitialisation : MonoBehaviour
 {
     [SerializeField]
     private Camera[] gameCameras;
+
+    [SerializeField]
+    private Image blueCrosshair;
+
+    [SerializeField]
+    private Image redCrosshair;
+
+    private List<Image> allCrosshairs = new List<Image>();
 
     private int teamID = 1;
     private Vector3[] raycastPositions = new Vector3[4];
@@ -17,6 +27,7 @@ public class MatchInitialisation : MonoBehaviour
         setCameraDimensions();
         assignPlayersToTeams();
         assignPlayerIDsAndRaycasts();
+        passCrosshairsToUIManager();
     }
 
     // Update is called once per frame
@@ -24,6 +35,8 @@ public class MatchInitialisation : MonoBehaviour
     {
 
     }
+
+    
 
     private void setCameraDimensions()
     {
@@ -36,6 +49,7 @@ public class MatchInitialisation : MonoBehaviour
         {
             gameCameras[0].rect = new Rect(0, 0.5f, 1, 0.5f);
             raycastPositions[0] = new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f);
+            setCrosshairPosition(1, raycastPositions[0]);
             Debug.Log("Setting Camera 0 for 1v1 | 1v2 - Top Half");
         }
         // 1v3 | 2v2  -  Top Left
@@ -43,6 +57,7 @@ public class MatchInitialisation : MonoBehaviour
         {
             gameCameras[0].rect = new Rect(0, 0.5f, 0.5f, 0.5f);
             raycastPositions[0] = new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f);
+            setCrosshairPosition(1, raycastPositions[0]);
             Debug.Log("Setting Camera 0 for 1v3 | 2v2 - Top Left, screen width is " + Screen.width + " and screen height is " + Screen.height);
         }
 
@@ -55,6 +70,7 @@ public class MatchInitialisation : MonoBehaviour
         {
             gameCameras[1].rect = new Rect(0, 0, 1, 0.5f);
             raycastPositions[1] = new Vector3(Screen.width * 0.5f, Screen.height * 0.25f, 0.0f);
+            setCrosshairPosition(2, raycastPositions[1]);
             Debug.Log("Setting Camera 1 for 1v1 - Bottom Half");
         }
 
@@ -63,6 +79,7 @@ public class MatchInitialisation : MonoBehaviour
         {
             gameCameras[1].rect = new Rect(0, 0, 0.5f, 0.5f);
             raycastPositions[1] = new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f);
+            setCrosshairPosition(2, raycastPositions[1]);
             Debug.Log("Setting Camera 1 for 1v2 - Bottom Left");
         }
 
@@ -71,6 +88,7 @@ public class MatchInitialisation : MonoBehaviour
         {
             gameCameras[1].rect = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
             raycastPositions[1] = new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f);
+            setCrosshairPosition(2, raycastPositions[1]);
             Debug.Log("Setting Camera 1 for 1v3 - Top Right");
         }
 
@@ -79,6 +97,7 @@ public class MatchInitialisation : MonoBehaviour
         {
             gameCameras[1].rect = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
             raycastPositions[1] = new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f);
+            setCrosshairPosition(1, raycastPositions[1]);
             Debug.Log("Setting Camera 1 for 2v2 - Top Right");
         }
 
@@ -99,6 +118,7 @@ public class MatchInitialisation : MonoBehaviour
         {
             gameCameras[2].rect = new Rect(0.5f, 0, 0.5f, 0.5f);
             raycastPositions[2] = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
+            setCrosshairPosition(2, raycastPositions[2]);
             Debug.Log("Setting Camera 2 for 1v2 - Bottom Right");
         }
 
@@ -107,6 +127,7 @@ public class MatchInitialisation : MonoBehaviour
         {
             gameCameras[2].rect = new Rect(0, 0, 0.5f, 0.5f);
             raycastPositions[2] = new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f);
+            setCrosshairPosition(2, raycastPositions[2]);
             Debug.Log("Setting Camera 2 for 1v3 - Bottom Left");
         }
 
@@ -115,6 +136,7 @@ public class MatchInitialisation : MonoBehaviour
         {
             gameCameras[2].rect = new Rect(0, 0, 0.5f, 0.5f);
             raycastPositions[2] = new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f);
+            setCrosshairPosition(2, raycastPositions[2]);
             Debug.Log("Setting Camera 2 for 2v2 - Bottom Left");
         }
 
@@ -143,6 +165,7 @@ public class MatchInitialisation : MonoBehaviour
         {
             gameCameras[3].rect = new Rect(0.5f, 0, 0.5f, 0.5f);
             raycastPositions[3] = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
+            setCrosshairPosition(2, raycastPositions[3]);
             Debug.Log("Setting Camera 3 for 1v3 - Bottom Right");
         }
 
@@ -151,6 +174,7 @@ public class MatchInitialisation : MonoBehaviour
         {
             gameCameras[3].rect = new Rect(0.5f, 0, 0.5f, 0.5f);
             raycastPositions[3] = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
+            setCrosshairPosition(2, raycastPositions[3]);
             Debug.Log("Setting Camera 3 for 2v2 - Bottom Right");
         }
     }
@@ -183,6 +207,30 @@ public class MatchInitialisation : MonoBehaviour
             currentPlayerInput.AssignPlayerID(i + 1);
             currentPlayerInput.SetRaycastPosition(raycastPositions[i]);
         }
+    }
+
+    private void setCrosshairPosition(int pTeamID, Vector3 pPosition)
+    {
+        Image pNewCrosshair;
+        if (pTeamID == 1)
+        {
+            pNewCrosshair = Instantiate(blueCrosshair);
+            Debug.Log("Instantiating a blue crosshair.");
+        }
+        else
+        {
+            pNewCrosshair = Instantiate(redCrosshair);
+            Debug.Log("Instantiating a red crosshair.");
+        }
+        pNewCrosshair.transform.position = pPosition;
+        pNewCrosshair.transform.SetParent(GameObject.Find("Canvas").transform);
+        allCrosshairs.Add(pNewCrosshair);
+        Debug.Log("allCrosshairs now has " + allCrosshairs.Count + " crosshairs.");
+    }
+
+    private void passCrosshairsToUIManager()
+    {
+        GameObject.Find("Manager").GetComponent<PauseScreen>().SetCrosshairs(allCrosshairs.ToArray());
     }
 
 

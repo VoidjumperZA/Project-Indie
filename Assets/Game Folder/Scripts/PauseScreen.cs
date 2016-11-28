@@ -10,7 +10,7 @@ public class PauseScreen : MonoBehaviour
     [SerializeField]
     private GameObject HUD;
 
-    [SerializeField]
+    //[SerializeField]
     private Image[] Crosshairs;
 
     [SerializeField]
@@ -42,6 +42,11 @@ public class PauseScreen : MonoBehaviour
         {
             toggleHUD(true);
         }
+    }
+
+    public void SetCrosshairs(Image[] pCrosshairs)
+    {
+        Crosshairs = pCrosshairs;
     }
 
     private void animateWheel()
