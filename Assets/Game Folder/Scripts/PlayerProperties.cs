@@ -26,24 +26,12 @@ public class PlayerProperties : MonoBehaviour
     private float _addedGravity;
     [SerializeField]
     private float _manaValueOnPickUp;
-
-    void Start()
-    {
-        //Standard values
-
-        //Movement Speed:                   30
-        //Throwing Force:                   1900
-        //Throw Rotation Addition:          25
-        //Flash Throw Before Flash:         true
-        //Flash Throwing Force:             1900
-        //Flash Throw Rotation Addition:    45
-        //Column Movement Cooldown:         120
-        //Flash Cooldown Value:             120
-        //Flash Distance:                   20
-        //Added gravity:                    1180000
-
-        //For Dom where to start after dinner: making states/booleans in PlayerInput, Fmod
-    }
+    [SerializeField]
+    private float _maxManaValue;
+    [SerializeField]
+    private float _startingManaValue;
+    [SerializeField]
+    private float _flashManaCost;
 
     public float GetMovementSpeed()
     {
@@ -98,5 +86,20 @@ public class PlayerProperties : MonoBehaviour
     public float GetManaValueOnPickUp()
     {
         return _manaValueOnPickUp;
+    }
+
+    public float GetMaxManaValue()
+    {
+        return _maxManaValue;
+    }
+
+    public float GetStartingManaValue()
+    {
+        return _startingManaValue;
+    }
+
+    public float GetFlashManaCost()
+    {
+        return _flashManaCost;
     }
 }
