@@ -265,7 +265,7 @@ public static class MatchStatistics
     /// Return an integer with the amount of minutes the match lasts.
     /// </summary>
     /// <returns></returns>
-    public static float GetMatchTimeInMinutes()
+    public static int GetMatchTimeInMinutes()
     {
         return matchTimeInMinutes;
     }

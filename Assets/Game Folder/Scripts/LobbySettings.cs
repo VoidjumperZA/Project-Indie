@@ -13,6 +13,8 @@ public static class LobbySettings
     private static int numberOfPlayers;
     private static int matchTimeInMinutes;
     private static int goalsToWin;
+    private static int sceneToLoad;
+    private static float modifierValue;
 
     public static void SetTeamPlayerCount(int pTeam, int pPlayerCount)
     {
@@ -26,6 +28,34 @@ public static class LobbySettings
             team_2PlayerCount = pPlayerCount;
             numberOfPlayers += pPlayerCount;
         }
+    }
+
+    public static void SetArena(string pArenaName)
+    {
+        if (pArenaName == "Sunlight")
+        {
+            sceneToLoad = 1;
+        }
+        if (pArenaName == "Moonbeam")
+        {
+            sceneToLoad = 2;
+        }
+        else
+        {
+            Debug.Log("An incorrect arena name has been entered as an argument to the button.");
+            sceneToLoad = 0; //Defaults back to loading the menu scene. If this bug is ever left untouched, at least the menu
+            //will load and it won't crash
+        }
+    }
+
+    public static void SetCooldownModifier(float pModifierValue)
+    {
+        modifierValue = pModifierValue;
+    }
+
+    public static int GetSceneToLoad()
+    {
+        return sceneToLoad;
     }
 
     public static void SetMatchTimeInMinutes(int pMinutes)
@@ -68,6 +98,10 @@ public static class LobbySettings
         return goalsToWin;
     }
 
+    public static float GetModifierValue()
+    {
+        return modifierValue;
+    }
 
     public static void ResetLobbySettingsData()
     {

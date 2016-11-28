@@ -1,20 +1,43 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class MainMenuControl : MonoBehaviour
 {
+    [SerializeField]
+    private Canvas[] playMenuSubsections;
 
+    [SerializeField]
+    private GameObject pentagram;
+
+    [SerializeField]
+    private float pentagramRotationSpeed;
+
+    private float pentagramRotationAngle;
+    private float pentagramAngleToReach;
+    private bool pentagramShouldRotate;
     // Use this for initialization
     void Start()
     {
-
+        pentagramShouldRotate = false;
+        pentagramAngleToReach = 360 / playMenuSubsections.Length;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (pentagramShouldRotate == true)
+        {
+            pentagram.transform.Rotate(0, 0, pentagramRotationSpeed);
+            pentagramRotationAngle += pentagramRotationSpeed;
 
+            if (pentagramRotationAngle >= pentagramAngleToReach)
+            {
+                pentagramRotationAngle = 0.0f;
+                pentagramShouldRotate = false;
+            }
+        }
     }
 
     public void SetTeam_1PlayerCount(int pTeam1Count)
@@ -36,8 +59,26 @@ public class MainMenuControl : MonoBehaviour
         LobbySettings.ResetNumberOfPlayers();
     }
 
+    public void moveToNextSubsection(int pMenuLevel)
+    {
+        playMenuSubsections[pMenuLevel].gameObject.SetActive(true);
+        playMenuSubsections[pMenuLevel - 1].gameObject.SetActive(false);
+
+        pentagramShouldRotate = true;
+    }
+
+    public void SetArenaName(string pArenaName)
+    {
+        LobbySettings.SetArena(pArenaName);
+    }
+
+    public void SetCooldownModifier(float pModifier)
+    {
+        LobbySettings.SetCooldownModifier(pModifier);
+    }
+
     public void LoadScene(int pSceneToLoad)
     {
-        SceneManager.LoadScene(pSceneToLoad);
+        SceneManager.LoadScene(LobbySettings.GetSceneToLoad());
     }
 }
