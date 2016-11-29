@@ -91,10 +91,10 @@ public class PlayerCamera : MonoBehaviour
             //maybe below Slerp, maybe more, idk have to wait untill Josh is back
             _smoothFollowSpeed += _smoothFollowIncrement;
             transform.position = Vector3.Slerp(transform.position, _finalCameraPosition, _smoothFollowSpeed);
-            print("Distance: " + (_finalCameraPosition - transform.position).magnitude);
+            //print("Distance: " + (_finalCameraPosition - transform.position).magnitude);
             if ((_finalCameraPosition -transform.position).magnitude <= _smoothFollowClipDistance)
             {
-                print("reached him!");
+                //print("reached him!");
                 _smoothFollow = false;
             }
         }

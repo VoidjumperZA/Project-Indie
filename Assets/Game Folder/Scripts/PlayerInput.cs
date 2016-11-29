@@ -39,6 +39,7 @@ public class PlayerInput : MonoBehaviour
     private float _spawnHeight;
     private float _manaPoints;
     private bool _ballPosession;
+    private bool _inAir;
     private Vector3 _raycastPos;
 
     //Cooldown variables
@@ -112,6 +113,7 @@ public class PlayerInput : MonoBehaviour
         faceButtonCheck(InputManager.LowerColumn(_playerID), ref lowerAxisLock, "LowerColumn");
 
         forcedThrowHandler();
+        gravityHandler();
     }
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
@@ -204,12 +206,25 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    public void SetInAir(bool pBool)
+    {
+        _inAir = pBool;
+    }
+
     private void forcedThrowHandler()
     {
         if(_ballPosession == true && _forcedThrowTimeStamp <= Time.time)
         {
             //_playerActions.ForcedThrow(transform.forward);
             _playerActions.Throw(transform.forward, PlayerActions.ThrowType.FORCED);
+        }
+    }
+
+    private void gravityHandler()
+    {
+        if(_inAir == true)
+        {
+            _playerMovement.ApplyGravity(_playerProperties.GetAddedGravity());
         }
     }
 
