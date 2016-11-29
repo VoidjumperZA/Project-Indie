@@ -35,7 +35,7 @@ public class PlayerCollision : MonoBehaviour
 
                     GameObject ball = GameObject.FindGameObjectWithTag("Ball");
                     Vector3 deltaFromBallToColumnUser = new Vector3();
-                    GameObject columnUser = GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayer(columnProperties.GetOwnerID());
+                    GameObject columnUser = GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayerElement(columnProperties.GetOwnerID());
                     deltaFromBallToColumnUser = columnUser.transform.position - ball.transform.position;
 
                     //However, it is still inside the column and trapped on the otehr side of the glass, it first

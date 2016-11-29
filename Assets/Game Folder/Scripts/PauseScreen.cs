@@ -78,9 +78,9 @@ public class PauseScreen : MonoBehaviour
     private void toggleHUD(bool pState)
     {
         HUD.SetActive(pState);
-        for (int i = 0; i < Crosshairs.Length; i++)
+        for (int i = 0; i < Crosshairs.Length - 1; i++)
         {
-            Crosshairs[i].enabled = pState;
+            Crosshairs[i].gameObject.SetActive(pState);
         }
     }
 }

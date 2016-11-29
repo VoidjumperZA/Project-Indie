@@ -96,7 +96,7 @@ public class Ball : MonoBehaviour
             for (int i = 0; i < GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayersArraySize(); i++)
             {
                 Debug.Log("i is " + i);
-                GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayer(i + 1).GetComponent<PlayerActions>().Respawn();
+                GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayerElement(i + 1).GetComponent<PlayerActions>().Respawn();
             }
             ResetToCentre();
         }

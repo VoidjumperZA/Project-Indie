@@ -84,7 +84,6 @@ public class MainMenuControl : MonoBehaviour
 
     public void LoadScene(int pSceneToLoad)
     {
-        SceneManager.LoadScene(pSceneToLoad);
-        //SceneManager.LoadScene(LobbySettings.GetSceneToLoad());
+        SceneManager.LoadScene(LobbySettings.GetSceneToLoad());
     }
 }

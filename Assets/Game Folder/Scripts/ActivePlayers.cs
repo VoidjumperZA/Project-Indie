@@ -27,9 +27,9 @@ public class ActivePlayers : MonoBehaviour
         return activePlayerArray.Length;
     }
 
-    public GameObject GetActivePlayer(int pPlayerID)
+    public GameObject GetActivePlayerElement(int pActiveObjectID)
     {
-        Debug.Log("Player ID is " + pPlayerID);
-        return activePlayerArray[pPlayerID - 1];
+        Debug.Log("Active Object ID is " + pActiveObjectID);
+        return activePlayerArray[pActiveObjectID];
     }
 }
