@@ -64,6 +64,7 @@ public class MainMenuControl : MonoBehaviour
         playMenuSubsections[pMenuLevel].gameObject.SetActive(true);
         playMenuSubsections[pMenuLevel - 1].gameObject.SetActive(false);
 
+        pentagramRotationAngle = 0.0f;
         pentagramShouldRotate = true;
     }
 
@@ -84,7 +85,6 @@ public class MainMenuControl : MonoBehaviour
 
     public void LoadScene(int pSceneToLoad)
     {
-        SceneManager.LoadScene(pSceneToLoad);
-        //SceneManager.LoadScene(LobbySettings.GetSceneToLoad());
+        SceneManager.LoadScene(LobbySettings.GetSceneToLoad());
     }
 }

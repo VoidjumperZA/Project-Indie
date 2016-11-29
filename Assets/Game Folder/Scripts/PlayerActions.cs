@@ -23,6 +23,11 @@ public class PlayerActions : MonoBehaviour
     private Camera _camera;
     private Vector3 _raycastPos;
 
+    private Ball _ballScript;
+    private Rigidbody _ballRigidbody;
+
+    public enum ThrowType { NORMAL, FORCED, DEATH }
+
     private void Start()
     {
         playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
@@ -34,6 +39,9 @@ public class PlayerActions : MonoBehaviour
         _rigidBody = gameObject.GetComponent<Rigidbody>();
 
         _columnControl = GameObject.Find("Manager").GetComponent<ColumnControl>();
+        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+        _ballScript = ball.GetComponent<Ball>();
+        _ballRigidbody = ball.GetComponent<Rigidbody>();
     }
 
 
@@ -122,30 +130,31 @@ public class PlayerActions : MonoBehaviour
         gameObject.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, -GameObject.Find("Manager").GetComponent<PlayerProperties>().GetAddedGravity(), 0) * Time.deltaTime);
     }
 
-    /// <summary>
-    /// Release the ball in the direction aimed, putting the ball back into play.
-    /// </summary>
-    /// <param name="pDirection"></param>
-    public void Throw(Vector3 pDirection)
+    public void Throw(Vector3 pDirection, ThrowType pType)
     {
-        //going to make another function called FlashThrow in PlayerMovement
-        //get the ball's gameObject
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
-        ball.GetComponent<Ball>().TogglePossession(false);
-        pDirection = Quaternion.AngleAxis(-playerProperties.GetThrowRotationAddition(), gameObject.transform.right) * pDirection;
+        _ballScript.TogglePossession(false);
 
-        ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
-    }
+        float rotation = 0.0f;
+        float force = 0.0f;
 
-    //Need to change name and determine if this needs to be in PlayerActions
-    public void DeathThrow(Vector3 pDirection)
-    {
-        //get the ball's gameObject
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
-        ball.GetComponent<Ball>().TogglePossession(false);
-        ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
+        switch(pType)
+        {
+            case ThrowType.NORMAL:
+                rotation = playerProperties.GetThrowRotationAddition();
+                force = playerProperties.GetThrowingForce();
+                break;
+            case ThrowType.FORCED:
+                rotation = playerProperties.GetForcedThrowRotationAddition();
+                force = playerProperties.GetForcedThrowingForce();
+                break;
+            case ThrowType.DEATH:
+                rotation = 0.0f;
+                //Might need a special one for DeathThrow
+                force = playerProperties.GetThrowingForce();
+                break;
+        }
+        pDirection = Quaternion.AngleAxis(-rotation, gameObject.transform.right) * pDirection;
+        _ballRigidbody.AddForce(pDirection * force);
     }
 
     public void SetCameraAndRaycastPos(Camera pCamera, Vector3 pRaycastPos)

@@ -11,17 +11,20 @@ public class ScoreAndTimerHandler : MonoBehaviour
     [SerializeField]
     private Text _timerText;
 
+    private int _matchDuration;
+
     private void Start()
     {
-
+        _matchDuration = (int)MatchStatistics.GetMatchTimeInMinutes() * 60;
     }
 
     private void Update()
     {
-        _team1_scoreText.text = "" + MatchStatistics.GetGoalsForTeam(1).ToString();
-        _team2_scoreText.text = "" + MatchStatistics.GetGoalsForTeam(2).ToString();
+        _team1_scoreText.text = "" + MatchStatistics.GetLifeFireLeft(1).ToString();
+        _team2_scoreText.text = "" + MatchStatistics.GetLifeFireLeft(2).ToString();
         //_timerText.text = "Time: " + ((int)Time.time).ToString();
-        _timerText.text = transform2Clock((int)Time.time);
+
+        _timerText.text = transform2Clock(_matchDuration - (int)Time.time);
     }
 
     private string transform2Clock(int pTime)

@@ -4,38 +4,53 @@ using System.Collections;
 public class PlayerProperties : MonoBehaviour
 {
     //DESIGNER Inspector values, once chosen a nice value, these can be replaced with "hard coded" values
+    [Header("General properties")]
     [SerializeField]
     private float _MovementSpeed;
     [SerializeField]
-    private float _throwingForce;
-    [SerializeField]
-    private float _throwRotationAddition;
-    [SerializeField]
-    private bool _flashThrowBeforeFlash;
-    [SerializeField]
-    private float _flashThrowingForce;
-    [SerializeField]
-    private float _flashThrowRotationAddition;
-    [SerializeField]
-    private float _columnMovementCooldownValue;
-    [SerializeField]
-    private float _flashCooldownValue;
-    [SerializeField]
-    private float _flashDistance;
+    private float _jumpForce;
     [SerializeField]
     private float _addedGravity;
     [SerializeField]
-    private float _manaValueOnPickUp;
+    private float _ballPosessionTime;
+    [Header("Throw properties")]
     [SerializeField]
-    private float _maxManaValue;
+    private float _throwingForce;
+    [SerializeField]
+    private float _flashThrowingForce;
+    [SerializeField]
+    private float _forcedThrowingForce;
+    [SerializeField]
+    private float _throwRotationAddition;
+    [SerializeField]
+    private float _flashThrowRotationAddition;
+    [SerializeField]
+    private float _forcedThrowRotationAddition;
+    [Header("Flash properties")]
+    [SerializeField]
+    private bool _flashThrowBeforeFlash;
+    [SerializeField]
+    private float _flashDistance;
+    [SerializeField]
+    private float _smoothFollowIncrement;
+    [SerializeField]
+    private float _smoothFollowClipDistance;
+    [SerializeField]
+    private float _flashManaCost;
+    [Header("Mana properties")]
     [SerializeField]
     private float _startingManaValue;
     [SerializeField]
-    private float _flashManaCost;
+    private float _maxManaValue;
     [SerializeField]
-    private float _jumpForce;
+    private float _manaValueOnPickUp;
+    [Header("Cooldown properties")]
     [SerializeField]
     private float _jumpCooldownValue;
+    [SerializeField]
+    private float _flashCooldownValue;
+    [SerializeField]
+    private float _columnMovementCooldownValue;
 
 
     public float GetMovementSpeed()
@@ -116,5 +131,30 @@ public class PlayerProperties : MonoBehaviour
     public float GetJumpCooldownValue()
     {
         return _jumpCooldownValue;
+    }
+
+    public float GetBallPosessionTime()
+    {
+        return _ballPosessionTime;
+    }
+
+    public float GetForcedThrowingForce()
+    {
+        return _forcedThrowingForce;
+    }
+
+    public float GetForcedThrowRotationAddition()
+    {
+        return _forcedThrowRotationAddition;
+    }
+
+    public float GetSmoothFollowIncrement()
+    {
+        return _smoothFollowIncrement;
+    }
+
+    public float GetSmoothFollowClipDistance()
+    {
+        return _smoothFollowClipDistance;
     }
 }

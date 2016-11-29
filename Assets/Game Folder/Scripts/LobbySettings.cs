@@ -32,13 +32,16 @@ public static class LobbySettings
 
     public static void SetArena(string pArenaName)
     {
+        Debug.Log("The give arena name is " + pArenaName);
         if (pArenaName == "Sunlight")
         {
             sceneToLoad = 1;
+            Debug.Log("Sunlight Arena has been set with a scene ID of " + sceneToLoad);
         }
-        if (pArenaName == "Moonbeam")
+        else if (pArenaName == "Moonbeam")
         {
             sceneToLoad = 2;
+            Debug.Log("Moonbeam Arena has been set with a scene ID of " + sceneToLoad);
         }
         else
         {

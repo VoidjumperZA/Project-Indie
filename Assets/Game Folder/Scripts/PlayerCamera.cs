@@ -20,13 +20,9 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField]
     private float _maxVerticalCameraRotation;
     [SerializeField]
-    private bool _smoothFollow = true;
+    private bool _raycasting;
     [SerializeField]
-    private float _smoothFollowSpeed;
-    [SerializeField]
-    private bool _raycasting = true;
-    [SerializeField]
-    private bool _raycastLerp = true;
+    private bool _raycastLerp;
     [SerializeField]
     private float _raycastLerpSpeed = 1.0f;
 
@@ -34,39 +30,25 @@ public class PlayerCamera : MonoBehaviour
     private Vector3 _finalCameraPosition;
     private Vector3 _finalCameraLookAt;
 
-    private bool countDownOutOfSmoothFollow;
-    private Vector3 deltaVec;
-    private Vector3 cameraStartPos;
+    private bool _smoothFollow = false;
+    private float _smoothFollowSpeed = 0.0f;
+    private float _smoothFollowIncrement = 0.0f;
+    private float _smoothFollowClipDistance = 0.0f;
 
     private void Start()
     {
         //DESIGNER Little trick so the Designers can work with integers
-        _smoothFollowSpeed /= 100;
         _targetCameraHelper = _target.GetChild(0).GetComponent<Transform>();
     }
 
     void Update()
     {
-        if (countDownOutOfSmoothFollow == true)
-        {
-            //if (cameraStartPos - gameObject.transform.position > deltaVec)
-           // {
 
-            //}
-        }
     }
-
-    private IEnumerator waitAfterFlashToToggleMode()
-    {
-        yield return new WaitForSeconds(0.6f);
-        _smoothFollow = false;
-    }
-
 
     private void LateUpdate()
     {
         followTarget();
-
     }
 
     private void followTarget()
@@ -106,7 +88,15 @@ public class PlayerCamera : MonoBehaviour
         }
         else
         {
+            //maybe below Slerp, maybe more, idk have to wait untill Josh is back
+            _smoothFollowSpeed += _smoothFollowIncrement;
             transform.position = Vector3.Slerp(transform.position, _finalCameraPosition, _smoothFollowSpeed);
+            print("Distance: " + (_finalCameraPosition - transform.position).magnitude);
+            if ((_finalCameraPosition -transform.position).magnitude <= _smoothFollowClipDistance)
+            {
+                print("reached him!");
+                _smoothFollow = false;
+            }
         }
         transform.LookAt(_finalCameraLookAt);
     }
@@ -126,24 +116,16 @@ public class PlayerCamera : MonoBehaviour
             _targetCameraHelper.transform.Rotate(-pYRotation * _verticalCameraRotionSpeed, 0, 0);
         }
 
-
         //DESIGNER A Drawline to visualise where the camera looks at
         Debug.DrawLine(transform.position, _finalCameraLookAt);
-        //BUGTEST
-        //print("X: " + pXRotation + "and Y: " + pYRotation);
     }
 
-    public void ToggleSmoothFollow(bool pState, Vector3 pDeltaVec, Vector3 pStartingPos)
+    public void ActivateSmoothFollowOnFlash(float pSmoothFollowIncrement, float pSmoothFollowClipDistance)
     {
-        _smoothFollow = pState;
-        deltaVec = pDeltaVec;
-        cameraStartPos = pStartingPos;
-        if (pState == true)
-        {
-            countDownOutOfSmoothFollow = true;
-            StartCoroutine(waitAfterFlashToToggleMode());
-        }
+        _smoothFollowIncrement = pSmoothFollowIncrement;
+        _smoothFollowClipDistance = pSmoothFollowClipDistance;
+        _smoothFollow = true;
+        //Maybe make this higher
+        _smoothFollowSpeed = 0.0f;
     }
-
-
 }

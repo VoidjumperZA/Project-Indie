@@ -40,7 +40,7 @@ public class Ball : MonoBehaviour
         if (movement != null)
         {
             //This is for the steal ball bug
-            if(currentOwner != null)
+            if (currentOwner != null)
             {
                 currentOwnerID.SetBallPosession(false);
             }
@@ -96,7 +96,7 @@ public class Ball : MonoBehaviour
             for (int i = 0; i < GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayersArraySize(); i++)
             {
                 Debug.Log("i is " + i);
-                GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayer(i + 1).GetComponent<PlayerActions>().Respawn();
+                GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayerElement(i).GetComponent<PlayerActions>().Respawn();
             }
             ResetToCentre();
         }
@@ -158,5 +158,10 @@ public class Ball : MonoBehaviour
     public bool IsInPossession()
     {
         return inPossession;
+    }
+
+    public Vector3 GetBallOffset()
+    {
+        return ballOffset;
     }
 }
