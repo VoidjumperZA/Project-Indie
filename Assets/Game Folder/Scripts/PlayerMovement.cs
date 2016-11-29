@@ -71,6 +71,19 @@ public class PlayerMovement : MonoBehaviour
         //Do we flash on the same column? yes-> afterFlashFailPosition, no-> afterFlashSucceedPosition 
         transform.position = currentColumn == possibleNextColumn ? afterFlashFailPosition : afterFlashSucceedPosition;
 
+        //Note: For some reason using _rigidbody.moveposition sometimes did not flash at all
+
+        //if (currentColumn == possibleNextColumn)
+        //{
+        //    _rigidBody.MovePosition(afterFlashFailPosition);
+        //    _rigidBody.position = afterFlashFailPosition;
+        //}
+        //else
+        //{
+        //    _rigidBody.MovePosition(afterFlashSucceedPosition);
+        //    _rigidBody.position = afterFlashSucceedPosition;
+        //}
+
         if (pFlashThrowBeforeFlash == false && pBallPosession == true)
         {
             _ballRigidbody.MovePosition(transform.position + _ballScript.GetBallOffset());
@@ -83,5 +96,11 @@ public class PlayerMovement : MonoBehaviour
         Vector3 Direction = Quaternion.AngleAxis(-pFlashThrowRotationAddition, transform.right) * transform.forward;
         _ballScript.TogglePossession(false);
         _ballRigidbody.AddForce(Direction * pFlashThrowingForce);
+    }
+
+    public void ApplyGravity(float pAddedGravity)
+    {
+        _rigidBody.AddRelativeForce(new Vector3(0.0f, -pAddedGravity, 0.0f) * Time.deltaTime);
+
     }
 }

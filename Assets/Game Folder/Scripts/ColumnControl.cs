@@ -67,13 +67,13 @@ public class ColumnControl : MonoBehaviour
     {
         if (pSelectedColumn != null /*&& isColumnMoving() == false*/ && pColumnProperties.GetColumnType() != 1 && pColumnProperties.GetColumnStatus() == 0)
         {
-            Debug.Log("Column Type: " + pColumnProperties.GetColumnType());
+            //Debug.Log("Column Type: " + pColumnProperties.GetColumnType());
             //Debug.Log("My pos before moving is: " + _selectedColumn.transform.position + " while the baseY is: " + _baseYValue);
             setSelectedColumnPropertiesDataValues(pColumnProperties, pPlayerID);
             pColumnProperties.columnStatus = ColumnProperties.ColumnStatus.Locked;
             pColumnProperties.ToggleColumnRising(true);
 
-            Debug.Log("Column Control column displacement size is: " + _columnDisplacementSize);
+            //Debug.Log("Column Control column displacement size is: " + _columnDisplacementSize);
 
             //FMOD
             playFMOD(pSelectedColumn, pColumnProperties, 1);

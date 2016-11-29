@@ -153,7 +153,9 @@ public class PlayerActions : MonoBehaviour
                 force = playerProperties.GetThrowingForce();
                 break;
         }
+        print("pDirection in Throw before: " + pDirection);
         pDirection = Quaternion.AngleAxis(-rotation, gameObject.transform.right) * pDirection;
+        print("pDirection in Throw after: " + pDirection);
         _ballRigidbody.AddForce(pDirection * force);
     }
 

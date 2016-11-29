@@ -81,6 +81,10 @@ public class ColumnProperties : MonoBehaviour
     private void Update()
     {
         respawnManaObject();
+    }
+
+    private void FixedUpdate()
+    {
         updateColumnPosition();
         if (_atBaseLevel == false)
         {
@@ -125,17 +129,18 @@ public class ColumnProperties : MonoBehaviour
     {
         if (_resettingMovementDelta < _columnDisplacementSize)
         {
-            transform.Translate(0, _polarity * _columnResettingSpeed, 0);
-            //Vector3 movement = transform.TransformDirection(0, _polarity * _columnResettingSpeed, 0);
-            //_rigidBody.MovePosition(transform.position + movement);
+            //transform.Translate(0, _polarity * _columnResettingSpeed, 0);
+            Vector3 movement = transform.TransformDirection(0, _polarity * _columnResettingSpeed, 0);
+            _rigidBody.MovePosition(transform.position + movement * Time.deltaTime);
 
             _resettingMovementDelta += _columnResettingSpeed;
         }
         else
         {
             transform.position = new Vector3(transform.position.x, _baseYValue, transform.position.z);
-            //Vector3 position = new Vector3(transform.position.x, _baseYValue, transform.position.z);
+            Vector3 position = new Vector3(transform.position.x, _baseYValue, transform.position.z);
             //_rigidBody.MovePosition(position);
+            _rigidBody.position = position;
 
             _resettingMovementDelta = 0.0f;
             _atBaseLevel = true;
@@ -157,9 +162,9 @@ public class ColumnProperties : MonoBehaviour
             {
                 _columnSpeed = _columnMovementMaxSpeed;
             }
-            transform.Translate(0, pPolarity * _columnSpeed, 0);
-            //Vector3 movement = transform.TransformDirection(0, _polarity * _columnSpeed, 0);
-            //_rigidBody.MovePosition(transform.position + movement);
+            //transform.Translate(0, pPolarity * _columnSpeed, 0);
+            Vector3 movement = transform.TransformDirection(0, pPolarity * _columnSpeed, 0);
+            _rigidBody.MovePosition(transform.position + movement * Time.deltaTime);
 
             _orignalMovementDelta += _columnSpeed;
         }

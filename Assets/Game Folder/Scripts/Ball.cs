@@ -108,12 +108,18 @@ public class Ball : MonoBehaviour
             ResetToCentre();
         }
 
-        if (pCollision.gameObject.tag == "LowerBoundary")
+        //A little fix for ResetToCentre()
+        _rigidbody.freezeRotation = false;
+    }
+
+
+    private void OnTriggerEnter(Collider pCol)
+    {
+        //This needs to be OnTriggerEnter
+        if (pCol.gameObject.tag == "LowerBoundary")
         {
             ResetToCentre();
         }
-        //A little fix for ResetToCentre()
-        _rigidbody.freezeRotation = false;
     }
 
     //
@@ -130,7 +136,7 @@ public class Ball : MonoBehaviour
     public void TogglePossession(bool pState)
     {
         if (currentOwnerID != null) { currentOwnerID.SetBallPosession(pState); }
-        print("inside Ball script.TogglePosession(), pState = " + pState);
+        //print("inside Ball script.TogglePosession(), pState = " + pState);
         if (pState == true)
         {
             inPossession = true;
