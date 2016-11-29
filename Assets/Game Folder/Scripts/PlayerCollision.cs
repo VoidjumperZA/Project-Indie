@@ -35,12 +35,17 @@ public class PlayerCollision : MonoBehaviour
 
                     GameObject ball = GameObject.FindGameObjectWithTag("Ball");
                     Vector3 deltaFromBallToColumnUser = new Vector3();
-                    GameObject columnUser = GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayerElement(columnProperties.GetOwnerID());
+                    GameObject columnUser = GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayerElement(columnProperties.GetOwnerID() -1);
                     deltaFromBallToColumnUser = columnUser.transform.position - ball.transform.position;
 
                     //However, it is still inside the column and trapped on the otehr side of the glass, it first
                     //needs to be moved away (renderer.bounds.extends?) before being thrown. Good luck Dom :)
-                    playerActions.DeathThrow(deltaFromBallToColumnUser);                    
+
+
+
+
+
+                    playerActions.Throw(deltaFromBallToColumnUser, PlayerActions.ThrowType.DEATH);
                 }
                 else if (pCol.gameObject.tag == "LowerBoundary")
                 {
@@ -62,13 +67,13 @@ public class PlayerCollision : MonoBehaviour
     {
         if (pCol.gameObject.tag == "Column")
         {
-            playerActions.ToggleAddedGravity(true);          
+            playerActions.ToggleAddedGravity(true);
         }
     }
 
     private void OnTriggerEnter(Collider pCol)
     {
-        if(pCol.gameObject.tag == "Mana")
+        if (pCol.gameObject.tag == "Mana")
         {
             playerInput.AddManaPoints();
             columnProperties.hitManaObject();
