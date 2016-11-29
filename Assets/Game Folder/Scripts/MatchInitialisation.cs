@@ -317,14 +317,34 @@ public class MatchInitialisation : MonoBehaviour
     private void assignPlayerIDsAndRaycasts()
     {
         string tagName = "Player_";
-        Debug.Log("In AssignPlayerIDandRaycast.");       
+        Debug.Log("In AssignPlayerIDandRaycast.");       /*
         for (int i = 0; i < LobbySettings.GetNumberOfPlayers(); i++)
         {
             PlayerInput currentPlayerInput = GameObject.FindGameObjectWithTag("" + tagName + (i + 1).ToString()).GetComponent<PlayerInput>();
             Debug.Log("Assigning object with tag '" + tagName + (i + 1) + "' the ID of " + (i + 1));
             currentPlayerInput.AssignPlayerID(i + 1);
             currentPlayerInput.SetRaycastPosition(raycastPositions[i]);
+        }*/
+
+        
+        for (int i = 0; i < LobbySettings.GetTeam_1PlayerCount(); i++)
+        {
+            PlayerInput currentPlayerInput = GameObject.FindGameObjectWithTag("" + tagName + (i + 1).ToString()).GetComponent<PlayerInput>();
+            Debug.Log("Assigning object with tag '" + tagName + (i + 1) + "' the ID of " + (i + 1));
+            currentPlayerInput.AssignPlayerID(i + 1);
+            currentPlayerInput.SetRaycastPosition(raycastPositions[i]);
+
         }
+
+        for (int i = LobbySettings.GetTeam_1PlayerCount(); i < LobbySettings.GetNumberOfPlayers(); i++)
+        {
+           PlayerInput currentPlayerInput = GameObject.FindGameObjectWithTag("" + tagName + (i + 2).ToString()).GetComponent<PlayerInput>();
+            Debug.Log("Assigning object with tag '" + tagName + (i + 2) + "' the ID of " + (i + 1));
+            currentPlayerInput.AssignPlayerID(i + 1);
+            currentPlayerInput.SetRaycastPosition(raycastPositions[i]);
+
+        }
+        
     }
 
     private void setCrosshairPosition(int pTeamID, Vector3 pPosition)
