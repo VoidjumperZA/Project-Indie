@@ -325,21 +325,38 @@ public class MatchInitialisation : MonoBehaviour
             currentPlayerInput.SetRaycastPosition(raycastPositions[i]);
         }*/
 
-        
+
+        //1v3
+        //         0                          1
         for (int i = 0; i < LobbySettings.GetTeam_1PlayerCount(); i++)
         {
+                                                                             // Player_      (  1  )
             PlayerInput currentPlayerInput = GameObject.FindGameObjectWithTag("" + tagName + (i + 1).ToString()).GetComponent<PlayerInput>();
+            //                                            Player_1                          1
             Debug.Log("Assigning object with tag '" + tagName + (i + 1) + "' the ID of " + (i + 1));
+            //                               (  1  )
             currentPlayerInput.AssignPlayerID(i + 1);
+            //                                                     0
             currentPlayerInput.SetRaycastPosition(raycastPositions[i]);
 
         }
 
-        for (int i = LobbySettings.GetTeam_1PlayerCount(); i < LobbySettings.GetNumberOfPlayers() - 1; i++)
+        int indexOffset = 0;
+        if(LobbySettings.GetTeam_1PlayerCount() == 2)
         {
-           PlayerInput currentPlayerInput = GameObject.FindGameObjectWithTag("" + tagName + (i + 2).ToString()).GetComponent<PlayerInput>();
-            Debug.Log("Assigning object with tag '" + tagName + (i + 2) + "' the ID of " + (i + 1));
+            indexOffset = 1;
+        }
+
+        //                         2                                           4
+        for (int i = LobbySettings.GetTeam_1PlayerCount(); i < LobbySettings.GetNumberOfPlayers(); i++)
+        {
+            //                                                                     Player_   (  3  )
+            PlayerInput currentPlayerInput = GameObject.FindGameObjectWithTag("" + tagName + (i + 2 - indexOffset).ToString()).GetComponent<PlayerInput>();
+            //                                                  (  3  )                       2
+            Debug.Log("Assigning object with tag '" + tagName + (i + 2 - indexOffset) + "' the ID of " + (i + 1));
+            //                                  2 
             currentPlayerInput.AssignPlayerID(i + 1);
+            //                                                     1
             currentPlayerInput.SetRaycastPosition(raycastPositions[i]);
 
         }
