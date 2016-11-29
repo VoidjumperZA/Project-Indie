@@ -130,7 +130,7 @@ public class PlayerActions : MonoBehaviour
         gameObject.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, -GameObject.Find("Manager").GetComponent<PlayerProperties>().GetAddedGravity(), 0) * Time.deltaTime);
     }
 
-    public void GenericThrow(Vector3 pDirection, ThrowType pType)
+    public void Throw(Vector3 pDirection, ThrowType pType)
     {
         _ballScript.TogglePossession(false);
 
@@ -155,44 +155,6 @@ public class PlayerActions : MonoBehaviour
         }
         pDirection = Quaternion.AngleAxis(-rotation, gameObject.transform.right) * pDirection;
         _ballRigidbody.AddForce(pDirection * force);
-    }
-
-    /// <summary>
-    /// Release the ball in the direction aimed, putting the ball back into play.
-    /// </summary>
-    /// <param name="pDirection"></param>
-    public void Throw(Vector3 pDirection)
-    {
-        //going to make another function called FlashThrow in PlayerMovement
-        //get the ball's gameObject
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
-        ball.GetComponent<Ball>().TogglePossession(false);
-        pDirection = Quaternion.AngleAxis(-playerProperties.GetThrowRotationAddition(), gameObject.transform.right) * pDirection;
-
-        ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
-    }
-
-    //For now ForcedThrow uses FlashRotationAddition and FlashThrowingForce
-    public void ForcedThrow(Vector3 pDirection)
-    {
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
-        ball.GetComponent<Ball>().TogglePossession(false);
-
-        pDirection = Quaternion.AngleAxis(-playerProperties.GetForcedThrowRotationAddition(), gameObject.transform.right) * pDirection;
-
-        ballRigidbody.AddForce(pDirection * playerProperties.GetForcedThrowingForce());
-    }
-
-    //Need to change name and determine if this needs to be in PlayerActions
-    public void DeathThrow(Vector3 pDirection)
-    {
-        //get the ball's gameObject
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
-        ball.GetComponent<Ball>().TogglePossession(false);
-        ballRigidbody.AddForce(pDirection * playerProperties.GetThrowingForce());
     }
 
     public void SetCameraAndRaycastPos(Camera pCamera, Vector3 pRaycastPos)

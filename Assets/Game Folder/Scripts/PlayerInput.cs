@@ -137,13 +137,15 @@ public class PlayerInput : MonoBehaviour
                         _flashTimeStamp = Time.time + _playerProperties.GetFlashCooldownValue();
                         _manaPoints -= _playerProperties.GetFlashManaCost();
                         _playerMovement.Flash(InputManager.Movement(_playerID).normalized, _playerProperties.GetFlashDistance(), _spawnHeight, _playerProperties.GetFlashThrowingForce(), _playerProperties.GetFlashThrowRotationAddition(), _ballPosession, _playerProperties.GetFlashThrowBeforeFlash());
+                        _cameraScript.ActivateSmoothFollowOnFlash(_playerProperties.GetSmoothFollowIncrement(), _playerProperties.GetSmoothFollowClipDistance());
                         FMODUnity.RuntimeManager.PlayOneShot(flashSound, _cameraScript.gameObject.transform.position);
                     }
                     break;
                 case "Throw":
                     if (_ballPosession)
                     {
-                        _playerActions.Throw(_cameraScript.transform.forward);
+                        //_playerActions.Throw(_cameraScript.transform.forward);
+                        _playerActions.Throw(_cameraScript.transform.forward, PlayerActions.ThrowType.NORMAL);
                         FMODUnity.RuntimeManager.PlayOneShot(ballShootSound, _cameraScript.gameObject.transform.position);
                     }
                     break;
@@ -200,14 +202,14 @@ public class PlayerInput : MonoBehaviour
         {
             _forcedThrowTimeStamp = Time.time + _playerProperties.GetBallPosessionTime();
         }
-        //_playerActions.StartForcedThrowTimer();
     }
 
     private void forcedThrowHandler()
     {
         if(_ballPosession == true && _forcedThrowTimeStamp <= Time.time)
         {
-            _playerActions.ForcedThrow(transform.forward);
+            //_playerActions.ForcedThrow(transform.forward);
+            _playerActions.Throw(transform.forward, PlayerActions.ThrowType.FORCED);
         }
     }
 

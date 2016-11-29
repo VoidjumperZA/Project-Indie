@@ -32,6 +32,8 @@ public class PlayerCamera : MonoBehaviour
 
     private bool _smoothFollow = false;
     private float _smoothFollowSpeed = 0.0f;
+    private float _smoothFollowIncrement = 0.0f;
+    private float _smoothFollowClipDistance = 0.0f;
 
     private void Start()
     {
@@ -87,9 +89,10 @@ public class PlayerCamera : MonoBehaviour
         else
         {
             //maybe below Slerp, maybe more, idk have to wait untill Josh is back
-            _smoothFollowSpeed += 0.01f;
+            _smoothFollowSpeed += _smoothFollowIncrement;
             transform.position = Vector3.Slerp(transform.position, _finalCameraPosition, _smoothFollowSpeed);
-            if (transform.position == _finalCameraPosition)
+            print("Distance: " + (_finalCameraPosition - transform.position).magnitude);
+            if ((_finalCameraPosition -transform.position).magnitude <= _smoothFollowClipDistance)
             {
                 print("reached him!");
                 _smoothFollow = false;
@@ -117,8 +120,10 @@ public class PlayerCamera : MonoBehaviour
         Debug.DrawLine(transform.position, _finalCameraLookAt);
     }
 
-    public void ActivateSmoothFollowOnFlash()
+    public void ActivateSmoothFollowOnFlash(float pSmoothFollowIncrement, float pSmoothFollowClipDistance)
     {
+        _smoothFollowIncrement = pSmoothFollowIncrement;
+        _smoothFollowClipDistance = pSmoothFollowClipDistance;
         _smoothFollow = true;
         //Maybe make this higher
         _smoothFollowSpeed = 0.0f;

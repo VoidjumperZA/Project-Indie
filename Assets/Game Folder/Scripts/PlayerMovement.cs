@@ -15,8 +15,6 @@ public class PlayerMovement : MonoBehaviour
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         _ballRigidbody = ball.GetComponent<Rigidbody>();
         _ballScript = ball.GetComponent<Ball>();
-        //PLAYER HAS NO CAMERA ATTACHED YOU IDIOT
-        _playerCamera = GetComponent<PlayerCamera>();
     }
 
     /// <summary>
@@ -65,21 +63,18 @@ public class PlayerMovement : MonoBehaviour
             possibleNextColumn = secondHitInfo.collider.gameObject;
         }
 
-        if (_flashThrowBeforeFlash && pBallPosession)
+        if (pFlashThrowBeforeFlash == true && pBallPosession == true)
         {
             flashThrow(pFlashThrowingForce, pFlashThrowRotationAddition);
-            print("flash throw before flash");
         }
 
         //Do we flash on the same column? yes-> afterFlashFailPosition, no-> afterFlashSucceedPosition 
         transform.position = currentColumn == possibleNextColumn ? afterFlashFailPosition : afterFlashSucceedPosition;
 
-        _playerCamera.ActivateSmoothFollowOnFlash();
-
-        if (!_flashThrowBeforeFlash && pBallPosession)
+        if (pFlashThrowBeforeFlash == false && pBallPosession == true)
         {
+            _ballRigidbody.MovePosition(transform.position + _ballScript.GetBallOffset());
             flashThrow(pFlashThrowingForce, pFlashThrowRotationAddition);
-            print("flash throw after flash");
         }
     }
 
