@@ -357,7 +357,7 @@ public class MatchInitialisation : MonoBehaviour
             //                                  2 
             currentPlayerInput.AssignPlayerID(i + 1);
             //                                                     1
-            currentPlayerInput.SetRaycastPosition(raycastPositions[i]);
+            currentPlayerInput.SetRaycastPosition(raycastPositions[i + 1 - indexOffset]);
 
         }
         
