@@ -27,6 +27,11 @@ public class ActivePlayers : MonoBehaviour
         return activePlayerArray.Length;
     }
 
+    /// <summary>
+    /// If you're using PlayerID, use PlayerID - 1.
+    /// </summary>
+    /// <param name="pActiveObjectID"></param>
+    /// <returns></returns>
     public GameObject GetActivePlayerElement(int pActiveObjectID)
     {
         Debug.Log("Active Object ID is " + pActiveObjectID);

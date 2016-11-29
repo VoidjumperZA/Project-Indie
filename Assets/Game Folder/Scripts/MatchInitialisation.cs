@@ -139,10 +139,10 @@ public class MatchInitialisation : MonoBehaviour
             Debug.Log("Setting Camera " + cameraToPosition + " for 1v3 - " + cameraConfiguration);
         }
         
-        // 2v2  -  Bottom Right
+        // 2v2  -  Top Right
         if (LobbySettings.GetTeam_1PlayerCount() == 2 && LobbySettings.GetTeam_2PlayerCount() == 2)
         {
-            cameraConfiguration = "Bottom Right";
+            cameraConfiguration = "Top Right";
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
@@ -312,7 +312,6 @@ public class MatchInitialisation : MonoBehaviour
             Debug.Log("Assigning ID " + (i + 1) + " to Team " + teamID + ".");
         }
     }
-
     
     private void assignPlayerIDsAndRaycasts()
     {
@@ -336,7 +335,7 @@ public class MatchInitialisation : MonoBehaviour
 
         }
 
-        for (int i = LobbySettings.GetTeam_1PlayerCount(); i < LobbySettings.GetNumberOfPlayers(); i++)
+        for (int i = LobbySettings.GetTeam_1PlayerCount(); i < LobbySettings.GetNumberOfPlayers() - 1; i++)
         {
            PlayerInput currentPlayerInput = GameObject.FindGameObjectWithTag("" + tagName + (i + 2).ToString()).GetComponent<PlayerInput>();
             Debug.Log("Assigning object with tag '" + tagName + (i + 2) + "' the ID of " + (i + 1));
