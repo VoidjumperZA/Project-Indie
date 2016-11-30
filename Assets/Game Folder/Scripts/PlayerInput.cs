@@ -43,7 +43,7 @@ public class PlayerInput : MonoBehaviour
     private Vector3 _raycastPos;
 
     //Cooldown variables
-    private float _flashTimeStamp;
+    //private float _flashTimeStamp;
     private float _columnMovementTimeStamp;
     private float _forcedThrowTimeStamp;
 
@@ -55,7 +55,6 @@ public class PlayerInput : MonoBehaviour
         _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
         _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
         //Setting cooldown values
-        _flashTimeStamp = Time.time;
         _columnMovementTimeStamp = Time.time;
         _forcedThrowTimeStamp = Time.time;
         //Setting individual player values
@@ -133,9 +132,8 @@ public class PlayerInput : MonoBehaviour
                     }
                     break;
                 case "Flash":
-                    if (_flashTimeStamp <= Time.time && _manaPoints >= _playerProperties.GetFlashManaCost() && flashDirectionCheck() == true)
+                    if (_manaPoints >= _playerProperties.GetFlashManaCost() && flashDirectionCheck() == true)
                     {
-                        _flashTimeStamp = Time.time + _playerProperties.GetFlashCooldownValue();
                         _manaPoints -= _playerProperties.GetFlashManaCost();
                         _playerMovement.Flash(InputManager.Movement(_playerID).normalized, _playerProperties.GetFlashDistance(), _spawnHeight, _playerProperties.GetFlashThrowingForce(), _playerProperties.GetFlashThrowRotationAddition(), _ballPosession, _playerProperties.GetFlashThrowBeforeFlash());
                         _cameraScript.ActivateSmoothFollowOnFlash(_playerProperties.GetSmoothFollowIncrement(), _playerProperties.GetSmoothFollowClipDistance());
@@ -145,7 +143,6 @@ public class PlayerInput : MonoBehaviour
                 case "Throw":
                     if (_ballPosession)
                     {
-                        //_playerActions.Throw(_cameraScript.transform.forward);
                         _playerActions.Throw(_cameraScript.transform.forward, PlayerActions.ThrowType.NORMAL);
                         FMODUnity.RuntimeManager.PlayOneShot(ballShootSound, _cameraScript.gameObject.transform.position);
                     }
@@ -195,7 +192,6 @@ public class PlayerInput : MonoBehaviour
     {
         pAxisToLock = pState;
     }
-    //This needs more data regarding force throwing
     public void SetBallPosession(bool pBool)
     {
         _ballPosession = pBool;
