@@ -73,7 +73,8 @@ public class Ball : MonoBehaviour
             //if the goal does not belong to the same team as the player who scored
             if (goalScript.GetTeamOwnershipID() != MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()))
             {
-                MatchStatistics.AddPlayerGoal(currentOwnerID.GetPlayerID());
+                Debug.Log("Adding a normal goal. Goal owner is " + goalScript.GetTeamOwnershipID() + " and the scorer's team ID is " + MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()));
+                MatchStatistics.AddPlayerGoal(currentOwnerID.GetPlayerID(), goalScript.GetTeamOwnershipID());
             }
             else
             {
@@ -82,15 +83,16 @@ public class Ball : MonoBehaviour
                 if (lastOwnerOfOtherTeamID == null)
                 {
                     Debug.Log("Scorer is on team" + MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()) + " while the goal registering is for team " + goalScript.GetTeamOwnershipID());
-                    MatchStatistics.AddUnattributedGoal(goalScript.GetTeamOwnershipID());
+                    MatchStatistics.AddUnattributedGoal(goalScript.GetOpposingTeamID(), goalScript.GetTeamOwnershipID());
                 }
                 //give the opposing team a goal with the last opposing player to have touched it the credit
                 else
                 {
-                    MatchStatistics.AddPlayerGoal(lastOwnerOfOtherTeamID.GetPlayerID());
+                    Debug.Log("Adding an own goal. Goal owner is " + goalScript.GetTeamOwnershipID() + " and the scorer's team ID is " + MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()) + " however the last opposing player is Player_" + lastOwnerOfOtherTeamID.GetPlayerID());
+                    MatchStatistics.AddPlayerGoal(lastOwnerOfOtherTeamID.GetPlayerID(), goalScript.GetTeamOwnershipID());
                 }
             }
-            Debug.Log("GAME SCORE: " + MatchStatistics.GetMatchGoals().x + " | " + MatchStatistics.GetMatchGoals().y);
+            Debug.Log("GAME SCORE: " + MatchStatistics.GetLifeFireValuesLeft().x + " | " + MatchStatistics.GetLifeFireValuesLeft().y);
 
             //Reset all players after a goal has been scored
             for (int i = 0; i < GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayersArraySize(); i++)
