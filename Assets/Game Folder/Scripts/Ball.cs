@@ -70,6 +70,8 @@ public class Ball : MonoBehaviour
             Debug.Log("Yes hello, this is Goal?");
             FMODUnity.RuntimeManager.PlayOneShot(goalSound, goalScript.gameObject.transform.position);
 
+            ResetToCentre();
+
             //if the goal does not belong to the same team as the player who scored
             if (goalScript.GetTeamOwnershipID() != MatchStatistics.GetTeamIDofPlayer(currentOwnerID.GetPlayerID()))
             {
@@ -107,7 +109,7 @@ public class Ball : MonoBehaviour
                     Debug.Log("Caught trying to respawn a player that's inactive.");
                 }
             }
-            ResetToCentre();
+            
         }
 
         //A little fix for ResetToCentre()

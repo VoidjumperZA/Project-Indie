@@ -16,6 +16,7 @@ public class ScoreAndTimerHandler : MonoBehaviour
     private void Start()
     {
         _matchDuration = (int)MatchStatistics.GetMatchTimeInMinutes() * 60;
+        Debug.Log("ScoreAndTimerHandler got a _matchDuration of " + _matchDuration + " from MatchStatistics.");
     }
 
     private void Update()

@@ -81,6 +81,7 @@ public class MainMenuControl : MonoBehaviour
     public void SetMatchTimeInMinutes(int pDuration)
     {
         LobbySettings.SetMatchTimeInMinutes(pDuration);
+        Debug.Log("MainMenuControl giving a value of " + pDuration + " to LobbySettings.");
     }
 
     public void LoadScene(int pSceneToLoad)
