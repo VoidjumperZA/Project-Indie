@@ -52,6 +52,10 @@ public class PlayerProperties : MonoBehaviour
     [SerializeField]
     private float _columnMovementCooldownValue;
 
+    void Start()
+    {
+        ModifyCooldownValues();
+    }
 
     public float GetMovementSpeed()
     {
@@ -136,5 +140,16 @@ public class PlayerProperties : MonoBehaviour
     public float GetTimeAdditionOnPickUpBall()
     {
         return _timeAdditionOnPickUpBall;
+    }
+
+    public void ModifyCooldownValues()
+    {
+        //if 0.5, move these down  ||  
+        _columnMovementCooldownValue *= LobbySettings.GetModifierValues().x;
+        _flashManaCost *= LobbySettings.GetModifierValues().x;
+
+        //yet do the inverse to these
+        _manaValueOnPickUp *= LobbySettings.GetModifierValues().y;
+        _maxManaValue *= LobbySettings.GetModifierValues().y;
     }
 }

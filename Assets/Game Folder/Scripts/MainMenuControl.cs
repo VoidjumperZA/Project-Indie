@@ -78,6 +78,11 @@ public class MainMenuControl : MonoBehaviour
         LobbySettings.SetCooldownModifier(pModifier);
     }
 
+    public void SetCooldownModifierInverse(float pInverse)
+    {
+        LobbySettings.SetCooldownModifierInverse(pInverse);
+    }
+
     public void SetMatchTimeInMinutes(int pDuration)
     {
         LobbySettings.SetMatchTimeInMinutes(pDuration);

@@ -15,6 +15,7 @@ public static class LobbySettings
     private static int goalsToWin;
     private static int sceneToLoad;
     private static float modifierValue;
+    private static float inverseModifierValue;
     private static bool usePossessedHexes;
 
     public static void SetTeamPlayerCount(int pTeam, int pPlayerCount)
@@ -55,6 +56,11 @@ public static class LobbySettings
     public static void SetCooldownModifier(float pModifierValue)
     {
         modifierValue = pModifierValue;
+    }
+
+    public static void SetCooldownModifierInverse(float pInverse)
+    {
+        inverseModifierValue = pInverse;
     }
 
     public static int GetSceneToLoad()
@@ -109,9 +115,9 @@ public static class LobbySettings
         return goalsToWin;
     }
 
-    public static float GetModifierValue()
+    public static Vector3 GetModifierValues()
     {
-        return modifierValue;
+        return new Vector3(modifierValue, inverseModifierValue);
     }
 
     public static bool IsPossessedHexes()
