@@ -15,6 +15,7 @@ public static class LobbySettings
     private static int goalsToWin;
     private static int sceneToLoad;
     private static float modifierValue;
+    private static bool usePossessedHexes;
 
     public static void SetTeamPlayerCount(int pTeam, int pPlayerCount)
     {
@@ -72,6 +73,11 @@ public static class LobbySettings
         goalsToWin = pGoalsToWin;
     }
 
+    public static void UsePossessedHexes(bool pState)
+    {
+        usePossessedHexes = pState;
+    }
+
     public static void ResetNumberOfPlayers()
     {
         numberOfPlayers = 0;
@@ -106,6 +112,11 @@ public static class LobbySettings
     public static float GetModifierValue()
     {
         return modifierValue;
+    }
+
+    public static bool IsPossessedHexes()
+    {
+        return usePossessedHexes;
     }
 
     public static void ResetLobbySettingsData()
