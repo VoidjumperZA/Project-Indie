@@ -14,6 +14,9 @@ public class MainMenuControl : MonoBehaviour
     [SerializeField]
     private float pentagramRotationSpeed;
 
+    [SerializeField]
+    private GameObject[] visualButtons;
+
     private float pentagramRotationAngle;
     private float pentagramAngleToReach;
     private bool pentagramShouldRotate;
@@ -29,16 +32,27 @@ public class MainMenuControl : MonoBehaviour
     {
         if (pentagramShouldRotate == true)
         {
-            pentagram.transform.Rotate(0, 0, pentagramRotationSpeed);
-            pentagramRotationAngle += pentagramRotationSpeed;
-
-            if (pentagramRotationAngle >= pentagramAngleToReach)
-            {
-                pentagramRotationAngle = 0.0f;
-                pentagramShouldRotate = false;
-            }
+            animateWheel();
         }
     }
+
+    private void animateWheel()
+    {
+        pentagram.transform.Rotate(0, 0, pentagramRotationSpeed);
+        pentagramRotationAngle += pentagramRotationSpeed;
+
+        for (int i = 0; i < visualButtons.Length; i++)
+        {
+            visualButtons[i].transform.Rotate(0, 0, -pentagramRotationSpeed);
+        }
+
+        if (pentagramRotationAngle >= pentagramAngleToReach)
+        {
+            pentagramRotationAngle = 0.0f;
+            pentagramShouldRotate = false;
+        }    
+    }
+
 
     public void SetTeam_1PlayerCount(int pTeam1Count)
     {
