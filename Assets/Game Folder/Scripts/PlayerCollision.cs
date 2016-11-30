@@ -29,17 +29,7 @@ public class PlayerCollision : MonoBehaviour
     {
         if (pCol.gameObject.tag == "Column")
         {
-            //playerActions.ToggleAddedGravity(false);
             playerInput.SetInAir(false);
-        }
-    }
-
-    private void OnCollisionExit(Collision pCol)
-    {
-        if (pCol.gameObject.tag == "Column")
-        {
-            //playerActions.ToggleAddedGravity(true);
-            playerInput.SetInAir(true);
         }
     }
 

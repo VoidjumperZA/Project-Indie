@@ -43,7 +43,6 @@ public class PlayerInput : MonoBehaviour
     private Vector3 _raycastPos;
 
     //Cooldown variables
-    private float _jumpTimeStamp;
     private float _flashTimeStamp;
     private float _columnMovementTimeStamp;
     private float _forcedThrowTimeStamp;
@@ -56,7 +55,6 @@ public class PlayerInput : MonoBehaviour
         _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
         _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
         //Setting cooldown values
-        _jumpTimeStamp = Time.time;
         _flashTimeStamp = Time.time;
         _columnMovementTimeStamp = Time.time;
         _forcedThrowTimeStamp = Time.time;
@@ -128,9 +126,9 @@ public class PlayerInput : MonoBehaviour
             {
                 case "Jump":
                     //Add a bool for grounded
-                    if (_jumpTimeStamp <= Time.time)
+                    if (_inAir == false)
                     {
-                        _jumpTimeStamp = Time.time + _playerProperties.GetJumpCooldownValue();
+                        _inAir = true;
                         _playerMovement.Jump(_playerProperties.GetJumpForce());
                     }
                     break;
@@ -216,7 +214,6 @@ public class PlayerInput : MonoBehaviour
     {
         if(_ballPosession == true && _forcedThrowTimeStamp <= Time.time)
         {
-            //_playerActions.ForcedThrow(transform.forward);
             _playerActions.Throw(transform.forward, PlayerActions.ThrowType.FORCED);
         }
     }
