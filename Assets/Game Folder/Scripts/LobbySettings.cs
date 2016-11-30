@@ -45,6 +45,10 @@ public static class LobbySettings
             sceneToLoad = 2;
             Debug.Log("Moonbeam Arena has been set with a scene ID of " + sceneToLoad);
         }
+        else if(pArenaName == "DTest")
+        {
+            sceneToLoad = 3;
+        }
         else
         {
             Debug.Log("An incorrect arena name has been entered as an argument to the button.");
