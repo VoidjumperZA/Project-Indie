@@ -1,48 +1,15 @@
 fileFormatVersion: 2
-guid: 8eca9300e46f8844aa57b35a658c5123
-timeCreated: 1480515418
+guid: d9311f2ad8d718d4e972b992e8a9d490
+timeCreated: 1480518674
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: HexBroken1
-    100004: HexBroken2
-    100006: HexBroken3
-    100008: HexBrokenHalf
-    100010: HexGoal
-    100012: HexNormal
-    100014: HexNormalHalf
     400000: //RootNode
-    400002: HexBroken1
-    400004: HexBroken2
-    400006: HexBroken3
-    400008: HexBrokenHalf
-    400010: HexGoal
-    400012: HexNormal
-    400014: HexNormalHalf
-    2300000: HexBroken1
-    2300002: HexBroken2
-    2300004: HexBroken3
-    2300006: HexBrokenHalf
-    2300008: HexGoal
-    2300010: HexNormal
-    2300012: HexNormalHalf
-    3300000: HexBroken1
-    3300002: HexBroken2
-    3300004: HexBroken3
-    3300006: HexBrokenHalf
-    3300008: HexGoal
-    3300010: HexNormal
-    3300012: HexNormalHalf
-    4300000: HexBrokenHalf
-    4300002: HexNormalHalf
-    4300004: HexGoal
-    4300006: HexBroken3
-    4300008: HexBroken2
-    4300010: HexBroken1
-    4300012: HexNormal
-    9500000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Statue1
   materials:
     importMaterials: 1
     materialName: 0
@@ -101,7 +68,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

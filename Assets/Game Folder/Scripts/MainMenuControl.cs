@@ -84,8 +84,23 @@ public class MainMenuControl : MonoBehaviour
         Debug.Log("MainMenuControl giving a value of " + pDuration + " to LobbySettings.");
     }
 
-    public void LoadScene(int pSceneToLoad)
+    public void SetGoalsToWin(int pGoalsToWin)
+    {
+        LobbySettings.SetGoalsToWin(pGoalsToWin);
+    }
+
+    public void UsePossessedHexes(bool pState)
+    {
+        LobbySettings.UsePossessedHexes(pState);
+    }
+
+    public void LoadScene()
     {
         SceneManager.LoadScene(LobbySettings.GetSceneToLoad());
+    }
+
+    public void ReloadMainMenu()
+    {
+
     }
 }

@@ -33,6 +33,8 @@ public class MatchInitialisation : MonoBehaviour
         assignCameraRectsToDictionary();
         assignRaycastVecsToDictionary();
 
+        switchedPossessedHexesOn();
+
         setCameraDimensions();
 
         assignPlayersToTeams();
@@ -70,6 +72,11 @@ public class MatchInitialisation : MonoBehaviour
         raycastDictionary.Add("Bottom Left", new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f));
         raycastDictionary.Add("Top Right", new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f));
         raycastDictionary.Add("Bottom Right", new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f));
+    }
+
+    private void switchedPossessedHexesOn()
+    {
+        GameObject.Find("Manager").GetComponent<PossessedHexes>().enabled = LobbySettings.IsPossessedHexes();
     }
 
     private void setCameraDimensions()
