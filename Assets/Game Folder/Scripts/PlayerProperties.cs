@@ -46,8 +46,6 @@ public class PlayerProperties : MonoBehaviour
     private float _manaValueOnPickUp;
     [Header("Cooldown properties")]
     [SerializeField]
-    private float _jumpCooldownValue;
-    [SerializeField]
     private float _flashCooldownValue;
     [SerializeField]
     private float _columnMovementCooldownValue;
@@ -126,11 +124,6 @@ public class PlayerProperties : MonoBehaviour
     public float GetJumpForce()
     {
         return _jumpForce;
-    }
-
-    public float GetJumpCooldownValue()
-    {
-        return _jumpCooldownValue;
     }
 
     public float GetBallPosessionTime()
