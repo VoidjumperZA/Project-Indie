@@ -78,14 +78,34 @@ public class MainMenuControl : MonoBehaviour
         LobbySettings.SetCooldownModifier(pModifier);
     }
 
+    public void SetCooldownModifierInverse(float pInverse)
+    {
+        LobbySettings.SetCooldownModifierInverse(pInverse);
+    }
+
     public void SetMatchTimeInMinutes(int pDuration)
     {
         LobbySettings.SetMatchTimeInMinutes(pDuration);
         Debug.Log("MainMenuControl giving a value of " + pDuration + " to LobbySettings.");
     }
 
-    public void LoadScene(int pSceneToLoad)
+    public void SetGoalsToWin(int pGoalsToWin)
+    {
+        LobbySettings.SetGoalsToWin(pGoalsToWin);
+    }
+
+    public void UsePossessedHexes(bool pState)
+    {
+        LobbySettings.UsePossessedHexes(pState);
+    }
+
+    public void LoadScene()
     {
         SceneManager.LoadScene(LobbySettings.GetSceneToLoad());
+    }
+
+    public void ReloadMainMenu()
+    {
+
     }
 }
