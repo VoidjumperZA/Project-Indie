@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ActivePlayers : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] activePlayerArray;
+    private List<GameObject> playersInMatchArray = new List<GameObject>();
     // Use this for initialization
     void Start()
     {
@@ -36,5 +38,15 @@ public class ActivePlayers : MonoBehaviour
     {
         Debug.Log("Active Object ID is " + pActiveObjectID);
         return activePlayerArray[pActiveObjectID];
+    }
+
+    public void AddPlayerInMatch(GameObject pMatchPlayer)
+    {
+        playersInMatchArray.Add(pMatchPlayer);
+    }
+
+    public GameObject GetPlayerInMatch(int pPlayerID)
+    {
+        return playersInMatchArray[pPlayerID - 1];
     }
 }

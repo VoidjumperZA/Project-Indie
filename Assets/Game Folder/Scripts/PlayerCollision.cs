@@ -50,7 +50,7 @@ public class PlayerCollision : MonoBehaviour
 
                     GameObject ball = GameObject.FindGameObjectWithTag("Ball");
                     //This GetActivePlayerElement is not working as it should or something.
-                    GameObject columnUser = GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayerElement(columnProperties.GetOwnerID() - 1);
+                    GameObject columnUser = GameObject.Find("Manager").GetComponent<ActivePlayers>().GetPlayerInMatch(columnProperties.GetOwnerID());
 
                     Vector3 deltaFromBallToColumnUser = columnUser.transform.position - ball.transform.position;
 

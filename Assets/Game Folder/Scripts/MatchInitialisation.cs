@@ -344,6 +344,9 @@ public class MatchInitialisation : MonoBehaviour
             //                                                     0
             currentPlayerInput.SetRaycastPosition(raycastPositions[i]);
 
+            //add it to the activeplayer's list of players ACTUALLY in the match and enabled
+            GameObject.Find("Manager").GetComponent<ActivePlayers>().AddPlayerInMatch(currentPlayerInput.gameObject);
+
         }
 
         int indexOffset = 0;
@@ -364,6 +367,8 @@ public class MatchInitialisation : MonoBehaviour
             //                                                     1
             currentPlayerInput.SetRaycastPosition(raycastPositions[i + 1 - indexOffset]);
 
+            //add it to the activeplayer's list of players ACTUALLY in the match and enabled
+            GameObject.Find("Manager").GetComponent<ActivePlayers>().AddPlayerInMatch(currentPlayerInput.gameObject);
         }
         
     }
