@@ -13,6 +13,8 @@ public class PlayerProperties : MonoBehaviour
     private float _addedGravity;
     [SerializeField]
     private float _ballPosessionTime;
+    [SerializeField]
+    private float _timeAdditionOnPickUpBall;
     [Header("Throw properties")]
     [SerializeField]
     private float _throwingForce;
@@ -55,99 +57,84 @@ public class PlayerProperties : MonoBehaviour
     {
         return _MovementSpeed;
     }
-
     public float GetThrowingForce()
     {
         return _throwingForce;
     }
-
     public float GetThrowRotationAddition()
     {
         return _throwRotationAddition;
     }
-
     public bool GetFlashThrowBeforeFlash()
     {
         return _flashThrowBeforeFlash;
     }
-
     public float GetFlashThrowingForce()
     {
         return _flashThrowingForce;
     }
-
     public float GetFlashThrowRotationAddition()
     {
         return _flashThrowRotationAddition;
     }
-
     public float GetColumnMovementCooldownValue()
     {
         return _columnMovementCooldownValue;
     }
-
     public float GetFlashCooldownValue()
     {
         return _flashCooldownValue;
     }
-
     public float GetFlashDistance()
     {
         return _flashDistance;
     }
-
     public float GetAddedGravity()
     {
         return _addedGravity;
     }
-
     public float GetManaValueOnPickUp()
     {
         return _manaValueOnPickUp;
     }
-
     public float GetMaxManaValue()
     {
         return _maxManaValue;
     }
-
     public float GetStartingManaValue()
     {
         return _startingManaValue;
     }
-
     public float GetFlashManaCost()
     {
         return _flashManaCost;
     }
-
     public float GetJumpForce()
     {
         return _jumpForce;
     }
-
     public float GetBallPosessionTime()
     {
         return _ballPosessionTime;
     }
-
     public float GetForcedThrowingForce()
     {
         return _forcedThrowingForce;
     }
-
     public float GetForcedThrowRotationAddition()
     {
         return _forcedThrowRotationAddition;
     }
-
     public float GetSmoothFollowIncrement()
     {
         return _smoothFollowIncrement;
     }
-
     public float GetSmoothFollowClipDistance()
     {
         return _smoothFollowClipDistance;
+    }
+    public float GetTimeAdditionOnPickUpBall()
+    {
+        return _timeAdditionOnPickUpBall;
     }
 }
