@@ -64,6 +64,7 @@ public static class LobbySettings
     public static void SetMatchTimeInMinutes(int pMinutes)
     {
         matchTimeInMinutes = pMinutes;
+        Debug.Log("LobbySettings saving a value of " + pMinutes);
     }
 
     public static void SetGoalsToWin(int pGoalsToWin)
@@ -94,6 +95,7 @@ public static class LobbySettings
     public static int GetMatchTimeInMinutes()
     {
         return matchTimeInMinutes;
+        Debug.Log("LobbySettings returning a value of " + matchTimeInMinutes);
     }
 
     public static int GetGoalsToWin()
