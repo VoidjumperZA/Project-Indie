@@ -43,8 +43,6 @@ public class MatchInitialisation : MonoBehaviour
 
         assignPlayerIDsAndRaycasts();
         passCrosshairsToUIManager();
-
-
     }
 
     // Update is called once per frame
