@@ -22,11 +22,24 @@ public class Ball : MonoBehaviour
     public string goalSound = "event:/Goal";
     //VYTAUTAS' FMOD IMPLEMENTATION ENDS
 
+    private ParticleSystem _particleSystemGlow;
+    private ParticleSystem _particleSystemDust;
+    [SerializeField]
+    private Color _standardColour;
+    [SerializeField]
+    private Color _overheatColour;
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
         centrePosition = transform.position;
         inPossession = false;
+
+        _particleSystemGlow = GameObject.Find("glow").GetComponent<ParticleSystem>();
+        _particleSystemGlow.startColor = _standardColour;
+
+        _particleSystemDust = GameObject.Find("dust").GetComponent<ParticleSystem>();
+        _particleSystemDust.startColor = _standardColour;
     }
 
     private void Update()
@@ -109,9 +122,7 @@ public class Ball : MonoBehaviour
                     Debug.Log("Caught trying to respawn a player that's inactive.");
                 }
             }
-            
         }
-
         //A little fix for ResetToCentre()
         _rigidbody.freezeRotation = false;
     }
@@ -180,5 +191,11 @@ public class Ball : MonoBehaviour
     public Vector3 GetBallOffset()
     {
         return ballOffset;
+    }
+
+    public void SetColourState(float pState)
+    {
+        _particleSystemGlow.startColor = Color.Lerp(_standardColour, _overheatColour, pState);
+        _particleSystemDust.startColor = Color.Lerp(_standardColour, _overheatColour, pState);
     }
 }

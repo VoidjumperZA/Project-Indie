@@ -52,6 +52,16 @@ public static class MatchStatistics
         teamPossession.Add(pPlayerID, 0.0f);
     }
 
+    /// <summary>
+    /// Sets up PlayersSquished and PlayersDropped for the gamefield itself. The ID of the game field is set to 10.
+    /// </summary>
+    public static void SetUpPossessedHexesAsPseudoPlayer()
+    {
+        //game ID is listed as 10
+        playersSquished.Add(10, 0);
+        playersDropped.Add(10, 0);
+    }
+
     //adds a death to the tally for the spesified player
     /// <summary>
     /// Adds a death to the tally for the spesified player. K: Player | V: Deaths

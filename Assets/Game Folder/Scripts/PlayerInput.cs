@@ -16,6 +16,7 @@ public class PlayerInput : MonoBehaviour
     private PlayerActions _playerActions;
     private PlayerCamera _cameraScript;
     private PlayerProperties _playerProperties;
+    private Ball _ballscript;
 
     //Vytautas's' FMOD implementation
     public string flashSound = "event:/Flash";
@@ -43,9 +44,7 @@ public class PlayerInput : MonoBehaviour
     private Vector3 _raycastPos;
 
     //Cooldown variables
-    //private float _flashTimeStamp;
     private float _columnMovementTimeStamp;
-    //private float _forcedThrowTimeStamp;
     private float _holdingBallTime;
 
     private void Start()
@@ -55,6 +54,7 @@ public class PlayerInput : MonoBehaviour
         _playerActions = GetComponent<PlayerActions>();
         _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
         _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
+        _ballscript = GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>();
         //Setting cooldown values
         _columnMovementTimeStamp = Time.time;
         //_forcedThrowTimeStamp = Time.time;
@@ -221,6 +221,11 @@ public class PlayerInput : MonoBehaviour
         _holdingBallTime = Mathf.Clamp(_holdingBallTime, -_playerProperties.GetTimeAdditionOnPickUpBall(), _playerProperties.GetBallPosessionTime());
 
         print("_holdingBallTime: " + _holdingBallTime);
+
+        if(_ballPosession)
+        {
+            _ballscript.SetColourState(_holdingBallTime / _playerProperties.GetBallPosessionTime());
+        }
 
         if(_holdingBallTime == _playerProperties.GetBallPosessionTime())
         {

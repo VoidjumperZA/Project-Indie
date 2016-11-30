@@ -71,18 +71,6 @@ public class PlayerActions : MonoBehaviour
 
                 if (_columnProperties.GetColumnType() == 0)
                 {
-                    //if we have a pentagram already, and it's not the same one we're targeting, switch the old one off
-                    //Pentagram newSelectedPenta = _selectedColumn.GetComponentInChildren(typeof(Pentagram), true) as Pentagram;
-                    //if (selectionPentagram != null && selectionPentagram != newSelectedPenta)
-                    //{
-                    //    selectionPentagram.TogglePentagram(false);
-                    //}
-
-                    //selectionPentagram = newSelectedPenta;
-                    //if (selectionPentagram.IsPentagramActive() != true)
-                    //{
-                    //selectionPentagram.TogglePentagram(true, gameObject.transform);
-                    //}
                     selectionPentagram.TogglePentagram(true, gameObject.transform);
                     selectionPentagram.MovePentagram(_selectedColumn.transform);
                 }

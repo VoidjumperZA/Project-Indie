@@ -147,6 +147,7 @@ public class PlayerProperties : MonoBehaviour
         //if 0.5, move these down  ||  
         _columnMovementCooldownValue *= LobbySettings.GetModifierValues().x;
         _flashManaCost *= LobbySettings.GetModifierValues().x;
+        GameObject.Find("Manager").GetComponent<PossessedHexes>().ModifyCooldownValue(LobbySettings.GetModifierValues().x);
 
         //yet do the inverse to these
         _manaValueOnPickUp *= LobbySettings.GetModifierValues().y;
