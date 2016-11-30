@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -35,21 +36,52 @@ public class PlayerCamera : MonoBehaviour
     private float _smoothFollowIncrement = 0.0f;
     private float _smoothFollowClipDistance = 0.0f;
 
+    //[SerializeField]
+    //private Image _arrow;
+    //private RectTransform _rectTransform;
+    //private Camera _camera;
+    //private Transform _ballTransform;
+
     private void Start()
     {
         //DESIGNER Little trick so the Designers can work with integers
         _targetCameraHelper = _target.GetChild(0).GetComponent<Transform>();
+
+        //_rectTransform = _arrow.GetComponent<RectTransform>();
+        //_camera = GetComponent<Camera>();
+        //_ballTransform = GameObject.FindGameObjectWithTag("Ball").GetComponent<Transform>();
+
+        //updateArrow();
+
     }
 
-    void Update()
+    private void Update()
     {
-
+        //updateArrow();
     }
 
     private void LateUpdate()
     {
         followTarget();
     }
+
+    //private void updateArrow()
+    //{
+    //    Vector3 ballScreenPosition = _camera.WorldToScreenPoint(_ballTransform.position);
+    //    //print(ballScreenPosition);
+    //    //float angle = Vector2.Angle(new Vector2(1.0f, 0.0f), new Vector2(ballScreenPosition.x, ballScreenPosition.y));
+
+    //    //_rectTransform.position = new Vector3(ballScreenPosition.x, ballScreenPosition.y, 0.0f);
+
+    //    Vector2 ballPos = new Vector2(ballScreenPosition.x, ballScreenPosition.y);
+    //    Vector2 ballVector = ballPos - new Vector2(_rectTransform.position.x, _rectTransform.position.y);
+    //    float angle = Vector2.Angle(new Vector2(1.0f, 0.0f), ballVector);
+
+
+
+    //    _rectTransform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);//<--------- HIER
+
+    //}
 
     private void followTarget()
     {
@@ -92,7 +124,7 @@ public class PlayerCamera : MonoBehaviour
             _smoothFollowSpeed += _smoothFollowIncrement;
             transform.position = Vector3.Slerp(transform.position, _finalCameraPosition, _smoothFollowSpeed);
             //print("Distance: " + (_finalCameraPosition - transform.position).magnitude);
-            if ((_finalCameraPosition -transform.position).magnitude <= _smoothFollowClipDistance)
+            if ((_finalCameraPosition - transform.position).magnitude <= _smoothFollowClipDistance)
             {
                 //print("reached him!");
                 _smoothFollow = false;

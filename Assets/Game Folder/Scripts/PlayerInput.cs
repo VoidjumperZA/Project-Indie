@@ -114,6 +114,7 @@ public class PlayerInput : MonoBehaviour
 
         forcedThrowHandler();
         gravityHandler();
+        temp_ResetBall();
     }
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
@@ -159,14 +160,14 @@ public class PlayerInput : MonoBehaviour
                     executePause();
                     break;
                 case "RaiseColumn":
-                    if (_columnMovementTimeStamp <= Time.time)
+                    if (_columnMovementTimeStamp <= Time.time && _ballPosession == false)
                     {
                         _columnMovementTimeStamp = Time.time + _playerProperties.GetColumnMovementCooldownValue();
                         _playerActions.MoveColumn("Raise", _playerID);
                     }
                     break;
                 case "LowerColumn":
-                    if (_columnMovementTimeStamp <= Time.time)
+                    if (_columnMovementTimeStamp <= Time.time && _ballPosession == false)
                     {
                         _columnMovementTimeStamp = Time.time + _playerProperties.GetColumnMovementCooldownValue();
                         _playerActions.MoveColumn("Lower", _playerID);
@@ -263,5 +264,14 @@ public class PlayerInput : MonoBehaviour
     {
         _manaPoints = Mathf.Min(_manaPoints + _playerProperties.GetManaValueOnPickUp(), _playerProperties.GetMaxManaValue());
         print("_manaPoints: " + _manaPoints);
+    }
+
+    public void temp_ResetBall()
+    {
+        if(Input.GetKeyUp(KeyCode.R))
+        {
+            print("Resetting the ball");
+            GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>().ResetToCentre();
+        }
     }
 }

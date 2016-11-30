@@ -48,10 +48,6 @@ public class PlayerActions : MonoBehaviour
     private void Update()
     {
         RaycastingColumn();
-        if (applyGravity == true)
-        {
-            applyAddedGravity();
-        }
     }
 
     public void MoveColumn(string pRaiseOrLower, int pPlayerID)
@@ -116,18 +112,6 @@ public class PlayerActions : MonoBehaviour
 
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         ball.GetComponent<Ball>().TogglePossession(false);
-    }
-
-    //Player states should be in PlayerInput
-    public void ToggleAddedGravity(bool pState)
-    {
-        applyGravity = pState;
-    }
-
-    //Move this to PlayerMovment??
-    private void applyAddedGravity()
-    {
-        gameObject.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, -GameObject.Find("Manager").GetComponent<PlayerProperties>().GetAddedGravity(), 0) * Time.deltaTime);
     }
 
     public void Throw(Vector3 pDirection, ThrowType pType)
