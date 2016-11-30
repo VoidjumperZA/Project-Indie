@@ -30,6 +30,7 @@ public static class MatchStatistics
         lifeFireLeft.Add(2, LobbySettings.GetGoalsToWin());
 
         matchTimeInMinutes = LobbySettings.GetMatchTimeInMinutes();
+        Debug.Log("MatchStatistics matchTime set from LobbySettings to a value of " + matchTimeInMinutes);
     }
 
     //assigns a player to a team
