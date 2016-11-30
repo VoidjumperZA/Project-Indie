@@ -114,7 +114,7 @@ public class PlayerInput : MonoBehaviour
 
         forcedThrowHandler();
         gravityHandler();
-        temp_ResetBall();
+        //temp_ResetBall();
     }
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
@@ -265,7 +265,7 @@ public class PlayerInput : MonoBehaviour
         _manaPoints = Mathf.Min(_manaPoints + _playerProperties.GetManaValueOnPickUp(), _playerProperties.GetMaxManaValue());
         print("_manaPoints: " + _manaPoints);
     }
-
+    /*
     public void temp_ResetBall()
     {
         if(Input.GetKeyUp(KeyCode.R))
@@ -273,5 +273,5 @@ public class PlayerInput : MonoBehaviour
             print("Resetting the ball");
             GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>().ResetToCentre();
         }
-    }
+    }*/
 }

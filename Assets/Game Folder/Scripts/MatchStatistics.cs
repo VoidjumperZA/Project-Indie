@@ -68,7 +68,7 @@ public static class MatchStatistics
     /// </summary>
     /// <param name="pPlayerID"></param>
     /// <returns></returns>
-    public static void AddPlayerGoal(int pPlayerID)
+    public static void AddPlayerGoal(int pPlayerID, int pGoalScoredInOwnerID)
     {
         IncrementItemByOne(goalsScored, pPlayerID);
 
@@ -76,16 +76,17 @@ public static class MatchStatistics
         int playerTeam;
         teamInfo.TryGetValue(pPlayerID, out playerTeam);
         IncrementItemByOne(matchGoals, playerTeam);
-        ReduceItemByOne(lifeFireLeft, playerTeam);
+        ReduceItemByOne(lifeFireLeft, pGoalScoredInOwnerID);
     }
 
     /// <summary>
     /// Add a goal to a team with no player getting the attributation for the goal. 
     /// </summary>
     /// <param name="pTeamID"></param>
-    public static void AddUnattributedGoal(int pTeamID)
+    public static void AddUnattributedGoal(int pTeamID, int pEnemyTeamID)
     {
         IncrementItemByOne(matchGoals, pTeamID);
+        ReduceItemByOne(lifeFireLeft, pEnemyTeamID);
     }
 
     //adds a count to the tally of squished players for the spesified player
@@ -144,27 +145,52 @@ public static class MatchStatistics
 
     //returns the number of goals that team has
     /// <summary>
-    /// Returns the number of goals that team has. K: Team | V: No. Goals
+    /// Returns the number of times that team has thrown the ball into the enemy's LifeFire. K: Team | V: No. Goals
     /// </summary>
     /// <param name="pTeamID"></param>
     /// <returns></returns>
-    public static int GetGoalsForTeam(int pTeamID)
+    public static int GetTeamGoals(int pTeamID)
+    {
+        return ReturnDictionaryValue(matchGoals, pTeamID);
+    }
+
+    //returns the number of goals that team has
+    /// <summary>
+    /// Returns the number of times that team has thrown the ball into the enemy's LifeFire. K: Team | V: No. Goals
+    /// </summary>
+    /// <param name="pTeamID"></param>
+    /// <returns></returns>
+    public static int Get(int pTeamID)
     {
         return ReturnDictionaryValue(matchGoals, pTeamID);
     }
 
     //returns a vec2 of the goals of both teams
     /// <summary>
-    /// Returns a Vector2 with the x element being Team 1's goals and the y being Team 2's. 
+    /// Returns a Vector2 with the x element being the LifeFire left for Team 1 and the y that left for Team 2.
     /// </summary>
     /// <returns></returns>
-    public static Vector2 GetMatchGoals()
+    public static Vector2 GetLifeFireValuesLeft()
     {
         //this could be cleaned up instead of hardtyping values
-        Vector2 goals;
-        goals.x = ReturnDictionaryValue(matchGoals, 1);
-        goals.y = ReturnDictionaryValue(matchGoals, 2);
-        return goals;
+        Vector2 lifefireValues;
+        lifefireValues.x = ReturnDictionaryValue(lifeFireLeft, 1);
+        lifefireValues.y = ReturnDictionaryValue(lifeFireLeft, 2);
+        return lifefireValues;
+    }
+
+    //returns a vec2 of the goals of both teams
+    /// <summary>
+    /// Returns a Vector2 with the x element being the LifeFire taken off the total for Team 1 and the y that taken off Team 2.
+    /// </summary>
+    /// <returns></returns>
+    public static Vector2 GetLifeFireValuesRemoved()
+    {
+        //this could be cleaned up instead of hardtyping values
+        Vector2 lifefireValues;
+        lifefireValues.x = LobbySettings.GetGoalsToWin() - GetTeamGoals(1);
+        lifefireValues.y = LobbySettings.GetGoalsToWin() - GetTeamGoals(2);
+        return lifefireValues;
     }
 
     //returns the number of times that player has died
