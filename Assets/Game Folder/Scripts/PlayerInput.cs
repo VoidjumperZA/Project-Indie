@@ -217,7 +217,7 @@ public class PlayerInput : MonoBehaviour
 
         if(_ballPosession)
         {
-            _ballscript.SetColourState(_holdingBallTime / _playerProperties.GetBallPosessionTime());
+            //_ballscript.SetColourState(_holdingBallTime / _playerProperties.GetBallPosessionTime());
         }
 
         if(_holdingBallTime == _playerProperties.GetBallPosessionTime())
