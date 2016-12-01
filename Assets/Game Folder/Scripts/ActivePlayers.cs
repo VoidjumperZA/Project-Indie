@@ -49,4 +49,10 @@ public class ActivePlayers : MonoBehaviour
     {
         return playersInMatchArray[pPlayerID - 1];
     }
+
+    public int GetPlayersInMatchArraySize()
+    {
+        return playersInMatchArray.Count;
+    }
+
 }
