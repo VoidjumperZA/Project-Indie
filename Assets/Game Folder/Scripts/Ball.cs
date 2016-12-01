@@ -29,6 +29,9 @@ public class Ball : MonoBehaviour
     [SerializeField]
     private Color _overheatColour;
 
+    private PlayerProperties _playerProperties;
+    private float _coolingOffBallCounter;
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -40,11 +43,15 @@ public class Ball : MonoBehaviour
 
         _particleSystemDust = GameObject.Find("dust").GetComponent<ParticleSystem>();
         _particleSystemDust.startColor = _standardColour;
+
+        _coolingOffBallCounter = 0.0f;
+        _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
     }
 
     private void Update()
     {
         moveWithToPlayer();
+        CoolingOffBall();
     }
 
     private void OnCollisionEnter(Collision pCollision)
@@ -110,17 +117,10 @@ public class Ball : MonoBehaviour
             Debug.Log("GAME SCORE: " + MatchStatistics.GetLifeFireValuesLeft().x + " | " + MatchStatistics.GetLifeFireValuesLeft().y);
 
             //Reset all players after a goal has been scored
-            for (int i = 0; i < GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayersArraySize(); i++)
+            for (int i = 0; i < GameObject.Find("Manager").GetComponent<ActivePlayers>().GetPlayersInMatchArraySize(); i++)
             {
                 Debug.Log("i is " + i);
-                try
-                {
-                    GameObject.Find("Manager").GetComponent<ActivePlayers>().GetActivePlayerElement(i).GetComponent<PlayerActions>().Respawn();
-                }
-                catch
-                {
-                    Debug.Log("Caught trying to respawn a player that's inactive.");
-                }
+                GameObject.Find("Manager").GetComponent<ActivePlayers>().GetPlayerInMatch(i + 1).GetComponent<PlayerActions>().Respawn();
             }
         }
         //A little fix for ResetToCentre()
@@ -133,6 +133,11 @@ public class Ball : MonoBehaviour
         //This needs to be OnTriggerEnter
         if (pCol.gameObject.tag == "LowerBoundary")
         {
+            for (int i = 0; i < GameObject.Find("Manager").GetComponent<ActivePlayers>().GetPlayersInMatchArraySize(); i++)
+            {
+                Debug.Log("i is " + i);
+                GameObject.Find("Manager").GetComponent<ActivePlayers>().GetPlayerInMatch(i + 1).GetComponent<PlayerActions>().Respawn();
+            }
             ResetToCentre();
         }
     }
@@ -167,6 +172,7 @@ public class Ball : MonoBehaviour
             lastOwner = currentOwner;
             lastOwnerID = currentOwnerID;
             currentOwner = null;
+            _coolingOffBallCounter = 0.0f;
         }
     }
 
@@ -197,5 +203,16 @@ public class Ball : MonoBehaviour
     {
         _particleSystemGlow.startColor = Color.Lerp(_standardColour, _overheatColour, pState);
         _particleSystemDust.startColor = Color.Lerp(_standardColour, _overheatColour, pState);
+    }
+
+    //Think it's not in ratio yet, but yeah fine for now
+    public void CoolingOffBall()
+    {
+        if (inPossession == false)
+        {
+            _coolingOffBallCounter += Time.deltaTime;
+            _coolingOffBallCounter = Mathf.Min(_coolingOffBallCounter, _playerProperties.GetBallCoolOffTime());
+            SetColourState(1.0f - (_coolingOffBallCounter / _playerProperties.GetBallCoolOffTime()));
+        }
     }
 }

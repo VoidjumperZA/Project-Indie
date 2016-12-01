@@ -211,16 +211,9 @@ public class PlayerInput : MonoBehaviour
 
     private void forcedThrowHandler()
     {
-        //if(_ballPosession == true && _forcedThrowTimeStamp <= Time.time)
-        //{
-        //    _playerActions.Throw(transform.forward, PlayerActions.ThrowType.FORCED);
-        //}
-
         _holdingBallTime = _ballPosession == true ? _holdingBallTime + Time.deltaTime : _holdingBallTime - Time.deltaTime;
 
         _holdingBallTime = Mathf.Clamp(_holdingBallTime, -_playerProperties.GetTimeAdditionOnPickUpBall(), _playerProperties.GetBallPosessionTime());
-
-        print("_holdingBallTime: " + _holdingBallTime);
 
         if(_ballPosession)
         {

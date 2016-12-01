@@ -15,6 +15,8 @@ public class PlayerProperties : MonoBehaviour
     private float _ballPosessionTime;
     [SerializeField]
     private float _timeAdditionOnPickUpBall;
+    [SerializeField]
+    private float _ballCoolOffTime;
     [Header("Throw properties")]
     [SerializeField]
     private float _throwingForce;
@@ -48,11 +50,9 @@ public class PlayerProperties : MonoBehaviour
     private float _manaValueOnPickUp;
     [Header("Cooldown properties")]
     [SerializeField]
-    private float _flashCooldownValue;
-    [SerializeField]
     private float _columnMovementCooldownValue;
 
-    void Start()
+    private void Start()
     {
         ModifyCooldownValues();
     }
@@ -84,10 +84,6 @@ public class PlayerProperties : MonoBehaviour
     public float GetColumnMovementCooldownValue()
     {
         return _columnMovementCooldownValue;
-    }
-    public float GetFlashCooldownValue()
-    {
-        return _flashCooldownValue;
     }
     public float GetFlashDistance()
     {
@@ -140,6 +136,10 @@ public class PlayerProperties : MonoBehaviour
     public float GetTimeAdditionOnPickUpBall()
     {
         return _timeAdditionOnPickUpBall;
+    }
+    public float GetBallCoolOffTime()
+    {
+        return _ballCoolOffTime;
     }
 
     public void ModifyCooldownValues()
