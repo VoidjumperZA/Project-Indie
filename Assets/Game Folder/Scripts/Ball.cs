@@ -199,6 +199,11 @@ public class Ball : MonoBehaviour
         return ballOffset;
     }
 
+    public GameObject getCurrentOwner()
+    {
+        return currentOwner;
+    }
+
     public void SetColourState(float pState)
     {
         _particleSystemGlow.startColor = Color.Lerp(_standardColour, _overheatColour, pState);
