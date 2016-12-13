@@ -39,10 +39,10 @@ public class Ball : MonoBehaviour
         inPossession = false;
 
         _particleSystemGlow = GameObject.Find("glow").GetComponent<ParticleSystem>();
-        //_particleSystemGlow.startColor = _standardColour;
+        _particleSystemGlow.startColor = _standardColour;
 
         _particleSystemDust = GameObject.Find("dust").GetComponent<ParticleSystem>();
-        //_particleSystemDust.startColor = _standardColour;
+        _particleSystemDust.startColor = _standardColour;
 
         _coolingOffBallCounter = 0.0f;
         _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
@@ -51,7 +51,7 @@ public class Ball : MonoBehaviour
     private void Update()
     {
         moveWithToPlayer();
-        //CoolingOffBall();
+        CoolingOffBall();
     }
 
     private void OnCollisionEnter(Collision pCollision)
@@ -197,6 +197,11 @@ public class Ball : MonoBehaviour
     public Vector3 GetBallOffset()
     {
         return ballOffset;
+    }
+
+    public GameObject getCurrentOwner()
+    {
+        return currentOwner;
     }
 
     public void SetColourState(float pState)

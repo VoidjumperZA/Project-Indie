@@ -49,6 +49,10 @@ public static class LobbySettings
         {
             sceneToLoad = 3;
         }
+        else if(pArenaName == "JennTest")
+        {
+            sceneToLoad = 4;
+        }
         else
         {
             Debug.Log("An incorrect arena name has been entered as an argument to the button.");

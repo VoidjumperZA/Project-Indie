@@ -4,9 +4,6 @@ using System.Collections;
 
 public class PlayerInput : MonoBehaviour
 {
-    [SerializeField]
-    private bool _switchStatementOn;
-
     //Receiving object references through inspector
     [SerializeField]
     private Camera _playerCamera;
@@ -65,35 +62,6 @@ public class PlayerInput : MonoBehaviour
         _manaPoints = _playerProperties.GetStartingManaValue();
         _ballPosession = false;
         //Sending the right camera object and raycast position to _playerActions, so it doesn't need an instance of _playerInput
-
-        if (_switchStatementOn)
-        {
-            //Temporarily switch statement
-            switch (gameObject.tag)
-            {
-                case "Player_1":
-                    _playerID = 1;
-                    _temp_TeamID = 1;
-                    _raycastPos = new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f);
-                    break;
-                case "Player_2":
-                    _playerID = 2;
-                    _temp_TeamID = 1;
-                    _raycastPos = new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f);
-                    break;
-                case "Player_3":
-                    _playerID = 3;
-                    _temp_TeamID = 2;
-                    _raycastPos = new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f);
-                    break;
-                case "Player_4":
-                    _playerID = 4;
-                    _temp_TeamID = 2;
-                    _raycastPos = new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f);
-                    break;
-            }
-            _playerActions.SetCameraAndRaycastPos(_playerCamera, _raycastPos);
-        }
     }
 
     private void Update()
@@ -197,7 +165,7 @@ public class PlayerInput : MonoBehaviour
     public void SetBallPosession(bool pBool)
     {
         _ballPosession = pBool;
-        if(pBool == true)
+        if (pBool == true)
         {
             //_forcedThrowTimeStamp = Time.time + _playerProperties.GetBallPosessionTime();
             _holdingBallTime += _playerProperties.GetTimeAdditionOnPickUpBall();
@@ -215,12 +183,12 @@ public class PlayerInput : MonoBehaviour
 
         _holdingBallTime = Mathf.Clamp(_holdingBallTime, -_playerProperties.GetTimeAdditionOnPickUpBall(), _playerProperties.GetBallPosessionTime());
 
-        if(_ballPosession)
+        if (_ballPosession)
         {
-            //_ballscript.SetColourState(_holdingBallTime / _playerProperties.GetBallPosessionTime());
+            _ballscript.SetColourState(_holdingBallTime / _playerProperties.GetBallPosessionTime());
         }
 
-        if(_holdingBallTime == _playerProperties.GetBallPosessionTime())
+        if (_holdingBallTime == _playerProperties.GetBallPosessionTime())
         {
             _playerActions.Throw(transform.forward, PlayerActions.ThrowType.FORCED);
             print("_holdingBallTime Has reached its maximum value and Forced Throw has been activated");
@@ -229,7 +197,7 @@ public class PlayerInput : MonoBehaviour
 
     private void gravityHandler()
     {
-        if(_inAir == true)
+        if (_inAir == true)
         {
             _playerMovement.ApplyGravity(_playerProperties.GetAddedGravity());
         }
