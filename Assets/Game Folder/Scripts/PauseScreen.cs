@@ -23,11 +23,12 @@ public class PauseScreen : MonoBehaviour
     private float wheelRotationSpeed;
 
     private float pauseScreenOwner;
+    MatchInitialisation matchInit; 
 
     // Use this for initialization
     void Start()
     {
-
+        matchInit = GameObject.Find("Manager").GetComponent<MatchInitialisation>();
     }
 
     // Update is called once per frame
@@ -37,10 +38,13 @@ public class PauseScreen : MonoBehaviour
         {
             animateWheel();
             toggleHUD(false);
+           
+            matchInit.ToggleFullscreenCam(matchInit.GetGameCamera(0), true);
         }
         else
         {
             toggleHUD(true);
+            matchInit.ToggleFullscreenCam(matchInit.GetGameCamera(0), false);
         }
     }
 
@@ -78,7 +82,7 @@ public class PauseScreen : MonoBehaviour
     private void toggleHUD(bool pState)
     {
         HUD.SetActive(pState);
-        for (int i = 0; i < Crosshairs.Length - 1; i++)
+        for (int i = 0; i < Crosshairs.Length; i++)
         {
             Crosshairs[i].gameObject.SetActive(pState);
         }
