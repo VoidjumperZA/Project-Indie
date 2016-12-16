@@ -8,16 +8,11 @@ public class PlayerCollision : MonoBehaviour
     private PlayerMovement playerMovement;
     private ColumnProperties columnProperties;
 
-    private float _columnwidth;
-
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
         playerActions = GetComponent<PlayerActions>();
         playerMovement = GetComponent<PlayerMovement>();
-
-        _columnwidth = CalculateColumnWidth();
-        print(_columnwidth);
     }
 
     private void Update()
@@ -64,8 +59,12 @@ public class PlayerCollision : MonoBehaviour
 
         if (pCol.gameObject.tag == "Mana")
         {
-            playerInput.AddManaPoints();
-            columnProperties.hitManaObject();
+            if (detectColumnBelow() == true)
+            {
+                playerInput.AddManaPoints();
+                columnProperties.hitManaObject();
+                print("HIT THE MANA OBJECT");
+            }
         }
     }
 
@@ -76,33 +75,14 @@ public class PlayerCollision : MonoBehaviour
         Ray ray = new Ray(transform.position + (transform.up * 2.0f), -gameObject.transform.up);
 
         RaycastHit[] raycastHits = Physics.RaycastAll(ray);
-        print("amount of raycasthits: " + raycastHits.Length);
         foreach (RaycastHit hit in raycastHits)
         {
-            print("hit name: " + hit.collider.name);
             if (hit.collider.tag == "Column")
             {
-                print("HALELUJAH NIGGA");
                 columnProperties = hit.collider.gameObject.GetComponent<ColumnProperties>();
                 return true;
             }
         }
         return false;
-    }
-
-    private float CalculateColumnWidth()
-    {
-        RaycastHit raycastHit;
-        Ray ray = new Ray(gameObject.transform.position, -gameObject.transform.up);
-
-        if (Physics.Raycast(ray, out raycastHit))
-        {
-            if (raycastHit.collider.gameObject.tag == "Column")
-            {
-                GameObject column = raycastHit.collider.gameObject;
-                return (column.GetComponent<MeshRenderer>().bounds.extents.x) * 2.0f;
-            }
-        }
-        return 0.0f;
     }
 }

@@ -5,10 +5,10 @@ public class ColumnProperties : MonoBehaviour
 {
     [SerializeField]
     private bool _hasManaObject;
-    [SerializeField]
-    private float _manaObjectRespawnCooldownValue;
+
     GameObject _manaObjectPrefab;
     Rigidbody _rigidBody;
+    private float _manaObjectRespawnTime;
     private float _manaObjectRespawnTimeStamp;
     GameObject _newManaObject;
 
@@ -52,12 +52,13 @@ public class ColumnProperties : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody>();
         columnStatus = ColumnStatus.Free;
         _manaObjectPrefab = Resources.Load("ManaObject") as GameObject;
+        _manaObjectRespawnTime = GameObject.Find("Manager").GetComponent<PlayerProperties>().GetManaRespawnTime();
         _manaObjectRespawnTimeStamp = Time.time;
         if (_hasManaObject)
         {
             _newManaObject = Instantiate(_manaObjectPrefab);
             _newManaObject.transform.SetParent(transform);
-            _newManaObject.transform.position = new Vector3(transform.position.x, GetComponent<MeshRenderer>().bounds.extents.y * (2.0f - 0.25f), transform.position.z);
+            _newManaObject.transform.position = new Vector3(transform.position.x, GetComponent<MeshRenderer>().bounds.extents.y * 2.0f + 6, transform.position.z);
         }
     }
 
@@ -75,7 +76,7 @@ public class ColumnProperties : MonoBehaviour
     public void hitManaObject()
     {
         _newManaObject.SetActive(false);
-        _manaObjectRespawnTimeStamp = Time.time + _manaObjectRespawnCooldownValue;
+        _manaObjectRespawnTimeStamp = Time.time + _manaObjectRespawnTime;
     }
 
     private void Update()
