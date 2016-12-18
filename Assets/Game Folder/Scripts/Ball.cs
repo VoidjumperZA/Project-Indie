@@ -213,11 +213,19 @@ public class Ball : MonoBehaviour
     //Think it's not in ratio yet, but yeah fine for now
     public void CoolingOffBall()
     {
-        if (inPossession == false)
+        try
         {
-            _coolingOffBallCounter += Time.deltaTime;
-            _coolingOffBallCounter = Mathf.Min(_coolingOffBallCounter, _playerProperties.GetBallCoolOffTime());
-            SetColourState(1.0f - (_coolingOffBallCounter / _playerProperties.GetBallCoolOffTime()));
+            if (inPossession == false)
+            {
+                _coolingOffBallCounter += Time.deltaTime;
+                _coolingOffBallCounter = Mathf.Min(_coolingOffBallCounter, _playerProperties.GetBallCoolOffTime());
+                SetColourState(1.0f - (_coolingOffBallCounter / _playerProperties.GetBallCoolOffTime()));
+            }
         }
+        catch
+        {
+            Debug.Log("ball in the menu has no objects assigned.");
+        }
+       
     }
 }

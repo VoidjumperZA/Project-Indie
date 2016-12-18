@@ -66,10 +66,17 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        //Send input to the PlayerCamera script
-        _cameraScript.MoveCamera(InputManager.CameraHorizontal(_playerID), InputManager.CameraVertical(_playerID) * _cameraPolarity);
-        //Send input to the PlayerMovement script
-        _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
+        //limit movement and camera controls to when the pause screen isn't on
+        if (GameObject.Find("Manager").GetComponent<PauseScreen>().IsPauseScreenActive() == false)
+        {
+            //Send input to the PlayerCamera script
+            _cameraScript.MoveCamera(InputManager.CameraHorizontal(_playerID), InputManager.CameraVertical(_playerID) * _cameraPolarity);
+        
+            //Send input to the PlayerMovement script
+            _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
+        }
+
+
         //faceButtonCheck methods which basically acts as activate on button release
         faceButtonCheck(InputManager.JumpButton(_playerID), ref jumpAxisLock, "Jump");
         faceButtonCheck(InputManager.FlashButton(_playerID), ref flashAxisLock, "Flash");
@@ -85,7 +92,7 @@ public class PlayerInput : MonoBehaviour
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
     {
-        if (pButtonPressed > 0 && pAxisLock == false)
+        if (pButtonPressed > 0 && pAxisLock == false && GameObject.Find("Manager").GetComponent<PauseScreen>().IsPauseScreenActive() == false)
         {
             lockAxis(ref pAxisLock, true);
 
