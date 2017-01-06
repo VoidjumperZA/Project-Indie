@@ -99,7 +99,7 @@ public class MatchInitialisation : MonoBehaviour
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition - 1] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
-            setCrosshairPosition(team, raycastPositions[cameraToPosition]);
+            setCrosshairPosition(team, raycastPositions[cameraToPosition - 1]);
             Debug.Log("Setting Camera " + cameraToPosition + " for 1v1 | 1v2 - " + cameraConfiguration);
         }
         // 1v3 | 2v2  -  Top Left        
@@ -109,7 +109,7 @@ public class MatchInitialisation : MonoBehaviour
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition - 1] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
-            setCrosshairPosition(team, raycastPositions[cameraToPosition]);
+            setCrosshairPosition(team, raycastPositions[cameraToPosition - 1]);
             Debug.Log("Setting Camera " + cameraToPosition + " for 1v3 | 2v2 - " + cameraConfiguration);
         }
 
@@ -156,7 +156,7 @@ public class MatchInitialisation : MonoBehaviour
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition - 1] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
-            setCrosshairPosition(team, raycastPositions[cameraToPosition]);
+            setCrosshairPosition(team, raycastPositions[cameraToPosition - 1]);
             Debug.Log("Setting Camera " + cameraToPosition + " for 2v2 - " + cameraConfiguration);
         }
 
@@ -173,7 +173,7 @@ public class MatchInitialisation : MonoBehaviour
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition - 1] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
-            setCrosshairPosition(team, raycastPositions[cameraToPosition]);
+            setCrosshairPosition(team, raycastPositions[cameraToPosition - 1]);
             Debug.Log("Setting Camera " + cameraToPosition + " for 1v1 - " + cameraConfiguration);
         }
 
@@ -184,7 +184,7 @@ public class MatchInitialisation : MonoBehaviour
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition - 1] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
-            setCrosshairPosition(team, raycastPositions[cameraToPosition]);
+            setCrosshairPosition(team, raycastPositions[cameraToPosition - 1]);
             Debug.Log("Setting Camera " + cameraToPosition + " for 1v2 - " + cameraConfiguration);
         }
 
@@ -195,7 +195,7 @@ public class MatchInitialisation : MonoBehaviour
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition - 1] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
-            setCrosshairPosition(team, raycastPositions[cameraToPosition]);
+            setCrosshairPosition(team, raycastPositions[cameraToPosition - 1]);
             Debug.Log("Setting Camera " + cameraToPosition + " for 1v3 - " + cameraConfiguration);
         }
 
@@ -206,7 +206,7 @@ public class MatchInitialisation : MonoBehaviour
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition - 1] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
-            setCrosshairPosition(team, raycastPositions[cameraToPosition]);
+            setCrosshairPosition(team, raycastPositions[cameraToPosition - 1]);
             Debug.Log("Setting Camera " + cameraToPosition + " for 2v2 - " + cameraConfiguration);
         }
 
@@ -233,7 +233,7 @@ public class MatchInitialisation : MonoBehaviour
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition - 1] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
-            setCrosshairPosition(team, raycastPositions[cameraToPosition]);
+            setCrosshairPosition(team, raycastPositions[cameraToPosition - 1]);
             Debug.Log("Setting Camera " + cameraToPosition + " for 1v2 - " + cameraConfiguration);
         }
 
@@ -244,7 +244,7 @@ public class MatchInitialisation : MonoBehaviour
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition - 1] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
-            setCrosshairPosition(team, raycastPositions[cameraToPosition]);
+            setCrosshairPosition(team, raycastPositions[cameraToPosition - 1]);
             Debug.Log("Setting Camera " + cameraToPosition + " for 1v3 - " + cameraConfiguration);
         }
 
@@ -255,7 +255,7 @@ public class MatchInitialisation : MonoBehaviour
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition - 1] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
-            setCrosshairPosition(team, raycastPositions[cameraToPosition]);
+            setCrosshairPosition(team, raycastPositions[cameraToPosition - 1]);
             Debug.Log("Setting Camera " + cameraToPosition + " for 2v2 - " + cameraConfiguration);
         }
 
@@ -292,7 +292,7 @@ public class MatchInitialisation : MonoBehaviour
 
             gameCameras[cameraToPosition].rect = ReturnDictionaryRectValue(cameraDictionary, cameraConfiguration);
             raycastPositions[cameraToPosition - 1] = ReturnDictionaryVecValue(raycastDictionary, cameraConfiguration);
-            setCrosshairPosition(team, raycastPositions[cameraToPosition]);
+            setCrosshairPosition(team, raycastPositions[cameraToPosition - 1]);
             Debug.Log("Setting Camera " + cameraToPosition + " for 1v3 - " + cameraConfiguration);
         }
         /*
@@ -388,15 +388,17 @@ public class MatchInitialisation : MonoBehaviour
         if (pTeamID == 1)
         {
             pNewCrosshair = Instantiate(blueCrosshair);
-            Debug.Log("Instantiating a blue crosshair.");
+            Debug.Log("Instantiating a blue crosshair at position: " + pNewCrosshair.transform.position);
         }
         else
         {
             pNewCrosshair = Instantiate(redCrosshair);
-            Debug.Log("Instantiating a red crosshair.");
+            Debug.Log("Instantiating a red crosshair at position: " + pNewCrosshair.transform.position);
         }
         pNewCrosshair.transform.position = pPosition;
+        Debug.Log("Crosshair has been repositioned to: " + pNewCrosshair.transform.position);
         pNewCrosshair.transform.SetParent(GameObject.Find("Canvas").transform);
+        Debug.Log("Crosshair has been parented and now exists at: " + pNewCrosshair.transform.position);
         allCrosshairs.Add(pNewCrosshair);
         Debug.Log("allCrosshairs now has " + allCrosshairs.Count + " crosshairs.");
     }
