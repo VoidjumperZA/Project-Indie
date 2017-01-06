@@ -53,6 +53,10 @@ public class MainMenuControl : MonoBehaviour
         }    
     }
 
+    public void QuickTest()
+    {
+
+    }
 
     public void SetTeam_1PlayerCount(int pTeam1Count)
     {

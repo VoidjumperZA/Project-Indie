@@ -39,10 +39,10 @@ public class Ball : MonoBehaviour
         inPossession = false;
 
         _particleSystemGlow = GameObject.Find("glow").GetComponent<ParticleSystem>();
-        //_particleSystemGlow.startColor = _standardColour;
+        _particleSystemGlow.startColor = _standardColour;
 
         _particleSystemDust = GameObject.Find("dust").GetComponent<ParticleSystem>();
-        //_particleSystemDust.startColor = _standardColour;
+        _particleSystemDust.startColor = _standardColour;
 
         _coolingOffBallCounter = 0.0f;
         _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
@@ -51,7 +51,7 @@ public class Ball : MonoBehaviour
     private void Update()
     {
         moveWithToPlayer();
-        //CoolingOffBall();
+        CoolingOffBall();
     }
 
     private void OnCollisionEnter(Collision pCollision)
@@ -199,6 +199,11 @@ public class Ball : MonoBehaviour
         return ballOffset;
     }
 
+    public GameObject getCurrentOwner()
+    {
+        return currentOwner;
+    }
+
     public void SetColourState(float pState)
     {
         _particleSystemGlow.startColor = Color.Lerp(_standardColour, _overheatColour, pState);
@@ -208,11 +213,19 @@ public class Ball : MonoBehaviour
     //Think it's not in ratio yet, but yeah fine for now
     public void CoolingOffBall()
     {
-        if (inPossession == false)
+        try
         {
-            _coolingOffBallCounter += Time.deltaTime;
-            _coolingOffBallCounter = Mathf.Min(_coolingOffBallCounter, _playerProperties.GetBallCoolOffTime());
-            SetColourState(1.0f - (_coolingOffBallCounter / _playerProperties.GetBallCoolOffTime()));
+            if (inPossession == false)
+            {
+                _coolingOffBallCounter += Time.deltaTime;
+                _coolingOffBallCounter = Mathf.Min(_coolingOffBallCounter, _playerProperties.GetBallCoolOffTime());
+                SetColourState(1.0f - (_coolingOffBallCounter / _playerProperties.GetBallCoolOffTime()));
+            }
         }
+        catch
+        {
+            Debug.Log("ball in the menu has no objects assigned.");
+        }
+       
     }
 }

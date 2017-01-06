@@ -12,8 +12,8 @@ public class DeathZones : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        setStartPosOfBoundaries(upperBoundary, 2.3f);
-        setStartPosOfBoundaries(lowerBoundary, 1.3f);
+        setStartPosOfBoundaries(upperBoundary, 2.75f);
+        setStartPosOfBoundaries(lowerBoundary, 1.5f);
     }
 
     // Update is called once per frame
