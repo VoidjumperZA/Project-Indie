@@ -158,7 +158,7 @@ public class PauseScreen : MonoBehaviour
     {
         if (InputManager.PauseButton(pauseScreenOwner) > 0 && pauseAxisLock == false)
         {
-            Debug.Log("Unpaused.";)
+            Debug.Log("Unpaused.");
             pauseAxisLock = true;
             DisplayPauseScreen(false, 0);
         }
