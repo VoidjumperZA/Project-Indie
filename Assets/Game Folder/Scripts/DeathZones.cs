@@ -9,24 +9,30 @@ public class DeathZones : MonoBehaviour
     [SerializeField]
     private GameObject lowerBoundary;
 
-    // Use this for initialization
-    void Start()
+
+    private void Start()
     {
-        setStartPosOfBoundaries(upperBoundary, 2.75f);
-        setStartPosOfBoundaries(lowerBoundary, 1.5f);
+        ColumnControl control = GetComponent<ColumnControl>();
+
+        float columnBaseYValue = control.GetUnmovingColumn().transform.position.y;
+        float columnHeight = control.GetUnmovingColumn().GetComponent<MeshRenderer>().bounds.extents.y * 2.0f;
+        float distance = control.GetColumnDisplacement();
+
+
+        setStartPosOfBoundaries(upperBoundary, columnBaseYValue + columnHeight + distance);
+        setStartPosOfBoundaries(lowerBoundary, columnBaseYValue + columnHeight - distance);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
 
     }
 
-    private void setStartPosOfBoundaries(GameObject pZone, float pDistanceOffset)
+    private void setStartPosOfBoundaries(GameObject pZone, float pHeight)
     {
         ColumnControl columnControl = GetComponent<ColumnControl>();
         //pZone.transform.position = new Vector3(pZone.transform.position.x, pZone.transform.position.y, 0);
-        pZone.transform.position = new Vector3(pZone.transform.position.x, 0 + (columnControl.GetUnmovingColumn().GetComponent<MeshRenderer>().bounds.extents.y) * pDistanceOffset, pZone.transform.position.z);
+        pZone.transform.position = new Vector3(pZone.transform.position.x, pHeight , pZone.transform.position.z);
         
     }
 }

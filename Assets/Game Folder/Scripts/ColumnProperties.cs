@@ -134,7 +134,7 @@ public class ColumnProperties : MonoBehaviour
             Vector3 movement = transform.TransformDirection(0, _polarity * _columnResettingSpeed, 0);
             _rigidBody.MovePosition(transform.position + movement * Time.deltaTime);
 
-            _resettingMovementDelta += _columnResettingSpeed;
+            _resettingMovementDelta += (movement * Time.deltaTime).magnitude;
         }
         else
         {
@@ -167,7 +167,7 @@ public class ColumnProperties : MonoBehaviour
             Vector3 movement = transform.TransformDirection(0, pPolarity * _columnSpeed, 0);
             _rigidBody.MovePosition(transform.position + movement * Time.deltaTime);
 
-            _orignalMovementDelta += _columnSpeed;
+            _orignalMovementDelta += (movement * Time.deltaTime).magnitude;
         }
         else
         {
