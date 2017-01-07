@@ -7,17 +7,47 @@ public class SimpleRotate : MonoBehaviour
     private bool overrideAutomaticRotation;
 
     [SerializeField]
-    private float newRotationSpeedX;
+    private float customMaxRotationSpeedX;
 
     [SerializeField]
-    private float newRotationSpeedY;
+    private float customMaxRotationSpeedY;
 
     [SerializeField]
-    private float newRotationSpeedZ;
+    private float customMaxRotationSpeedZ;
+
+    [Header("Random Range")]
+
+    [SerializeField]
+    private bool randomiseSpeed;
+
+    [SerializeField]
+    private float customMinRotationSpeedX;
+
+    [SerializeField]
+    private float customMinRotationSpeedY;
+
+    [SerializeField]
+    private float customMinRotationSpeedZ;
+
+    private float internalRotSpeedX;
+    private float internalRotSpeedY;
+    private float internalRotSpeedZ;
+    
     // Use this for initialization
     void Start()
     {
-
+        if (randomiseSpeed == true)
+        {
+            internalRotSpeedX = Random.Range(customMaxRotationSpeedX, customMinRotationSpeedX);
+            internalRotSpeedY = Random.Range(customMaxRotationSpeedY, customMinRotationSpeedY);
+            internalRotSpeedZ = Random.Range(customMaxRotationSpeedZ, customMinRotationSpeedZ);
+        }
+        else
+        {
+            internalRotSpeedX = customMaxRotationSpeedX;
+            internalRotSpeedY = customMaxRotationSpeedY;
+            internalRotSpeedZ = customMaxRotationSpeedZ;
+        }
     }
 
     // Update is called once per frame
@@ -42,6 +72,7 @@ public class SimpleRotate : MonoBehaviour
     //this is primarly used to control the game camera's rotation
     private void rotateWithValue()
     {
-        transform.Rotate(newRotationSpeedX, newRotationSpeedY, newRotationSpeedZ);
+        
+        transform.Rotate(internalRotSpeedX, internalRotSpeedY, internalRotSpeedZ);
     }
 }

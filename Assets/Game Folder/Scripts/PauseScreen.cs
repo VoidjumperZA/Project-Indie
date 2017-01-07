@@ -60,7 +60,7 @@ public class PauseScreen : MonoBehaviour
             }
             toggleHUD(false);
            
-            dismissPauseScreen();
+            //dismissPauseScreen();
             matchInit.ToggleFullscreenCam(matchInit.GetGameCamera(0), true);
         }
         else
