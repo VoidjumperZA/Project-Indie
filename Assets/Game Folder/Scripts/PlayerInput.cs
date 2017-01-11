@@ -92,7 +92,7 @@ public class PlayerInput : MonoBehaviour
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
     {
-        if (pButtonPressed > 0 && pAxisLock == false && GameObject.Find("Manager").GetComponent<PauseScreen>().IsPauseScreenActive() == false)
+        if (pButtonPressed > 0 && pAxisLock == false)
         {
             lockAxis(ref pAxisLock, true);
 
@@ -161,7 +161,15 @@ public class PlayerInput : MonoBehaviour
     private void executePause()
     {
         PauseScreen pauseScreen = GameObject.Find("Manager").GetComponent<PauseScreen>();
-        pauseScreen.DisplayPauseScreen(!pauseScreen.IsPauseScreenActive(), _playerID);
+        if (pauseScreen.IsPauseScreenActive() == false)
+        {
+            pauseScreen.DisplayPauseScreen(true, _playerID);
+        }
+        else
+        {
+            pauseScreen.DisplayPauseScreen(false, 0);
+        }
+
     }
 
     private void lockAxis(ref bool pAxisToLock, bool pState)

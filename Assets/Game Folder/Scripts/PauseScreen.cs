@@ -20,10 +20,14 @@ public class PauseScreen : MonoBehaviour
     private Image[] visualButtons;
 
     [SerializeField]
+    private GameObject[] submenus;
+
+    [SerializeField]
     private float wheelRotationSpeed;
 
     private int pauseScreenOwner;
     private int numberOfOptions = 3;
+    private int selectedOption = 0;
 
     //Animation
     private float wheelRotationAngle;
@@ -46,11 +50,15 @@ public class PauseScreen : MonoBehaviour
 
         wheelShouldRotate = false;
         wheelAngleToReach = 360 / numberOfOptions;
+
+        selectedOption = 0;
+        submenus[selectedOption].SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Selected Option = " + selectedOption);
         if (IsPauseScreenActive() == true)
         {
             checkNavigationButtons();
@@ -91,7 +99,16 @@ public class PauseScreen : MonoBehaviour
                 wheelPolarity = 1;
             }
 
-                wheelShouldRotate = true;
+            if (InputManager.MovementVertical(pauseScreenOwner) < 0)
+            {
+                //do something
+            }
+            else if (InputManager.MovementVertical(pauseScreenOwner) > 0)
+            {
+                //do something
+            }
+
+            wheelShouldRotate = true;
           //  DisplayPauseScreen(false, 0);
         }
         if (InputManager.PauseButton(pauseScreenOwner) == 0)
@@ -103,6 +120,7 @@ public class PauseScreen : MonoBehaviour
     //move the pause wheel based on option selected
     private void animateWheel()
     {
+        submenus[selectedOption].SetActive(false);
         pauseWheel.transform.Rotate(0, 0, wheelRotationSpeed * wheelPolarity);
         wheelRotationAngle += (wheelRotationSpeed * wheelPolarity);
 
@@ -116,16 +134,37 @@ public class PauseScreen : MonoBehaviour
         {
             wheelRotationAngle = 0.0f;
             wheelShouldRotate = false;
+            selectedOption += wheelPolarity * 1;
+            if (selectedOption < 0 || selectedOption > numberOfOptions - 1)
+            {
+                selectedOption = numberOfOptions - 1;
+            }
+            if (selectedOption > numberOfOptions - 1)
+            {
+                selectedOption = 0;
+            }
+            submenus[selectedOption].SetActive(true);
         }
         else if (wheelRotationAngle <= -wheelAngleToReach)
         {
             wheelRotationAngle = 0.0f;
             wheelShouldRotate = false;
+            selectedOption += wheelPolarity * 1;
+            if (selectedOption < 0)
+            {
+                selectedOption = numberOfOptions - 1;
+            }
+            if (selectedOption > numberOfOptions - 1)
+            {
+                selectedOption = 0;
+            }
+            submenus[selectedOption].SetActive(true);
         }
     }
 
     public void DisplayPauseScreen(bool pState, int pPlayerID)
     {
+        selectedOption = 0;
         pauseScreen.SetActive(pState);
         pauseScreenOwner = pPlayerID;
     }
