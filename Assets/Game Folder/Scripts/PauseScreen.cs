@@ -188,7 +188,7 @@ public class PauseScreen : MonoBehaviour
     }
 
     //returns who started the pause screen
-    public float GetPauseScreenOwner()
+    public int GetPauseScreenOwner()
     {
         return pauseScreenOwner;
     }
