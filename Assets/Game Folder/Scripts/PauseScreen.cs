@@ -166,6 +166,15 @@ public class PauseScreen : MonoBehaviour
     {
         selectedOption = 0;
         pauseScreen.SetActive(pState);
+        if (pState == true)
+        {
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.visible = false;
+        }
+
         pauseScreenOwner = pPlayerID;
     }
 
