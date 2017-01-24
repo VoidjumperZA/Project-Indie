@@ -119,7 +119,6 @@ public class ColumnControl : MonoBehaviour
         return _selectionPentagramRotationSpeed;
     }
 
-
     private void playFMOD(GameObject pSelectedColumn, ColumnProperties pColumnProperties, int pDirectionParamValue)
     {
         pColumnProperties.hexSoundEv = FMODUnity.RuntimeManager.CreateInstance(pColumnProperties.hexSound);
