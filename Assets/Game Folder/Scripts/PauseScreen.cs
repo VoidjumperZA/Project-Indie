@@ -58,7 +58,7 @@ public class PauseScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Selected Option = " + selectedOption);
+        //Debug.Log("Selected Option = " + selectedOption);
         if (IsPauseScreenActive() == true)
         {
             checkNavigationButtons();
@@ -87,7 +87,7 @@ public class PauseScreen : MonoBehaviour
     {
         if (InputManager.MovementHorizontal(pauseScreenOwner) != 0 && navAxisLock == false)
         {
-            Debug.Log("Getting nav controls");
+            //Debug.Log("Getting nav controls");
             navAxisLock = true;
 
             if (InputManager.MovementHorizontal(pauseScreenOwner) < 0)

@@ -123,10 +123,6 @@ public class PlayerInput : MonoBehaviour
                         FMODUnity.RuntimeManager.PlayOneShot(ballShootSound, _cameraScript.gameObject.transform.position);
                     }
                     break;
-                case "Inverse":
-                    //This will be removed once we have the options screen done I think...
-                    executeInverse();
-                    break;
                 case "Pause":
                     executePause();
                     break;
@@ -153,10 +149,29 @@ public class PlayerInput : MonoBehaviour
     }
 
     //This will be removed once we have the options screen done I think...
-    private void executeInverse()
+    public void ExecuteInverse()
     {
         _cameraPolarity *= -1;
     }
+
+    public void ExecuteInverse(bool pState)
+    {
+        if (pState == true)
+        {
+            _cameraPolarity = -1;
+        }
+        else
+        {
+            _cameraPolarity = 1;
+        }
+    }
+
+    public int GetInverseState()
+    {
+        return _cameraPolarity;
+    }
+
+
     //Implemented by Josh, leave it for now
     private void executePause()
     {
