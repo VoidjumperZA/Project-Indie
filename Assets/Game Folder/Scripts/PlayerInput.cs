@@ -34,6 +34,9 @@ public class PlayerInput : MonoBehaviour
     private int _playerID;
     private int _temp_TeamID;
     private int _cameraPolarity;
+    private float _cameraSensitivity;
+    private float _sensitivityConstant;
+    private float _internalCameraSensitivity;
     private float _spawnHeight;
     private float _manaPoints;
     private bool _ballPosession;
@@ -58,6 +61,9 @@ public class PlayerInput : MonoBehaviour
         _holdingBallTime = -_playerProperties.GetTimeAdditionOnPickUpBall();
         //Setting individual player values
         _cameraPolarity = 1;
+        _cameraSensitivity = 5;
+        _internalCameraSensitivity = _cameraSensitivity;
+        _sensitivityConstant = 0.25f;
         _spawnHeight = transform.position.y;
         _manaPoints = _playerProperties.GetStartingManaValue();
         _ballPosession = false;
@@ -70,7 +76,7 @@ public class PlayerInput : MonoBehaviour
         if (GameObject.Find("Manager").GetComponent<PauseScreen>().IsPauseScreenActive() == false)
         {
             //Send input to the PlayerCamera script
-            _cameraScript.MoveCamera(InputManager.CameraHorizontal(_playerID), InputManager.CameraVertical(_playerID) * _cameraPolarity);
+            _cameraScript.MoveCamera(InputManager.CameraHorizontal(_playerID) * _internalCameraSensitivity, (InputManager.CameraVertical(_playerID) * _internalCameraSensitivity) * _cameraPolarity);
         
             //Send input to the PlayerMovement script
             _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
@@ -170,6 +176,18 @@ public class PlayerInput : MonoBehaviour
     {
         return _cameraPolarity;
     }
+
+    public void SetPlayerSensitivity(int pIncrement)
+    {
+        _cameraSensitivity = pIncrement;
+        _internalCameraSensitivity = _sensitivityConstant * pIncrement;
+    }
+
+    public float GetPlayerSensitivity()
+    {
+        return _cameraSensitivity;
+    }
+
 
 
     //Implemented by Josh, leave it for now
