@@ -61,9 +61,9 @@ public class PlayerInput : MonoBehaviour
         _holdingBallTime = -_playerProperties.GetTimeAdditionOnPickUpBall();
         //Setting individual player values
         _cameraPolarity = 1;
-        _cameraSensitivity = 5;
-        _internalCameraSensitivity = _cameraSensitivity;
+        _cameraSensitivity = 5;    
         _sensitivityConstant = 0.25f;
+        _internalCameraSensitivity = _sensitivityConstant * _cameraSensitivity;
         _spawnHeight = transform.position.y;
         _manaPoints = _playerProperties.GetStartingManaValue();
         _ballPosession = false;
@@ -77,7 +77,7 @@ public class PlayerInput : MonoBehaviour
         {
             //Send input to the PlayerCamera script
             _cameraScript.MoveCamera(InputManager.CameraHorizontal(_playerID) * _internalCameraSensitivity, (InputManager.CameraVertical(_playerID) * _internalCameraSensitivity) * _cameraPolarity);
-        
+
             //Send input to the PlayerMovement script
             _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
         }
@@ -197,6 +197,8 @@ public class PlayerInput : MonoBehaviour
         if (pauseScreen.IsPauseScreenActive() == false)
         {
             pauseScreen.DisplayPauseScreen(true, _playerID);
+            pauseScreen.ResetLightUpCounter();
+            StartCoroutine(pauseScreen.LightUpHexagonalArray(true));
         }
         else
         {

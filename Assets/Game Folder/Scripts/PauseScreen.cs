@@ -17,6 +17,9 @@ public class PauseScreen : MonoBehaviour
     private Image pauseWheel;
 
     [SerializeField]
+    private GameObject hexagonalTilesParentObject;
+
+    [SerializeField]
     private Image[] visualButtons;
 
     [SerializeField]
@@ -24,6 +27,9 @@ public class PauseScreen : MonoBehaviour
 
     [SerializeField]
     private float wheelRotationSpeed;
+
+    private GameObject[] hexagonalTiles;
+    private int tileLightUpCounter;
 
     private int pauseScreenOwner;
     private int numberOfOptions = 3;
@@ -41,11 +47,14 @@ public class PauseScreen : MonoBehaviour
     private bool navAxisLock;
     private bool acceptAxisLock;
 
-    MatchInitialisation matchInit; 
+    MatchInitialisation matchInit;
 
     // Use this for initialization
     void Start()
     {
+        tileLightUpCounter = 0;
+        hexagonalTiles = GameObject.FindGameObjectsWithTag("HexagonalPauseTile");
+        hideHexagonalArray();
         matchInit = GameObject.Find("Manager").GetComponent<MatchInitialisation>();
 
         wheelShouldRotate = false;
@@ -53,6 +62,8 @@ public class PauseScreen : MonoBehaviour
 
         selectedOption = 0;
         submenus[selectedOption].SetActive(true);
+
+        //StartCoroutine(lightUpHexagonalArray());
     }
 
     // Update is called once per frame
@@ -67,12 +78,14 @@ public class PauseScreen : MonoBehaviour
                 animateWheel();
             }
             toggleHUD(false);
-           
+
             //dismissPauseScreen();
             matchInit.ToggleFullscreenCam(matchInit.GetGameCamera(0), true);
         }
         else
         {
+            tileLightUpCounter = 9999;
+            hideHexagonalArray();
             toggleHUD(true);
             matchInit.ToggleFullscreenCam(matchInit.GetGameCamera(0), false);
         }
@@ -81,6 +94,30 @@ public class PauseScreen : MonoBehaviour
     public void SetCrosshairs(Image[] pCrosshairs)
     {
         Crosshairs = pCrosshairs;
+    }
+
+    public void ResetLightUpCounter()
+    {
+      tileLightUpCounter = 0;
+    }
+
+    public IEnumerator LightUpHexagonalArray(bool pState)
+    {
+        while(tileLightUpCounter < (int)(hexagonalTiles.Length * 0.66f))
+        {
+            hexagonalTiles[Random.Range(0, hexagonalTiles.Length)].GetComponent<Image>().enabled = pState;
+            tileLightUpCounter++;
+            yield return new WaitForSeconds(0.04f);
+        }
+
+    }
+
+    private void hideHexagonalArray()
+    {
+      for (int i = 0; i < hexagonalTiles.Length; i++)
+      {
+          hexagonalTiles[i].GetComponent<Image>().enabled = false;
+      }
     }
 
     private void checkNavigationButtons()
@@ -134,7 +171,7 @@ public class PauseScreen : MonoBehaviour
         {
             wheelRotationAngle = 0.0f;
             wheelShouldRotate = false;
-            selectedOption += wheelPolarity * 1;
+            selectedOption -= wheelPolarity * 1;
             if (selectedOption < 0 || selectedOption > numberOfOptions - 1)
             {
                 selectedOption = numberOfOptions - 1;

@@ -6,17 +6,30 @@ public class VoteToExitSubmenu : MonoBehaviour
 {
     [SerializeField]
     private Image[] votersProfiles;
+
+    private ActivePlayers activePlayers;
+    private Vector3 originalPositionStack;
     private int totalVotes;
     private int currentVotes;
 
     private bool voteAxisLock;
 
+    private int pauseScreenOwner;
+
     // Use this for initialization
     void Start()
     {
+        activePlayers = GameObject.Find("Manager").GetComponent<ActivePlayers>();
+
+        for (int i = 0; i < votersProfiles.Length; i++)
+        {
+            votersProfiles[i].GetComponent<Image>().enabled = false;
+        }
+        originalPositionStack = votersProfiles[0].transform.position;
         currentVotes = 0;
-        totalVotes = 4;
+        totalVotes = activePlayers.GetPlayersInMatchArraySize();
         voteAxisLock = false;
+
     }
 
     // Update is called once per frame
@@ -27,18 +40,31 @@ public class VoteToExitSubmenu : MonoBehaviour
 
     private void checkVotes()
     {
-        /*for (int i = 0; i < length; i++)
+        for (int i = 0; i < totalVotes; i++)
         {
+          if (InputManager.AcceptButton(i) > 0 && voteAxisLock == false)
+          {
+              voteAxisLock = true;
+                votersProfiles[i].GetComponent<Image>().enabled = !votersProfiles[i].GetComponent<Image>().enabled;
 
-        }*/
-        if (InputManager.MovementVertical(pauseScreenOwner) > 0 && voteAxisLock == false)
-        {
-            voteAxisLock = true;
-
-        }
-        else if (InputManager.MovementVertical(pauseScreenOwner) == 0)
-        {
-            voteAxisLock = false;
+                if (votersProfiles[i].GetComponent<Image>().enabled == true)
+                {
+                    currentVotes++;
+                    Vector3 newPosition = votersProfiles[i].transform.position;
+                    newPosition.x = (votersProfiles[i].rectTransform.rect.width + (votersProfiles[i].rectTransform.rect.width * (1 / votersProfiles[i].rectTransform.rect.width))) * currentVotes;
+                    votersProfiles[i].transform.position = newPosition;
+                }
+                else
+                {
+                    currentVotes--;
+                    votersProfiles[i].transform.position = originalPositionStack;
+                }
+                
+          }
+          else if (InputManager.AcceptButton(i) == 0)
+          {
+              voteAxisLock = false;
+          }
         }
     }
 }
