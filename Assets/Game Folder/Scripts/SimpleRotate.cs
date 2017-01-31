@@ -51,7 +51,7 @@ public class SimpleRotate : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (overrideAutomaticRotation == false)
         {
