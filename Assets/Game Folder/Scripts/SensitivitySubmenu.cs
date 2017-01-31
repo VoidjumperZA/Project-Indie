@@ -31,7 +31,9 @@ public class SensitivitySubmenu : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        pauseScreenOwner = pauseScreen.GetPauseScreenOwner();
         verticalControls();
         animateText();
     }

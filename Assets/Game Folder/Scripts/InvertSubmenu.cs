@@ -41,6 +41,7 @@ public class InvertSubmenu : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        pauseScreenOwner = pauseScreen.GetPauseScreenOwner();
         verticalControls();
         acceptControls();
         animateButtons();

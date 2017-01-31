@@ -197,19 +197,19 @@ public class PlayerInput : MonoBehaviour
     private void executePause()
     {
         PauseScreen pauseScreen = GameObject.Find("Manager").GetComponent<PauseScreen>();
-        if (pauseScreen.IsPauseScreenActive() == false)
-        {
-            pauseScreen.DisplayPauseScreen(true, _playerID);
-            pauseScreen.DisplayPauseScreenOwner();
-            pauseScreen.ResetLightUpCounter();
-            StartCoroutine(pauseScreen.LightUpHexagonalArray(true));
-        }
-        else
-        {
-            pauseScreen.HidePauseScreenOwner();
-            pauseScreen.DisableActiveSubmenu();
-            pauseScreen.DisplayPauseScreen(false, 0);
-        }
+            if (pauseScreen.IsPauseScreenActive() == false)
+            {
+                pauseScreen.DisplayPauseScreen(true, _playerID);
+                pauseScreen.DisplayPauseScreenOwner();
+                pauseScreen.ResetLightUpCounter();
+                StartCoroutine(pauseScreen.LightUpHexagonalArray(true));
+            }
+            else if (pauseScreen.IsPauseScreenActive() == true && _playerID == pauseScreen.GetPauseScreenOwner())
+            {
+                pauseScreen.HidePauseScreenOwner();
+                pauseScreen.DisableActiveSubmenu();
+                pauseScreen.DisplayPauseScreen(false, 0);
+            }       
     }
 
     private void lockAxis(ref bool pAxisToLock, bool pState)
