@@ -210,7 +210,6 @@ public class PlayerInput : MonoBehaviour
             pauseScreen.DisableActiveSubmenu();
             pauseScreen.DisplayPauseScreen(false, 0);
         }
-
     }
 
     private void lockAxis(ref bool pAxisToLock, bool pState)

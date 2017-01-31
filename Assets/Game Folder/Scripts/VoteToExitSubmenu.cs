@@ -13,7 +13,7 @@ public class VoteToExitSubmenu : MonoBehaviour
     private int totalVotes;
     private int currentVotes;
 
-    private bool voteAxisLock;
+    private bool[] voteAxisLock = new bool[4];
 
     private int pauseScreenOwner;
 
@@ -29,7 +29,11 @@ public class VoteToExitSubmenu : MonoBehaviour
         originalPositionStack = votersProfiles[0].transform.position;
         currentVotes = 0;
         totalVotes = activePlayers.GetPlayersInMatchArraySize();
-        voteAxisLock = false;
+        for (int i = 0; i < voteAxisLock.Length; i++)
+        {
+            voteAxisLock[i] = false;
+        }
+      
 
     }
 
@@ -44,9 +48,9 @@ public class VoteToExitSubmenu : MonoBehaviour
     {
         for (int i = 0; i < totalVotes; i++)
         {
-          if (InputManager.AcceptButton(i) > 0 && voteAxisLock == false)
+          if (InputManager.AcceptButton(i + 1) > 0 && voteAxisLock[i] == false)
           {
-              voteAxisLock = true;
+              voteAxisLock[i] = true;
                 //there are five players, IDs are 1-4, so get the number player so they portrait will have the right colour
                 int playerNumber = activePlayers.GetPlayerNumberFromID(i + 1) - 1;
                 votersProfiles[playerNumber].GetComponent<Image>().enabled = !votersProfiles[playerNumber].GetComponent<Image>().enabled;
@@ -55,7 +59,7 @@ public class VoteToExitSubmenu : MonoBehaviour
                 {
                     currentVotes++;
                     Vector3 newPosition = votersProfiles[playerNumber].transform.position;
-                    newPosition.x = (votersProfiles[playerNumber].rectTransform.rect.width + (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
+                    newPosition.x = votersProfiles[playerNumber].transform.position.x + (votersProfiles[playerNumber].rectTransform.rect.width + (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
                     votersProfiles[playerNumber].transform.position = newPosition;
                 }
                 else
@@ -65,9 +69,9 @@ public class VoteToExitSubmenu : MonoBehaviour
                 }
                 
           }
-          else if (InputManager.AcceptButton(i) == 0)
+          else if (InputManager.AcceptButton(i + 1) == 0)
           {
-              voteAxisLock = false;
+              voteAxisLock[i] = false;
           }
         }
     }
