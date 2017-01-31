@@ -3,18 +3,34 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField]
+    private float _distanceToGround;
+    [SerializeField]
+    private LayerMask _ground;
+
     private Rigidbody _rigidBody;
+    private Vector3 _newVelocity;
     private Rigidbody _ballRigidbody;
     private Ball _ballScript;
     private PlayerCamera _playerCamera;
     private bool _flashThrowBeforeFlash;
 
+    private float _characterWidth, _characterDepth;
+
     private void Start()
     {
+        _distanceToGround = 0.1f;
+        _ground = 1;
         _rigidBody = GetComponent<Rigidbody>();
+        _newVelocity = Vector3.zero;
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         _ballRigidbody = ball.GetComponent<Rigidbody>();
         _ballScript = ball.GetComponent<Ball>();
+
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+        _distanceToGround += renderer.bounds.extents.y;
+        _characterWidth = renderer.bounds.extents.x * 0.9f;
+        _characterDepth = renderer.bounds.extents.z * 0.9f;
     }
 
     /// <summary>
@@ -23,15 +39,24 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="pDirection"></param>
     public void Move(Vector3 pDirection, float pMovementSpeed)
     {
-        Vector3 movement = transform.TransformDirection(pDirection) * pMovementSpeed * Time.deltaTime;
-        _rigidBody.MovePosition(transform.position + movement);
+        Vector3 characterSpaceVelocity = transform.TransformDirection(pDirection) * pMovementSpeed;
+        _newVelocity.x = characterSpaceVelocity.x;
+        _newVelocity.z = characterSpaceVelocity.z;
+        //_rigidBody.MovePosition(transform.position + velocity);
     }
 
     public void Jump(float pJumpForce)
     {
-        Vector3 force = transform.up * pJumpForce;
-        _rigidBody.AddRelativeForce(force, ForceMode.Impulse);
+        //Vector3 force = transform.up * pJumpForce;
+        //_rigidBody.AddRelativeForce(force, ForceMode.Impulse);
+        _newVelocity.y = pJumpForce;
     }
+
+    public void ApplyVelocity()
+    {
+        //print(_newVelocity);
+        _rigidBody.velocity = _newVelocity;
+    }  
 
     //NOTES: Flashing works, looks kinda oke actually, not sure if we need the smoothcamera, need feedback on this.
     //Fmod needs to be implemented, for now focus on other stuff, fix this later.
@@ -100,7 +125,31 @@ public class PlayerMovement : MonoBehaviour
 
     public void ApplyGravity(float pAddedGravity)
     {
-        _rigidBody.AddRelativeForce(new Vector3(0.0f, -pAddedGravity, 0.0f) * Time.deltaTime);
+        //_rigidBody.AddRelativeForce(new Vector3(0.0f, -pAddedGravity, 0.0f) * Time.deltaTime);
+        _newVelocity.y -= pAddedGravity;
+    }
 
+    public void ResetGravity()
+    {
+        //print("RESET");
+        _newVelocity.y = 0.0f;
+    }
+
+    public bool Grounded()
+    {
+        Ray[] rays = new Ray[5];
+        rays[0] = new Ray(transform.position + transform.TransformVector(new Vector3(_characterWidth, 0, _characterDepth)), Vector3.down);
+        rays[1] = new Ray(transform.position + transform.TransformVector(new Vector3(_characterWidth, 0, -_characterDepth)), Vector3.down);
+        rays[2] = new Ray(transform.position + transform.TransformVector(new Vector3(-_characterWidth, 0, _characterDepth)), Vector3.down);
+        rays[3] = new Ray(transform.position + transform.TransformVector(new Vector3(-_characterWidth, 0, -_characterDepth)), Vector3.down);
+        rays[4] = new Ray(transform.position, Vector3.down);
+
+        for (int rayIndex = 0; rayIndex < rays.Length; rayIndex++)
+        {
+            Debug.DrawRay(rays[rayIndex].origin, rays[rayIndex].direction, Color.red);
+            if (Physics.Raycast(rays[rayIndex], _distanceToGround, _ground))
+                return true;
+        }
+        return false;
     }
 }

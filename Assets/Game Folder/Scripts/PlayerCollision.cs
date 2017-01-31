@@ -15,19 +15,6 @@ public class PlayerCollision : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
     }
 
-    private void Update()
-    {
-
-    }
-
-    private void OnCollisionEnter(Collision pCol)
-    {
-        if (pCol.gameObject.tag == "Column")
-        {
-            playerInput.SetInAir(false);
-        }
-    }
-
     private void OnTriggerEnter(Collider pCol)
     {
         if (pCol.gameObject.tag == "UpperBoundary" || pCol.gameObject.tag == "LowerBoundary")

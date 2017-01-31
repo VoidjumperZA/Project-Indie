@@ -40,7 +40,7 @@ public class PlayerInput : MonoBehaviour
     private float _spawnHeight;
     private float _manaPoints;
     private bool _ballPosession;
-    private bool _inAir;
+    private bool _grounded;
     private Vector3 _raycastPos;
 
     //Cooldown variables
@@ -77,14 +77,10 @@ public class PlayerInput : MonoBehaviour
         {
             //Send input to the PlayerCamera script
             _cameraScript.MoveCamera(InputManager.CameraHorizontal(_playerID) * _internalCameraSensitivity, (InputManager.CameraVertical(_playerID) * _internalCameraSensitivity) * _cameraPolarity);
-
-            //Send input to the PlayerMovement script
-            _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
         }
 
 
         //faceButtonCheck methods which basically acts as activate on button release
-        faceButtonCheck(InputManager.JumpButton(_playerID), ref jumpAxisLock, "Jump");
         faceButtonCheck(InputManager.FlashButton(_playerID), ref flashAxisLock, "Flash");
         faceButtonCheck(InputManager.ThrowButton(_playerID), ref throwAxisLock, "Throw");
         faceButtonCheck(InputManager.InvertButton(_playerID), ref invertAxisLock, "Inverse");
@@ -93,7 +89,15 @@ public class PlayerInput : MonoBehaviour
         faceButtonCheck(InputManager.LowerColumn(_playerID), ref lowerAxisLock, "LowerColumn");
 
         forcedThrowHandler();
+    }
+
+    private void FixedUpdate()
+    {
+        //Send input to the PlayerMovement script
+        _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
         gravityHandler();
+        faceButtonCheck(InputManager.JumpButton(_playerID), ref jumpAxisLock, "Jump");
+        _playerMovement.ApplyVelocity();
     }
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
@@ -107,9 +111,8 @@ public class PlayerInput : MonoBehaviour
             {
                 case "Jump":
                     //Add a bool for grounded
-                    if (_inAir == false)
+                    if (_grounded == true)
                     {
-                        _inAir = true;
                         _playerMovement.Jump(_playerProperties.GetJumpForce());
                     }
                     break;
@@ -224,9 +227,9 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    public void SetInAir(bool pBool)
+    public void SetGrounded(bool pBool)
     {
-        _inAir = pBool;
+        _grounded = pBool;
     }
 
     private void forcedThrowHandler()
@@ -249,9 +252,15 @@ public class PlayerInput : MonoBehaviour
 
     private void gravityHandler()
     {
-        if (_inAir == true)
+        _grounded = _playerMovement.Grounded();
+
+        if (_grounded == false)
         {
             _playerMovement.ApplyGravity(_playerProperties.GetAddedGravity());
+        }
+        else
+        {
+            _playerMovement.ResetGravity();
         }
     }
 
