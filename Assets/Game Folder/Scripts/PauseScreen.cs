@@ -26,6 +26,12 @@ public class PauseScreen : MonoBehaviour
     private GameObject[] submenus;
 
     [SerializeField]
+    private Image[] PlayerProfiles;
+
+    [SerializeField]
+    private Text playerTextName;
+
+    [SerializeField]
     private float wheelRotationSpeed;
 
     private GameObject[] hexagonalTiles;
@@ -48,21 +54,26 @@ public class PauseScreen : MonoBehaviour
     private bool acceptAxisLock;
 
     MatchInitialisation matchInit;
+    private ActivePlayers activePlayers;
 
     // Use this for initialization
     void Start()
     {
         tileLightUpCounter = 0;
         hexagonalTiles = GameObject.FindGameObjectsWithTag("HexagonalPauseTile");
+        activePlayers = GameObject.Find("Manager").GetComponent<ActivePlayers>();
         hideHexagonalArray();
         matchInit = GameObject.Find("Manager").GetComponent<MatchInitialisation>();
-
         wheelShouldRotate = false;
         wheelAngleToReach = 360 / numberOfOptions;
 
         selectedOption = 0;
         submenus[selectedOption].SetActive(true);
 
+        for (int i = 0; i < PlayerProfiles.Length; i++)
+        {
+            PlayerProfiles[i].GetComponent<Image>().enabled = false;
+        }
         //StartCoroutine(lightUpHexagonalArray());
     }
 
@@ -112,19 +123,30 @@ public class PauseScreen : MonoBehaviour
 
     }
 
+    public void DisplayPauseScreenOwner()
+    {
+        playerTextName.text = "Player " + pauseScreenOwner + "  -  ";
+        PlayerProfiles[activePlayers.GetPlayerNumberFromID(pauseScreenOwner) - 1].GetComponent<Image>().enabled = true;
+    }
+
+    public void  HidePauseScreenOwner()
+    {
+        PlayerProfiles[activePlayers.GetPlayerNumberFromID(pauseScreenOwner) - 1].GetComponent<Image>().enabled = false;
+    }
+
+    //disable all hexagons
     private void hideHexagonalArray()
     {
       for (int i = 0; i < hexagonalTiles.Length; i++)
       {
           hexagonalTiles[i].GetComponent<Image>().enabled = false;
-      }
+      }        
     }
 
     private void checkNavigationButtons()
     {
         if (InputManager.MovementHorizontal(pauseScreenOwner) != 0 && navAxisLock == false)
         {
-            //Debug.Log("Getting nav controls");
             navAxisLock = true;
 
             if (InputManager.MovementHorizontal(pauseScreenOwner) < 0)
@@ -136,17 +158,7 @@ public class PauseScreen : MonoBehaviour
                 wheelPolarity = 1;
             }
 
-            if (InputManager.MovementVertical(pauseScreenOwner) < 0)
-            {
-                //do something
-            }
-            else if (InputManager.MovementVertical(pauseScreenOwner) > 0)
-            {
-                //do something
-            }
-
             wheelShouldRotate = true;
-          //  DisplayPauseScreen(false, 0);
         }
         if (InputManager.PauseButton(pauseScreenOwner) == 0)
         {
@@ -154,25 +166,33 @@ public class PauseScreen : MonoBehaviour
         }
     }
 
+    public void DisableActiveSubmenu()
+    {
+        submenus[selectedOption].SetActive(false);
+    }
+
     //move the pause wheel based on option selected
     private void animateWheel()
     {
+        //toggle old option off and start rotating the wheel
         submenus[selectedOption].SetActive(false);
         pauseWheel.transform.Rotate(0, 0, wheelRotationSpeed * wheelPolarity);
         wheelRotationAngle += (wheelRotationSpeed * wheelPolarity);
 
+        //rotate all the buttons in the opposite direction to wheel rotation, to ensure they remain straight up
         for (int i = 0; i < visualButtons.Length; i++)
         {
             visualButtons[i].transform.Rotate(0, 0, (-wheelRotationSpeed * wheelPolarity));
             //rotate on the other axes based on controller input?
         }
 
+        //if we've rotated sufficiently
         if (wheelRotationAngle >= wheelAngleToReach)
         {
             wheelRotationAngle = 0.0f;
             wheelShouldRotate = false;
-            selectedOption -= wheelPolarity * 1;
-            if (selectedOption < 0 || selectedOption > numberOfOptions - 1)
+            selectedOption += (wheelPolarity * -1);
+            if (selectedOption < 0)
             {
                 selectedOption = numberOfOptions - 1;
             }
@@ -186,7 +206,7 @@ public class PauseScreen : MonoBehaviour
         {
             wheelRotationAngle = 0.0f;
             wheelShouldRotate = false;
-            selectedOption += wheelPolarity * 1;
+            selectedOption += (wheelPolarity * -1);
             if (selectedOption < 0)
             {
                 selectedOption = numberOfOptions - 1;
@@ -206,6 +226,7 @@ public class PauseScreen : MonoBehaviour
         if (pState == true)
         {
             Cursor.visible = true;
+            submenus[selectedOption].SetActive(true);
         }
         else
         {

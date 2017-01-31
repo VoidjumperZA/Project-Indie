@@ -190,18 +190,21 @@ public class PlayerInput : MonoBehaviour
 
 
 
-    //Implemented by Josh, leave it for now
+    //Implemented by Josh, leave it for now (you better)
     private void executePause()
     {
         PauseScreen pauseScreen = GameObject.Find("Manager").GetComponent<PauseScreen>();
         if (pauseScreen.IsPauseScreenActive() == false)
         {
             pauseScreen.DisplayPauseScreen(true, _playerID);
+            pauseScreen.DisplayPauseScreenOwner();
             pauseScreen.ResetLightUpCounter();
             StartCoroutine(pauseScreen.LightUpHexagonalArray(true));
         }
         else
         {
+            pauseScreen.HidePauseScreenOwner();
+            pauseScreen.DisableActiveSubmenu();
             pauseScreen.DisplayPauseScreen(false, 0);
         }
 

@@ -19,6 +19,7 @@ public class MatchInitialisation : MonoBehaviour
 
     private List<Image> allCrosshairs = new List<Image>();
 
+    private string[] locationStrings = { "Top Half", "Bottom Half", "Top Left", "Bottom Left", "Top Right", "Bottom Right", "Not Displaying" };
     private static Dictionary<string, Rect> cameraDictionary = new Dictionary<string, Rect>();
     private static Dictionary<string, Vector3> raycastDictionary = new Dictionary<string, Vector3>();
 
@@ -51,32 +52,37 @@ public class MatchInitialisation : MonoBehaviour
 
     }
 
+    //store a dictionary of camera positions, tied to a string describing their location
     private void assignCameraRectsToDictionary()
     {
-        cameraDictionary.Add("Top Half", new Rect(0, 0.5f, 1, 0.5f));
-        cameraDictionary.Add("Bottom Half", new Rect(0, 0, 1, 0.5f));
-        cameraDictionary.Add("Top Left", new Rect(0, 0.5f, 0.5f, 0.5f));
-        cameraDictionary.Add("Bottom Left", new Rect(0, 0, 0.5f, 0.5f));
-        cameraDictionary.Add("Top Right", new Rect(0.5f, 0.5f, 0.5f, 0.5f));
-        cameraDictionary.Add("Bottom Right", new Rect(0.5f, 0, 0.5f, 0.5f));
-        cameraDictionary.Add("Not Displaying", new Rect(0, 0, 0, 0));     
+        cameraDictionary.Add(locationStrings[0], new Rect(0, 0.5f, 1, 0.5f));
+        cameraDictionary.Add(locationStrings[1], new Rect(0, 0, 1, 0.5f));
+        cameraDictionary.Add(locationStrings[2], new Rect(0, 0.5f, 0.5f, 0.5f));
+        cameraDictionary.Add(locationStrings[3], new Rect(0, 0, 0.5f, 0.5f));
+        cameraDictionary.Add(locationStrings[4], new Rect(0.5f, 0.5f, 0.5f, 0.5f));
+        cameraDictionary.Add(locationStrings[5], new Rect(0.5f, 0, 0.5f, 0.5f));
+        cameraDictionary.Add(locationStrings[6], new Rect(0, 0, 0, 0));     
     }
 
+    //store a dictionary of our raycast positions, tied to a string describing thier location
     private void assignRaycastVecsToDictionary()
     {
-        raycastDictionary.Add("Top Half", new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f));
-        raycastDictionary.Add("Bottom Half", new Vector3(Screen.width * 0.5f, Screen.height * 0.25f, 0.0f));
-        raycastDictionary.Add("Top Left", new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f));
-        raycastDictionary.Add("Bottom Left", new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f));
-        raycastDictionary.Add("Top Right", new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f));
-        raycastDictionary.Add("Bottom Right", new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f));
+        raycastDictionary.Add(locationStrings[0], new Vector3(Screen.width * 0.5f, Screen.height * 0.75f, 0.0f));
+        raycastDictionary.Add(locationStrings[1], new Vector3(Screen.width * 0.5f, Screen.height * 0.25f, 0.0f));
+        raycastDictionary.Add(locationStrings[2], new Vector3(Screen.width * 0.25f, Screen.height * 0.75f, 0.0f));
+        raycastDictionary.Add(locationStrings[3], new Vector3(Screen.width * 0.25f, Screen.height * 0.25f, 0.0f));
+        raycastDictionary.Add(locationStrings[4], new Vector3(Screen.width * 0.75f, Screen.height * 0.75f, 0.0f));
+        raycastDictionary.Add(locationStrings[5], new Vector3(Screen.width * 0.75f, Screen.height * 0.25f, 0.0f));
     }
 
+    //simply enable the script attached to the manager which creates the PossessedHexes game mode: with randomly moving hex columns
     private void switchedPossessedHexesOn()
     {
         GameObject.Find("Manager").GetComponent<PossessedHexes>().enabled = LobbySettings.IsPossessedHexes();
     }
-
+    
+    //what we do, in a somewhat inelegant fashion possibly, is go through each of the five cameras in this scene (excluding camera 0: the overhead gamecam
+    //and find the camera rect. We set it up with the size and width and position we want depending on the number of players and what game type it is
     private void setCameraDimensions()
     {
         string cameraConfiguration = "";
@@ -310,6 +316,7 @@ public class MatchInitialisation : MonoBehaviour
         //gameCameras[cameraToPosition].
     }
 
+    //simply give the players a team ID
     private void assignPlayersToTeams()
     {
         for (int i = 0; i < LobbySettings.GetNumberOfPlayers(); i++)
@@ -330,17 +337,12 @@ public class MatchInitialisation : MonoBehaviour
     private void assignPlayerIDsAndRaycasts()
     {
         string tagName = "Player_";
-        Debug.Log("In AssignPlayerIDandRaycast.");       /*
-        for (int i = 0; i < LobbySettings.GetNumberOfPlayers(); i++)
-        {
-            PlayerInput currentPlayerInput = GameObject.FindGameObjectWithTag("" + tagName + (i + 1).ToString()).GetComponent<PlayerInput>();
-            Debug.Log("Assigning object with tag '" + tagName + (i + 1) + "' the ID of " + (i + 1));
-            currentPlayerInput.AssignPlayerID(i + 1);
-            currentPlayerInput.SetRaycastPosition(raycastPositions[i]);
-        }*/
+        Debug.Log("In AssignPlayerIDandRaycast.");     
 
+        //This is a little complex, what we're doing is trying to go through five possible player (Blue 1, Blue 2, Red 1, Red 2 and Red 3) based on the game type (1v1, 1v3, 2v2)
+        //and trying to set the players (a total of 4) with an ID of 1-4. To do this we have to loop through the teams, trying to figure out where to start and using some
+        //offsets for team two (red) to account for there being anywhere from 1 to 3 of them present
 
-        //1v3
         //         0                          1
         for (int i = 0; i < LobbySettings.GetTeam_1PlayerCount(); i++)
         {
@@ -354,10 +356,11 @@ public class MatchInitialisation : MonoBehaviour
             currentPlayerInput.SetRaycastPosition(raycastPositions[i]);
 
             //add it to the activeplayer's list of players ACTUALLY in the match and enabled
-            GameObject.Find("Manager").GetComponent<ActivePlayers>().AddPlayerInMatch(currentPlayerInput.gameObject);
+            GameObject.Find("Manager").GetComponent<ActivePlayers>().AddPlayerInMatch(currentPlayerInput.gameObject, i + 1, i + 1);
 
         }
 
+        //the offset accomodates for the team being anything from a 1v1 to a 2v2, to a 1v3
         int indexOffset = 0;
         if(LobbySettings.GetTeam_1PlayerCount() == 2)
         {
@@ -377,7 +380,7 @@ public class MatchInitialisation : MonoBehaviour
             currentPlayerInput.SetRaycastPosition(raycastPositions[i + 1 - indexOffset]);
 
             //add it to the activeplayer's list of players ACTUALLY in the match and enabled
-            GameObject.Find("Manager").GetComponent<ActivePlayers>().AddPlayerInMatch(currentPlayerInput.gameObject);
+            GameObject.Find("Manager").GetComponent<ActivePlayers>().AddPlayerInMatch(currentPlayerInput.gameObject, i + 1, (i + 2 - indexOffset));
         }
         
     }

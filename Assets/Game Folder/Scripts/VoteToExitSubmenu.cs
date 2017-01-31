@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class VoteToExitSubmenu : MonoBehaviour
 {
     [SerializeField]
@@ -35,29 +36,32 @@ public class VoteToExitSubmenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        checkVotes();
+        registerVotes();
+        checkVoteCount();
     }
 
-    private void checkVotes()
+    private void registerVotes()
     {
         for (int i = 0; i < totalVotes; i++)
         {
           if (InputManager.AcceptButton(i) > 0 && voteAxisLock == false)
           {
               voteAxisLock = true;
-                votersProfiles[i].GetComponent<Image>().enabled = !votersProfiles[i].GetComponent<Image>().enabled;
+                //there are five players, IDs are 1-4, so get the number player so they portrait will have the right colour
+                int playerNumber = activePlayers.GetPlayerNumberFromID(i + 1) - 1;
+                votersProfiles[playerNumber].GetComponent<Image>().enabled = !votersProfiles[playerNumber].GetComponent<Image>().enabled;
 
-                if (votersProfiles[i].GetComponent<Image>().enabled == true)
+                if (votersProfiles[playerNumber].GetComponent<Image>().enabled == true)
                 {
                     currentVotes++;
-                    Vector3 newPosition = votersProfiles[i].transform.position;
-                    newPosition.x = (votersProfiles[i].rectTransform.rect.width + (votersProfiles[i].rectTransform.rect.width * (1 / votersProfiles[i].rectTransform.rect.width))) * currentVotes;
-                    votersProfiles[i].transform.position = newPosition;
+                    Vector3 newPosition = votersProfiles[playerNumber].transform.position;
+                    newPosition.x = (votersProfiles[playerNumber].rectTransform.rect.width + (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
+                    votersProfiles[playerNumber].transform.position = newPosition;
                 }
                 else
                 {
                     currentVotes--;
-                    votersProfiles[i].transform.position = originalPositionStack;
+                    votersProfiles[playerNumber].transform.position = originalPositionStack;
                 }
                 
           }
@@ -65,6 +69,14 @@ public class VoteToExitSubmenu : MonoBehaviour
           {
               voteAxisLock = false;
           }
+        }
+    }
+
+    private void checkVoteCount()
+    {
+        if (currentVotes == totalVotes)
+        {
+            SceneManager.LoadScene(0);
         }
     }
 }
