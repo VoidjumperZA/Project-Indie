@@ -65,7 +65,10 @@ public class VoteToExitSubmenu : MonoBehaviour
                 else
                 {
                     currentVotes--;
-                    refreshProfileImages();
+                    if (currentVotes > 0)
+                    {
+                        refreshProfileImages();
+                    }
                     votersProfiles[playerNumber].transform.position = originalPositionStack;
                 }
                 
@@ -86,7 +89,7 @@ public class VoteToExitSubmenu : MonoBehaviour
             if (votersProfiles[playerNumber].GetComponent<Image>().enabled == true)
             {
                 Vector3 newPosition = votersProfiles[playerNumber].transform.position;
-                newPosition.x = votersProfiles[playerNumber].transform.position.x + (votersProfiles[playerNumber].rectTransform.rect.width + (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
+                newPosition.x = votersProfiles[playerNumber].transform.position.x - (votersProfiles[playerNumber].rectTransform.rect.width - (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
                 votersProfiles[playerNumber].transform.position = newPosition;
             }
         }
