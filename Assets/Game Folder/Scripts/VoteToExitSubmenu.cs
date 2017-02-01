@@ -76,7 +76,7 @@ public class VoteToExitSubmenu : MonoBehaviour
           }
         }
     }
-    // 1 2 x 4
+    // 1 2
     private void refreshProfileImages(int pDroppedPlayer)
     {
         for (int i = pDroppedPlayer; i < pDroppedPlayer + (totalVotes - pDroppedPlayer); i++)
