@@ -76,10 +76,10 @@ public class VoteToExitSubmenu : MonoBehaviour
           }
         }
     }
-
+    // 1 2 x 4
     private void refreshProfileImages(int pDroppedPlayer)
     {
-        for (int i = pDroppedPlayer; i < currentVotes - pDroppedPlayer; i++)
+        for (int i = pDroppedPlayer; i < pDroppedPlayer + (totalVotes - pDroppedPlayer); i++)
         {
             int playerNumber = activePlayers.GetPlayerNumberFromID(i + 1) - 1;            
 
