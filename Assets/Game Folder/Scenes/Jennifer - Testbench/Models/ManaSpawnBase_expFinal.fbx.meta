@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: c47b011a230dcff4f80bf5c31d76e526
-timeCreated: 1483193066
+guid: b1f7697bb2434f24b90749a6036b9f1b
+timeCreated: 1485993202
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,8 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: ManaSpawn_Base
-    9500000: //RootNode
+    4300000: pCylinder1
   materials:
     importMaterials: 1
     materialName: 0
@@ -73,7 +72,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
