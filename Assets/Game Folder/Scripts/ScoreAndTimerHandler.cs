@@ -21,6 +21,9 @@ public class ScoreAndTimerHandler : MonoBehaviour
     //FMOD
     public string ding = "event:/TimerDing";
     public string dingLast = "event:/TimerDingLast";
+    private PlayerCamera _cameraScript;
+    [SerializeField]
+    private Camera _playerCamera;
 
     private void Start()
     {
@@ -28,6 +31,8 @@ public class ScoreAndTimerHandler : MonoBehaviour
         _counter = Time.time;
 
         StartCoroutine(countDown());
+
+        _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
     }
 
     private void Update()
@@ -73,12 +78,12 @@ public class ScoreAndTimerHandler : MonoBehaviour
         for (int i = 0; i < _countDownImages.Length; i++)
         {
             _countDownImages[i].enabled = true;
-            yield return new WaitForSeconds(5.0f);
-            FMODUnity.RuntimeManager.PlayOneShot(ding, gameObject.transform.position);
+            yield return new WaitForSeconds(1.0f);
+            FMODUnity.RuntimeManager.PlayOneShot(ding, _cameraScript.gameObject.transform.position);
             _countDownImages[i].enabled = false;
         }
         //Make everyone able to move again here maybe?
         _countingDown = true;
-        FMODUnity.RuntimeManager.PlayOneShot(dingLast, gameObject.transform.position);
+        FMODUnity.RuntimeManager.PlayOneShot(dingLast, _cameraScript.gameObject.transform.position);
     }
 }
