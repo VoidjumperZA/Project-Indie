@@ -69,7 +69,7 @@ public class ScoreAndTimerHandler : MonoBehaviour
         for (int i = 0; i < _countDownImages.Length; i++)
         {
             _countDownImages[i].enabled = true;
-            yield return new WaitForSeconds(5.0f);
+            yield return new WaitForSeconds(1.0f);
             _countDownImages[i].enabled = false;
         }
         //Make everyone able to move again here maybe?
