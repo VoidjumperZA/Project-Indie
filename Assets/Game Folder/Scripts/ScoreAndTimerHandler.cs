@@ -45,6 +45,9 @@ public class ScoreAndTimerHandler : MonoBehaviour
             _counter += Time.deltaTime;
         }
 
+        int poep = (_matchDuration - (int)(Time.time - _counter));
+        print("time: " + poep + ", matchDuration: " + _matchDuration + ", Time.time: " + Time.time + ", counter: " + _counter);
+        
         _timerText.text = transform2Clock(_matchDuration - (int)(Time.time - _counter));
     }
 
