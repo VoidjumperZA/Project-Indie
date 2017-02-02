@@ -47,8 +47,11 @@ public class PlayerInput : MonoBehaviour
     private float _columnMovementTimeStamp;
     private float _holdingBallTime;
 
+    private bool controlsDisabled;
+
     private void Start()
     {
+        controlsDisabled = false;
         //Getting class instances/components of objects. Need to be checked later for conventions
         _playerMovement = GetComponent<PlayerMovement>();
         _playerActions = GetComponent<PlayerActions>();
@@ -102,7 +105,7 @@ public class PlayerInput : MonoBehaviour
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
     {
-        if (pButtonPressed > 0 && pAxisLock == false)
+        if (pButtonPressed > 0 && pAxisLock == false && controlsDisabled == false)
         {
             lockAxis(ref pAxisLock, true);
 
@@ -151,6 +154,18 @@ public class PlayerInput : MonoBehaviour
                     break;
             }
         }
+        if (pButtonPressed > 0 && pAxisLock == false)
+        {
+            lockAxis(ref pAxisLock, true);
+
+            //execute the appropriate method for the call
+            switch (pActionName)
+            {
+                case "Pause":
+                    executePause();
+                    break;
+            }
+        }
         if (pButtonPressed == 0)
         {
             lockAxis(ref pAxisLock, false);
@@ -191,7 +206,15 @@ public class PlayerInput : MonoBehaviour
         return _cameraSensitivity;
     }
 
+    public void SetControlsDisabled(bool pState)
+    {
+        controlsDisabled = pState;
+    }
 
+    public bool GetControlsDisabled()
+    {
+        return controlsDisabled;
+    }
 
     //Implemented by Josh, leave it for now (you better)
     private void executePause()
@@ -199,6 +222,7 @@ public class PlayerInput : MonoBehaviour
         PauseScreen pauseScreen = GameObject.Find("Manager").GetComponent<PauseScreen>();
             if (pauseScreen.IsPauseScreenActive() == false)
             {
+                SetControlsDisabled(true);
                 pauseScreen.DisplayPauseScreen(true, _playerID);
                 pauseScreen.DisplayPauseScreenOwner();
                 pauseScreen.ResetLightUpCounter();
@@ -206,7 +230,8 @@ public class PlayerInput : MonoBehaviour
             }
             else if (pauseScreen.IsPauseScreenActive() == true && _playerID == pauseScreen.GetPauseScreenOwner())
             {
-                pauseScreen.HidePauseScreenOwner();
+            SetControlsDisabled(false);
+            pauseScreen.HidePauseScreenOwner();
                 pauseScreen.DisableActiveSubmenu();
                 pauseScreen.DisplayPauseScreen(false, 0);
             }       

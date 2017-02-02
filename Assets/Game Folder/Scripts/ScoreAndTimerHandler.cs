@@ -24,15 +24,21 @@ public class ScoreAndTimerHandler : MonoBehaviour
     private PlayerCamera _cameraScript;
     [SerializeField]
     private Camera _playerCamera;
+    private PlayerInput[] playerInputs;
+    private ActivePlayers activePlayers;
 
     private void Start()
     {
         _matchDuration = MatchStatistics.GetMatchTimeInMinutes() * 60;
         _counter = Time.time;
 
-        StartCoroutine(countDown());
-
+        StartCoroutine(CountDown());
+        activePlayers = GameObject.Find("Manager").GetComponent<ActivePlayers>();
         _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
+        for (int i = 0; i < activePlayers.GetPlayersInMatchArraySize(); i++)
+        {
+            playerInputs[i] = activePlayers.GetPlayerInMatch(i).GetComponent<PlayerInput>();
+        }
     }
 
     private void Update()
@@ -69,11 +75,14 @@ public class ScoreAndTimerHandler : MonoBehaviour
         _countingDown = pState;
     }
 
-    private IEnumerator countDown()
+    public IEnumerator CountDown()
     {
         _countingDown = false;
         //Make everyone respawn command here maybe?
-        //Make everyone unable to move here maybe?
+        for (int i = 0; i < activePlayers.GetActivePlayersArraySize(); i++)
+        {
+            playerInputs[i].SetControlsDisabled(true);
+        }
         //Start fading effect here maybe?
         for (int i = 0; i < _countDownImages.Length; i++)
         {
@@ -82,7 +91,10 @@ public class ScoreAndTimerHandler : MonoBehaviour
             FMODUnity.RuntimeManager.PlayOneShot(ding, _cameraScript.gameObject.transform.position);
             _countDownImages[i].enabled = false;
         }
-        //Make everyone able to move again here maybe?
+        for (int i = 0; i < activePlayers.GetActivePlayersArraySize(); i++)
+        {
+            playerInputs[i].SetControlsDisabled(false);
+        }
         _countingDown = true;
         FMODUnity.RuntimeManager.PlayOneShot(dingLast, _cameraScript.gameObject.transform.position);
     }
