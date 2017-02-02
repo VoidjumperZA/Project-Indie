@@ -72,7 +72,7 @@ public class VoteToExitSubmenu : MonoBehaviour
                     currentVotes--;
                     voteArray[i] = false;
                     refreshProfileImages(i + 1);
-                    votersProfiles[playerNumber].transform.position = originalPositionStack;
+                    //votersProfiles[playerNumber].transform.position = originalPositionStack;
                 }
                 
           }
