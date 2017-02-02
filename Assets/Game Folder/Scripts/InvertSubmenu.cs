@@ -50,7 +50,7 @@ public class InvertSubmenu : MonoBehaviour
 
     private void verticalControls()
     {
-        if (InputManager.MovementVertical(pauseScreenOwner) < 0 && verticalAxisLock == false)
+        if (InputManager.UIVertical(pauseScreenOwner) < 0 && verticalAxisLock == false)
         {
             verticalAxisLock = true;
             selectedOption++;
@@ -60,7 +60,7 @@ public class InvertSubmenu : MonoBehaviour
                 selectedOption = 0;
             }
         }
-        if (InputManager.MovementVertical(pauseScreenOwner) > 0 && verticalAxisLock == false)
+        if (InputManager.UIVertical(pauseScreenOwner) > 0 && verticalAxisLock == false)
         {
             verticalAxisLock = true;
             selectedOption--;
@@ -70,7 +70,7 @@ public class InvertSubmenu : MonoBehaviour
                 selectedOption = maxNumberOfOptions;
             }
         }
-        else if (InputManager.MovementVertical(pauseScreenOwner) == 0)
+        else if (InputManager.UIVertical(pauseScreenOwner) == 0)
         {
             verticalAxisLock = false;
         }

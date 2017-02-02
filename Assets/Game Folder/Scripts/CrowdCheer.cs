@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 public class CrowdCheer : MonoBehaviour
 {
+    [SerializeField]
+    private float minForceMultiplier;
+    [SerializeField]
+    private float maxForceMultiplier;
+    [SerializeField]
+    private float timeBetweenCheersInSeconds;
     private GameObject[] crowdMembers;
     private Rigidbody[] crowdMemberRigidbodies;
     private bool[] crowdMemberInAir;
@@ -12,28 +18,40 @@ public class CrowdCheer : MonoBehaviour
     void Start()
     {
         crowdMembers = GameObject.FindGameObjectsWithTag("CrowdMember");
+        crowdMemberRigidbodies = new Rigidbody[crowdMembers.Length];
         for (int i = 0; i < crowdMembers.Length; i++)
         {
             crowdMemberRigidbodies[i] = crowdMembers[i].GetComponent<Rigidbody>();
-            crowdMemberInAir[i] = false;
-        }
+            //crowdMemberInAir[i] = false;
+        }        
+        StartCoroutine(haveCrowdMemberCheer());
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        for (int i = 0; i < inAirBodies.Count; i++)
+
+    }
+
+    private IEnumerator haveCrowdMemberCheer()
+    {
+        //change alpha values of all tiles
+        while (true)
         {
-            //if (inAirBodies[i].collider.)
-            //{
-
-           // }
+            int randomMember = Random.Range(0, crowdMembers.Length);
+            if (crowdMemberRigidbodies[randomMember] == null)
+            {
+                crowdMembers[randomMember].GetComponent<Rigidbody>();
+            }
+            CrowdMemberProperties properties = crowdMembers[randomMember].GetComponent<CrowdMemberProperties>();
+            if (properties.GetGroundedState() == true)
+            {
+                // Debug.Log("Got cube " + randomMember + " launching him NOW!");
+                Vector3 force = crowdMembers[randomMember].transform.up * Random.Range(minForceMultiplier, maxForceMultiplier);
+                crowdMemberRigidbodies[randomMember].AddRelativeForce(force, ForceMode.Impulse);
+                properties.SetGroundedState(false);
+            }
+            yield return new WaitForSeconds(timeBetweenCheersInSeconds);
         }
-
-        int randomMember = Random.Range(0, crowdMembers.Length);
-        crowdMemberInAir[randomMember] = true;
-        Vector3 force = crowdMembers[randomMember].transform.up * 15000;
-        crowdMemberRigidbodies[randomMember].AddRelativeForce(force, ForceMode.Impulse);
-        inAirBodies.Add(crowdMemberRigidbodies[randomMember]);
     }
 }

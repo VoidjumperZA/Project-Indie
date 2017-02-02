@@ -42,7 +42,7 @@ public static class LobbySettings
         }
         else if (pArenaName == "Moonbeam")
         {
-            sceneToLoad = 5;
+            sceneToLoad = 2;
             Debug.Log("Moonbeam Arena has been set with a scene ID of " + sceneToLoad);
         }
         else if(pArenaName == "DTest")

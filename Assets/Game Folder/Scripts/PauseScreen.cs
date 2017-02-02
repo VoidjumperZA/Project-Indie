@@ -38,7 +38,7 @@ public class PauseScreen : MonoBehaviour
     private int tileLightUpCounter;
 
     private int pauseScreenOwner;
-    private int numberOfOptions = 3;
+    private int numberOfOptions;
     private int selectedOption = 0;
 
     //Animation
@@ -60,6 +60,7 @@ public class PauseScreen : MonoBehaviour
     void Start()
     {
         tileLightUpCounter = 0;
+        numberOfOptions = submenus.Length;
         hexagonalTiles = GameObject.FindGameObjectsWithTag("HexagonalPauseTile");
         activePlayers = GameObject.Find("Manager").GetComponent<ActivePlayers>();
         hideHexagonalArray();
@@ -110,18 +111,45 @@ public class PauseScreen : MonoBehaviour
     public void ResetLightUpCounter()
     {
       tileLightUpCounter = 0;
+      ShuffleHexagonalArray(hexagonalTiles);
     }
 
     public IEnumerator LightUpHexagonalArray(bool pState)
     {
+        //change alpha values of all tiles
+        while (tileLightUpCounter < hexagonalTiles.Length)
+        {
+            //int activeTile = Random.Range(0, hexagonalTiles.Length);
+            Color randomAlphaColour = hexagonalTiles[tileLightUpCounter].GetComponent<Image>().color;
+            randomAlphaColour.a = Random.Range(0.3f, 1.0f);
+            hexagonalTiles[tileLightUpCounter].GetComponent<Image>().color = randomAlphaColour;
+            hexagonalTiles[tileLightUpCounter].GetComponent<Image>().enabled = pState;
+            tileLightUpCounter++;
+            yield return new WaitForSeconds(0.004f);
+        }
+        //randomly activate certain hexes
+        /*
         while(tileLightUpCounter < (int)(hexagonalTiles.Length * 0.66f))
         {
             hexagonalTiles[Random.Range(0, hexagonalTiles.Length)].GetComponent<Image>().enabled = pState;
             tileLightUpCounter++;
             yield return new WaitForSeconds(0.04f);
-        }
+        }*/
 
     }
+
+    public void ShuffleHexagonalArray(GameObject[] hexArray)
+    {
+        int n = hexArray.Length;
+        while (n > 1)
+        {
+            int k = Random.Range(0, n--);
+            GameObject temp = hexArray[n];
+            hexArray[n] = hexArray[k];
+            hexArray[k] = temp;
+        }
+    }
+
 
     public void DisplayPauseScreenOwner()
     {
@@ -145,15 +173,15 @@ public class PauseScreen : MonoBehaviour
 
     private void checkNavigationButtons()
     {
-        if (InputManager.MovementHorizontal(pauseScreenOwner) != 0 && navAxisLock == false)
+        if (InputManager.UIHorizontal(pauseScreenOwner) != 0 && navAxisLock == false)
         {
             navAxisLock = true;
 
-            if (InputManager.MovementHorizontal(pauseScreenOwner) < 0)
+            if (InputManager.UIHorizontal(pauseScreenOwner) < 0)
             {
                 wheelPolarity = -1;
             }
-            else if (InputManager.MovementHorizontal(pauseScreenOwner) > 0)
+            else if (InputManager.UIHorizontal(pauseScreenOwner) > 0)
             {
                 wheelPolarity = 1;
             }
@@ -221,15 +249,22 @@ public class PauseScreen : MonoBehaviour
 
     public void DisplayPauseScreen(bool pState, int pPlayerID)
     {
-        selectedOption = 0;
         pauseScreen.SetActive(pState);
         if (pState == true)
         {
+            selectedOption = 0;
             Cursor.visible = true;
             submenus[selectedOption].SetActive(true);
         }
         else
         {
+            pauseWheel.transform.Rotate(0, 0, (360 / numberOfOptions) * selectedOption);
+            for (int i = 0; i < visualButtons.Length; i++)
+            {
+                visualButtons[i].transform.Rotate(0, 0, -(360 / numberOfOptions) * selectedOption);
+                //rotate on the other axes based on controller input?
+            }
+            selectedOption = 0;
             Cursor.visible = false;
         }
 

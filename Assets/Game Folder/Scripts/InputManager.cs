@@ -67,6 +67,21 @@ public static class InputManager
         return new Vector3(CameraHorizontal(pPlayerID), 0, CameraVertical(pPlayerID));
     }
 
+    public static float UIHorizontal(int pPlayerID)
+    {
+        return determineMovementAxes(pPlayerID, "UIHorizontal");
+    }
+
+    /// <summary>
+    /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
+    /// </summary>
+    /// <param name="pPlayerID"></param>
+    /// <returns></returns>
+    public static float UIVertical(int pPlayerID)
+    {
+        return determineMovementAxes(pPlayerID, "UIVertical");
+    }
+
     //Triggers / ColumnControl
     /// <summary>
     /// Float value between 0 and 1 if the axis is detecting input. Non-zero value confirms input.
