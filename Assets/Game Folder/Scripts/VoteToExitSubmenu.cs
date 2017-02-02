@@ -69,15 +69,17 @@ public class VoteToExitSubmenu : MonoBehaviour
                 {
                     currentVotes++;
                     voteArray[i] = true;
+                    votersProfiles[playerNumber].transform.position = positionArray[i];
+                    /*
                     Vector3 newPosition = votersProfiles[playerNumber].transform.position;
                     newPosition.x = votersProfiles[playerNumber].transform.position.x + (votersProfiles[playerNumber].rectTransform.rect.width + (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
-                    votersProfiles[playerNumber].transform.position = newPosition;
+                    votersProfiles[playerNumber].transform.position = newPosition;*/
                 }
                 else
                 {
                     currentVotes--;
                     voteArray[i] = false;
-                    refreshProfileImages(i + 1);
+                    refreshProfileImages();
                     //votersProfiles[playerNumber].transform.position = originalPositionStack;
                 }
                 
@@ -89,9 +91,8 @@ public class VoteToExitSubmenu : MonoBehaviour
         }
     }
     // 1 2
-    private void refreshProfileImages(int pDroppedPlayer)
-    {
-       
+    private void refreshProfileImages()
+    {     
             for (int i = 1; i < totalVotes; i++)
             {
                 if (voteArray[i - 1] == false)
