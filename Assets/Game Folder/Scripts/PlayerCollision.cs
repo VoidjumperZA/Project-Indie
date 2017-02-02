@@ -49,7 +49,8 @@ public class PlayerCollision : MonoBehaviour
             if (detectColumnBelow() == true)
             {
                 playerInput.AddManaPoints();
-                columnProperties.hitManaObject();
+                //columnProperties.hitManaObject();
+                pCol.transform.parent.gameObject.GetComponent<ManaObjectHandler>().PickUP();
                 print("HIT THE MANA OBJECT");
             }
         }
