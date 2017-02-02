@@ -18,6 +18,10 @@ public class ScoreAndTimerHandler : MonoBehaviour
     private float _counter = 0.0f;
     private bool _countingDown = false;
 
+    //FMOD
+    public string ding = "event:/TimerDing";
+    public string dingLast = "event:/TimerDingLast";
+
     private void Start()
     {
         _matchDuration = MatchStatistics.GetMatchTimeInMinutes() * 60;
@@ -69,10 +73,12 @@ public class ScoreAndTimerHandler : MonoBehaviour
         for (int i = 0; i < _countDownImages.Length; i++)
         {
             _countDownImages[i].enabled = true;
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(5.0f);
+            FMODUnity.RuntimeManager.PlayOneShot(ding, gameObject.transform.position);
             _countDownImages[i].enabled = false;
         }
         //Make everyone able to move again here maybe?
         _countingDown = true;
+        FMODUnity.RuntimeManager.PlayOneShot(dingLast, gameObject.transform.position);
     }
 }
