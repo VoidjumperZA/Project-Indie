@@ -156,6 +156,7 @@ public class PlayerProperties : MonoBehaviour
         GameObject.Find("Manager").GetComponent<PossessedHexes>().ModifyCooldownValue(LobbySettings.GetModifierValues().x);
 
         //yet do the inverse to these
+        print("manaValueOnPickUp: " + _manaValueOnPickUp + " + " + "modifyValue: " + LobbySettings.GetModifierValues().y);
         _manaValueOnPickUp *= LobbySettings.GetModifierValues().y;
         _maxManaValue *= LobbySettings.GetModifierValues().y;
     }

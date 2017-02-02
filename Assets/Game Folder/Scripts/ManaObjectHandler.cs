@@ -32,12 +32,13 @@ public class ManaObjectHandler : MonoBehaviour
 
     private IEnumerator Switcheroo()
     {
-        for (int i = 0; i  < _emissionMaps.Length; i ++)
+        for (int i = 0; i  < _emissionMaps.Length -1; i ++)
         {
             _material.SetTexture("_EmissionMap", _emissionMaps[i]);
 
             yield return new WaitForSeconds(_nextEmissionTime);
         }
+        _material.SetTexture("_EmissionMap", _emissionMaps[6]);
         _manaObject.SetActive(true);
     }
 }
