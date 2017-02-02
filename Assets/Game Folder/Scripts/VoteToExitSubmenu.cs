@@ -93,9 +93,9 @@ public class VoteToExitSubmenu : MonoBehaviour
     // 1 2
     private void refreshProfileImages()
     {     
-            for (int i = 1; i < totalVotes; i++)
+            for (int i = 0; i < totalVotes; i++)
             {
-                if (voteArray[i - 1] == false)
+                if (voteArray[i - 1] == false && i - 1 < 0)
                 {
                     int playerNumber = activePlayers.GetPlayerNumberFromID(i + 1) - 1;
                     votersProfiles[playerNumber].transform.position = positionArray[i - 1];
