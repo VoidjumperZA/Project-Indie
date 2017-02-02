@@ -69,7 +69,7 @@ public class VoteToExitSubmenu : MonoBehaviour
                 {
                     currentVotes++;
                     voteArray[i] = true;
-                    votersProfiles[playerNumber].transform.position = positionArray[i];
+                    votersProfiles[playerNumber].transform.position = positionArray[currentVotes - 1];
                     /*
                     Vector3 newPosition = votersProfiles[playerNumber].transform.position;
                     newPosition.x = votersProfiles[playerNumber].transform.position.x + (votersProfiles[playerNumber].rectTransform.rect.width + (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
