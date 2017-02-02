@@ -40,7 +40,7 @@ public class SensitivitySubmenu : MonoBehaviour {
 
     private void verticalControls()
     {
-        if (InputManager.MovementVertical(pauseScreenOwner) > 0 && verticalAxisLock == false)
+        if (InputManager.UIVertical(pauseScreenOwner) > 0 && verticalAxisLock == false)
         {
             verticalAxisLock = true;
             UpArrows[0].gameObject.SetActive(true);
@@ -52,7 +52,7 @@ public class SensitivitySubmenu : MonoBehaviour {
             }
             playerInput.SetPlayerSensitivity(selectedOption + 1);
         }
-        if (InputManager.MovementVertical(pauseScreenOwner) < 0 && verticalAxisLock == false)
+        if (InputManager.UIVertical(pauseScreenOwner) < 0 && verticalAxisLock == false)
         {
             verticalAxisLock = true;
             DownArrows[0].gameObject.SetActive(true);
@@ -64,7 +64,7 @@ public class SensitivitySubmenu : MonoBehaviour {
             }
             playerInput.SetPlayerSensitivity(selectedOption + 1);
         }
-        else if (InputManager.MovementVertical(pauseScreenOwner) == 0)
+        else if (InputManager.UIVertical(pauseScreenOwner) == 0)
         {
             verticalAxisLock = false;
             UpArrows[0].gameObject.SetActive(false);

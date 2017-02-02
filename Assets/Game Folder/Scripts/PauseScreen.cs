@@ -173,15 +173,15 @@ public class PauseScreen : MonoBehaviour
 
     private void checkNavigationButtons()
     {
-        if (InputManager.MovementHorizontal(pauseScreenOwner) != 0 && navAxisLock == false)
+        if (InputManager.UIHorizontal(pauseScreenOwner) != 0 && navAxisLock == false)
         {
             navAxisLock = true;
 
-            if (InputManager.MovementHorizontal(pauseScreenOwner) < 0)
+            if (InputManager.UIHorizontal(pauseScreenOwner) < 0)
             {
                 wheelPolarity = -1;
             }
-            else if (InputManager.MovementHorizontal(pauseScreenOwner) > 0)
+            else if (InputManager.UIHorizontal(pauseScreenOwner) > 0)
             {
                 wheelPolarity = 1;
             }
