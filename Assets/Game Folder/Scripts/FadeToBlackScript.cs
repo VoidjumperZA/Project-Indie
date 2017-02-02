@@ -43,7 +43,7 @@ public class FadeToBlackScript : MonoBehaviour
         }
     }
 
-    private void Awake()
+    private void Start()
     {
         _image = GetComponent<Image>();
         _color = _image.color;

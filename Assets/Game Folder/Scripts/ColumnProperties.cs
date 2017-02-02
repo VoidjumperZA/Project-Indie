@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ColumnProperties : MonoBehaviour
 {
@@ -51,14 +52,14 @@ public class ColumnProperties : MonoBehaviour
     {
         _rigidBody = GetComponent<Rigidbody>();
         columnStatus = ColumnStatus.Free;
-        _manaObjectPrefab = Resources.Load("ManaObject") as GameObject;
+        _manaObjectPrefab = Resources.Load("ManaSpawnBase") as GameObject;
         _manaObjectRespawnTime = GameObject.Find("Manager").GetComponent<PlayerProperties>().GetManaRespawnTime();
         _manaObjectRespawnTimeStamp = Time.time;
         if (_hasManaObject)
         {
             _newManaObject = Instantiate(_manaObjectPrefab);
             _newManaObject.transform.SetParent(transform);
-            _newManaObject.transform.position = new Vector3(transform.position.x, GetComponent<MeshRenderer>().bounds.extents.y * 2.0f + 6, transform.position.z);
+            _newManaObject.transform.position = new Vector3(transform.position.x, GetComponent<MeshRenderer>().bounds.extents.y * 2.0f + 3, transform.position.z);
         }
     }
 

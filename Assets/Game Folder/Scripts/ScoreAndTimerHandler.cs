@@ -16,34 +16,22 @@ public class ScoreAndTimerHandler : MonoBehaviour
     private int _matchDuration;
     private float _startMatchTimeStamp;
     private float _counter = 0.0f;
-    private bool _counting = false;
-
-    private void Awake()
-    {
-        
-    }
-
-    private void startCountDown()
-    {
-        print(_countDownImages[1].name);
-        
-    }
+    private bool _countingDown = false;
 
     private void Start()
     {
-        _matchDuration = (int)MatchStatistics.GetMatchTimeInMinutes() * 60;
-        //StartCoroutine("countDown");
-        Debug.Log("ScoreAndTimerHandler got a _matchDuration of " + _matchDuration + " from MatchStatistics.");
-        _startMatchTimeStamp = Time.time;
-        startCountDown();
+        _matchDuration = MatchStatistics.GetMatchTimeInMinutes() * 60;
+        _counter = Time.time;
+
+        StartCoroutine(countDown());
     }
 
     private void Update()
     {
         _team1_scoreText.text = "" + MatchStatistics.GetLifeFireLeft(1).ToString();
         _team2_scoreText.text = "" + MatchStatistics.GetLifeFireLeft(2).ToString();
-        //_timerText.text = "Time: " + ((int)Time.time).ToString();
-        if (_counting)
+
+        if (!_countingDown)
         {
             _counter += Time.deltaTime;
         }
@@ -69,19 +57,22 @@ public class ScoreAndTimerHandler : MonoBehaviour
 
     public void SetCounting(bool pState)
     {
-        _counting = pState;
+        _countingDown = pState;
     }
 
     private IEnumerator countDown()
     {
-        print("INSIDE COUNTDOWN BABEYYYYYYYYYYYYYYYYYYYYYYYY");
+        _countingDown = false;
+        //Make everyone respawn command here maybe?
+        //Make everyone unable to move here maybe?
+        //Start fading effect here maybe?
         for (int i = 0; i < _countDownImages.Length; i++)
         {
-            //_countDownImages[i].enabled = true;
-            print(_countDownImages[i].name);
-            print("Before");
+            _countDownImages[i].enabled = true;
             yield return new WaitForSeconds(5.0f);
-            print("After");
+            _countDownImages[i].enabled = false;
         }
+        //Make everyone able to move again here maybe?
+        _countingDown = true;
     }
 }
