@@ -69,7 +69,7 @@ public class VoteToExitSubmenu : MonoBehaviour
                 {
                     currentVotes++;
                     voteArray[i] = true;
-                    votersProfiles[playerNumber].transform.position = positionArray[currentVotes - 1];
+                    votersProfiles[playerNumber].transform.position = positionArray[i];
                     /*
                     Vector3 newPosition = votersProfiles[playerNumber].transform.position;
                     newPosition.x = votersProfiles[playerNumber].transform.position.x + (votersProfiles[playerNumber].rectTransform.rect.width + (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
@@ -95,7 +95,7 @@ public class VoteToExitSubmenu : MonoBehaviour
     {     
             for (int i = 0; i < totalVotes; i++)
             {
-                if (voteArray[i - 1] == false)
+                if (voteArray[i - 1] == false && i - 1 < 0)
                 {
                     int playerNumber = activePlayers.GetPlayerNumberFromID(i + 1) - 1;
                     votersProfiles[playerNumber].transform.position = positionArray[i - 1];
