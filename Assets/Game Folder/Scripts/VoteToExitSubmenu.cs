@@ -93,7 +93,7 @@ public class VoteToExitSubmenu : MonoBehaviour
     // 1 2
     private void refreshProfileImages()
     {     
-            for (int i = 1; i < totalVotes; i++)
+            for (int i = 0; i < totalVotes; i++)
             {
                 if (voteArray[i - 1] == false)
                 {
