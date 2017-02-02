@@ -51,12 +51,20 @@ public class ScoreAndTimerHandler : MonoBehaviour
             _counter += Time.deltaTime;
         }
 
-        int poep = (_matchDuration - (int)(Time.time - _counter));
-        print("time: " + poep + ", matchDuration: " + _matchDuration + ", Time.time: " + Time.time + ", counter: " + _counter);
-        
+        int timeInt = (_matchDuration - (int)(Time.time - _counter));
+        print("time: " + timeInt + ", matchDuration: " + _matchDuration + ", Time.time: " + Time.time + ", counter: " + _counter);
+
+        if (_matchDuration - (int)(Time.time - _counter) <= 0)
+        {
+
+        }
         _timerText.text = transform2Clock(_matchDuration - (int)(Time.time - _counter));
     }
 
+    public int GetTransform2Clock()
+    {
+        return _matchDuration - (int)(Time.time - _counter);
+    }
     private string transform2Clock(int pTime)
     {
         int minutes = pTime / 60;
