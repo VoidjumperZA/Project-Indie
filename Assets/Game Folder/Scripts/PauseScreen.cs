@@ -249,15 +249,22 @@ public class PauseScreen : MonoBehaviour
 
     public void DisplayPauseScreen(bool pState, int pPlayerID)
     {
-        selectedOption = 0;
         pauseScreen.SetActive(pState);
         if (pState == true)
         {
+            selectedOption = 0;
             Cursor.visible = true;
             submenus[selectedOption].SetActive(true);
         }
         else
         {
+            pauseWheel.transform.Rotate(0, 0, (360 / numberOfOptions) * selectedOption);
+            for (int i = 0; i < visualButtons.Length; i++)
+            {
+                visualButtons[i].transform.Rotate(0, 0, -(360 / numberOfOptions) * selectedOption);
+                //rotate on the other axes based on controller input?
+            }
+            selectedOption = 0;
             Cursor.visible = false;
         }
 
