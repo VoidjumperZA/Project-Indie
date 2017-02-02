@@ -22,12 +22,17 @@ public class Ball : MonoBehaviour
     public string goalSound = "event:/Goal";
     //VYTAUTAS' FMOD IMPLEMENTATION ENDS
 
-    private ParticleSystem _particleSystemGlow;
-    private ParticleSystem _particleSystemDust;
+    //private ParticleSystem _particleSystemGlow;
+    //private ParticleSystem _particleSystemDust;
+    //[SerializeField]
+    //private Color _standardColour;
+    //[SerializeField]
+    //private Color _overheatColour;
+
+    private Transform _fancyBall;
     [SerializeField]
-    private Color _standardColour;
-    [SerializeField]
-    private Color _overheatColour;
+    private float _fancyBallRotationSpeed = 3.0f;
+
 
     private PlayerProperties _playerProperties;
     private float _coolingOffBallCounter;
@@ -39,15 +44,18 @@ public class Ball : MonoBehaviour
         centrePosition = transform.position;
         inPossession = false;
 
-        _particleSystemGlow = GameObject.Find("glow").GetComponent<ParticleSystem>();
-        _particleSystemGlow.startColor = _standardColour;
+        //_particleSystemGlow = GameObject.Find("glow").GetComponent<ParticleSystem>();
+        //_particleSystemGlow.startColor = _standardColour;
 
-        _particleSystemDust = GameObject.Find("dust").GetComponent<ParticleSystem>();
-        _particleSystemDust.startColor = _standardColour;
+        //_particleSystemDust = GameObject.Find("dust").GetComponent<ParticleSystem>();
+        //_particleSystemDust.startColor = _standardColour;
+
+        _fancyBall = transform.FindChild("BallRing_1");
+
 
         _coolingOffBallCounter = 0.0f;
         _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
-        scoreAndTime = GameObject.Find("ScoreAndTimerPanel").GetComponent<ScoreAndTimerHandler>(); 
+        scoreAndTime = GameObject.Find("ScoreAndTimerPanel").GetComponent<ScoreAndTimerHandler>();
     }
 
     private void Update()
@@ -126,8 +134,6 @@ public class Ball : MonoBehaviour
             }
             StartCoroutine(scoreAndTime.CountDown());
         }
-        //A little fix for ResetToCentre()
-        _rigidbody.freezeRotation = false;
     }
 
 
@@ -153,7 +159,6 @@ public class Ball : MonoBehaviour
     {
         transform.position = centrePosition;
         _rigidbody.velocity = Vector3.zero;
-        _rigidbody.freezeRotation = true;
     }
 
     public void TogglePossession(bool pState)
@@ -165,6 +170,7 @@ public class Ball : MonoBehaviour
             inPossession = true;
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.useGravity = false;
+            _rigidbody.freezeRotation = true;
 
             FMODUnity.RuntimeManager.PlayOneShot(pickSound, gameObject.transform.position);
         }
@@ -176,6 +182,7 @@ public class Ball : MonoBehaviour
             lastOwnerID = currentOwnerID;
             currentOwner = null;
             _coolingOffBallCounter = 0.0f;
+            _rigidbody.freezeRotation = false;
         }
     }
 
@@ -207,12 +214,17 @@ public class Ball : MonoBehaviour
         return currentOwner;
     }
 
-    public void SetColourState(float pState)
-    {
-        _particleSystemGlow.startColor = Color.Lerp(_standardColour, _overheatColour, pState);
-        _particleSystemDust.startColor = Color.Lerp(_standardColour, _overheatColour, pState);
-    }
+    //public void SetColourState(float pState)
+    //{
+    //    _particleSystemGlow.startColor = Color.Lerp(_standardColour, _overheatColour, pState);
+    //    _particleSystemDust.startColor = Color.Lerp(_standardColour, _overheatColour, pState);
+    // }
 
+    public void SetRotationSpeed(float pState)
+    {
+        _fancyBall.Rotate(0.0f, pState * _fancyBallRotationSpeed, 0.0f);
+
+    }
     //Think it's not in ratio yet, but yeah fine for now
     public void CoolingOffBall()
     {
@@ -222,13 +234,14 @@ public class Ball : MonoBehaviour
             {
                 _coolingOffBallCounter += Time.deltaTime;
                 _coolingOffBallCounter = Mathf.Min(_coolingOffBallCounter, _playerProperties.GetBallCoolOffTime());
-                SetColourState(1.0f - (_coolingOffBallCounter / _playerProperties.GetBallCoolOffTime()));
+                // SetColourState(1.0f - (_coolingOffBallCounter / _playerProperties.GetBallCoolOffTime()));
+                SetRotationSpeed(1.0f - (_coolingOffBallCounter / _playerProperties.GetBallCoolOffTime()));
             }
         }
         catch
         {
             Debug.Log("ball in the menu has no objects assigned.");
         }
-       
+
     }
 }
