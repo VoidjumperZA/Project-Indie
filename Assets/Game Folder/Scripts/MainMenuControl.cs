@@ -9,6 +9,9 @@ public class MainMenuControl : MonoBehaviour
     private Canvas[] playMenuSubsections;
 
     [SerializeField]
+    private Canvas[] MenuSections;
+
+    [SerializeField]
     private GameObject pentagram;
 
     [SerializeField]
@@ -20,11 +23,20 @@ public class MainMenuControl : MonoBehaviour
     private float pentagramRotationAngle;
     private float pentagramAngleToReach;
     private bool pentagramShouldRotate;
+    private int currentSubsection;
+    private int currentMenuSection;
+    private int previousMenuSection;
+    private bool dismissSplashAxisLock;
+    private AudioSource[] buttonSounds;
     // Use this for initialization
     void Start()
     {
+        currentSubsection = 0;
+        currentMenuSection = 0;
+        dismissSplashAxisLock = false;
         pentagramShouldRotate = false;
         pentagramAngleToReach = 360 / playMenuSubsections.Length;
+        buttonSounds = GameObject.Find("Button Sounds Audio Source").GetComponents<AudioSource>();
     }
 
     // Update is called once per frame
@@ -79,11 +91,54 @@ public class MainMenuControl : MonoBehaviour
 
     public void moveToNextSubsection(int pMenuLevel)
     {
+        currentSubsection = pMenuLevel;
         playMenuSubsections[pMenuLevel].gameObject.SetActive(true);
         playMenuSubsections[pMenuLevel - 1].gameObject.SetActive(false);
 
         pentagramRotationAngle = 0.0f;
         pentagramShouldRotate = true;
+    }
+
+    public void ReturnToPreviousSubsection()
+    {
+        currentSubsection--;
+        if (currentSubsection < 0)
+        {
+            currentSubsection = 0;
+            MoveToNextSection(0);
+        }
+        else
+        {     
+            playMenuSubsections[currentSubsection].gameObject.SetActive(false);
+            playMenuSubsections[currentSubsection - 1].gameObject.SetActive(true);
+
+            pentagramRotationAngle = 0.0f;
+            pentagramShouldRotate = true;
+        }
+    }
+
+
+    public void MoveToNextSection(int pNextSection)
+    {
+        //if we go to custom game options
+        if (pNextSection == 2)
+        {
+            MenuSections[currentMenuSection].gameObject.SetActive(false);
+            playMenuSubsections[currentSubsection].gameObject.SetActive(true);
+        }
+        MenuSections[currentMenuSection].gameObject.SetActive(false);
+        MenuSections[pNextSection].gameObject.SetActive(true);
+        previousMenuSection = currentMenuSection;
+        currentMenuSection = pNextSection;
+    }
+
+    public void ReturnToPreviousMenuSection()
+    {
+        MenuSections[currentMenuSection].gameObject.SetActive(false);
+        MenuSections[previousMenuSection].gameObject.SetActive(true);
+        int temp = previousMenuSection;
+        previousMenuSection = currentMenuSection;
+        currentMenuSection = temp;
     }
 
     public void SetArenaName(string pArenaName)
@@ -126,4 +181,43 @@ public class MainMenuControl : MonoBehaviour
     {
 
     }
+
+    public void PlayHoverSound()
+    {
+        buttonSounds[0].Play();
+    }
+
+    public void PlayClickSound()
+    {
+        buttonSounds[1].Play();
+    }
+
+    private void listenForPressToBeginPrompt()
+    {
+        if (InputManager.AcceptButton(1) > 0 && dismissSplashAxisLock == false && currentMenuSection == 0)
+        {
+            dismissSplashAxisLock = true;
+            PlayClickSound();
+            MoveToNextSection(1);
+        }
+        if (InputManager.AcceptButton(1) == 0)
+        {
+            dismissSplashAxisLock = false;
+        }
+    }
+
+    public void SelectQuickPlay()
+    {
+        SetTeam_1PlayerCount(1);
+        SetTeam_2PlayerCount(1);
+        string[] arenaNames = { "Sunlight", "Moonbeam" };
+        SetArenaName(arenaNames[Random.Range(0, arenaNames.Length)]);
+        SetCooldownModifier(1);
+        SetCooldownModifierInverse(1);
+        SetMatchTimeInMinutes(5);
+        SetGoalsToWin(5);
+        UsePossessedHexes(false);
+        LoadScene();
+    }
+
 }

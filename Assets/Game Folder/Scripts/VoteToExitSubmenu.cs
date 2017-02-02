@@ -13,7 +13,8 @@ public class VoteToExitSubmenu : MonoBehaviour
     private int totalVotes;
     private int currentVotes;
 
-    private bool[] voteAxisLock = new bool[4];
+    private bool[] voteAxisLock;
+    private bool[] voteArray;
 
     private int pauseScreenOwner;
 
@@ -29,9 +30,12 @@ public class VoteToExitSubmenu : MonoBehaviour
         originalPositionStack = votersProfiles[0].transform.position;
         currentVotes = 0;
         totalVotes = activePlayers.GetPlayersInMatchArraySize();
+        voteAxisLock = new bool[totalVotes];
+        voteArray = new bool[totalVotes];
         for (int i = 0; i < voteAxisLock.Length; i++)
         {
             voteAxisLock[i] = false;
+            voteArray[i] = false;
         }
       
 
@@ -58,6 +62,7 @@ public class VoteToExitSubmenu : MonoBehaviour
                 if (votersProfiles[playerNumber].GetComponent<Image>().enabled == true)
                 {
                     currentVotes++;
+                    voteArray[i] = true;
                     Vector3 newPosition = votersProfiles[playerNumber].transform.position;
                     newPosition.x = votersProfiles[playerNumber].transform.position.x + (votersProfiles[playerNumber].rectTransform.rect.width + (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
                     votersProfiles[playerNumber].transform.position = newPosition;
@@ -65,6 +70,7 @@ public class VoteToExitSubmenu : MonoBehaviour
                 else
                 {
                     currentVotes--;
+                    voteArray[i] = false;
                     refreshProfileImages(i + 1);
                     votersProfiles[playerNumber].transform.position = originalPositionStack;
                 }
@@ -79,14 +85,25 @@ public class VoteToExitSubmenu : MonoBehaviour
     // 1 2
     private void refreshProfileImages(int pDroppedPlayer)
     {
+       
+            for (int i = 1; i < totalVotes; i++)
+            {
+                if (voteArray[i - 1] == false)
+                {
+                    int playerNumber = activePlayers.GetPlayerNumberFromID(i + 1) - 1;
+
+                    Vector3 newPosition = votersProfiles[playerNumber].transform.position;
+                    newPosition.x = votersProfiles[playerNumber].transform.position.x - (votersProfiles[playerNumber].rectTransform.rect.width - (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
+                    votersProfiles[playerNumber].transform.position = newPosition;
+                }
+            }
+
+
+/*
         for (int i = pDroppedPlayer; i < pDroppedPlayer + (totalVotes - pDroppedPlayer); i++)
         {
-            int playerNumber = activePlayers.GetPlayerNumberFromID(i + 1) - 1;            
-
-            Vector3 newPosition = votersProfiles[playerNumber].transform.position;
-            newPosition.x = votersProfiles[playerNumber].transform.position.x - (votersProfiles[playerNumber].rectTransform.rect.width - (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
-            votersProfiles[playerNumber].transform.position = newPosition;
-        }
+           
+        }*/
     }
 
     private void checkVoteCount()
