@@ -15,6 +15,7 @@ public class VoteToExitSubmenu : MonoBehaviour
 
     private bool[] voteAxisLock;
     private bool[] voteArray;
+    private Vector3[] positionArray;
 
     private int pauseScreenOwner;
 
@@ -22,7 +23,6 @@ public class VoteToExitSubmenu : MonoBehaviour
     void Start()
     {
         activePlayers = GameObject.Find("Manager").GetComponent<ActivePlayers>();
-
         for (int i = 0; i < votersProfiles.Length; i++)
         {
             votersProfiles[i].GetComponent<Image>().enabled = false;
@@ -30,13 +30,19 @@ public class VoteToExitSubmenu : MonoBehaviour
         originalPositionStack = votersProfiles[0].transform.position;
         currentVotes = 0;
         totalVotes = activePlayers.GetPlayersInMatchArraySize();
+        positionArray = new Vector3[totalVotes];
         voteAxisLock = new bool[totalVotes];
         voteArray = new bool[totalVotes];
         for (int i = 0; i < voteAxisLock.Length; i++)
         {
             voteAxisLock[i] = false;
             voteArray[i] = false;
+
+            Vector3 newPosition = originalPositionStack;
+            newPosition.x = originalPositionStack.x + (votersProfiles[i].rectTransform.rect.width + (votersProfiles[i].rectTransform.rect.width * (1 / votersProfiles[i].rectTransform.rect.width))) * i;
+            positionArray[i] = newPosition;
         }
+
       
 
     }
@@ -63,16 +69,18 @@ public class VoteToExitSubmenu : MonoBehaviour
                 {
                     currentVotes++;
                     voteArray[i] = true;
+                    votersProfiles[playerNumber].transform.position = positionArray[i];
+                    /*
                     Vector3 newPosition = votersProfiles[playerNumber].transform.position;
                     newPosition.x = votersProfiles[playerNumber].transform.position.x + (votersProfiles[playerNumber].rectTransform.rect.width + (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
-                    votersProfiles[playerNumber].transform.position = newPosition;
+                    votersProfiles[playerNumber].transform.position = newPosition;*/
                 }
                 else
                 {
                     currentVotes--;
                     voteArray[i] = false;
-                    refreshProfileImages(i + 1);
-                    votersProfiles[playerNumber].transform.position = originalPositionStack;
+                    refreshProfileImages();
+                    //votersProfiles[playerNumber].transform.position = originalPositionStack;
                 }
                 
           }
@@ -83,18 +91,19 @@ public class VoteToExitSubmenu : MonoBehaviour
         }
     }
     // 1 2
-    private void refreshProfileImages(int pDroppedPlayer)
-    {
-       
-            for (int i = 1; i < totalVotes; i++)
+    private void refreshProfileImages()
+    {     
+            for (int i = 0; i < totalVotes; i++)
             {
-                if (voteArray[i - 1] == false)
+                if (voteArray[i - 1] == false && i - 1 < 0)
                 {
                     int playerNumber = activePlayers.GetPlayerNumberFromID(i + 1) - 1;
+                    votersProfiles[playerNumber].transform.position = positionArray[i - 1];
+                   /* int playerNumber = activePlayers.GetPlayerNumberFromID(i + 1) - 1;
 
                     Vector3 newPosition = votersProfiles[playerNumber].transform.position;
                     newPosition.x = votersProfiles[playerNumber].transform.position.x - (votersProfiles[playerNumber].rectTransform.rect.width - (votersProfiles[playerNumber].rectTransform.rect.width * (1 / votersProfiles[playerNumber].rectTransform.rect.width))) * currentVotes;
-                    votersProfiles[playerNumber].transform.position = newPosition;
+                    votersProfiles[playerNumber].transform.position = newPosition;*/
                 }
             }
 

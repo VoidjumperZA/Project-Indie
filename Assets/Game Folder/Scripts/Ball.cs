@@ -31,6 +31,7 @@ public class Ball : MonoBehaviour
 
     private PlayerProperties _playerProperties;
     private float _coolingOffBallCounter;
+    private ScoreAndTimerHandler scoreAndTime;
 
     private void Start()
     {
@@ -46,6 +47,7 @@ public class Ball : MonoBehaviour
 
         _coolingOffBallCounter = 0.0f;
         _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
+        scoreAndTime = GameObject.Find("ScoreAndTimerPanel").GetComponent<ScoreAndTimerHandler>(); 
     }
 
     private void Update()
@@ -122,6 +124,7 @@ public class Ball : MonoBehaviour
                 Debug.Log("i is " + i);
                 GameObject.Find("Manager").GetComponent<ActivePlayers>().GetPlayerInMatch(i + 1).GetComponent<PlayerActions>().Respawn();
             }
+            StartCoroutine(scoreAndTime.CountDown());
         }
         //A little fix for ResetToCentre()
         _rigidbody.freezeRotation = false;
@@ -163,7 +166,7 @@ public class Ball : MonoBehaviour
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.useGravity = false;
 
-            FMODUnity.RuntimeManager.PlayOneShot(pickSound, this.gameObject.transform.position);
+            FMODUnity.RuntimeManager.PlayOneShot(pickSound, gameObject.transform.position);
         }
         else
         {
