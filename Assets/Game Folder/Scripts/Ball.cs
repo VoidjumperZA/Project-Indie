@@ -163,7 +163,7 @@ public class Ball : MonoBehaviour
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.useGravity = false;
 
-            FMODUnity.RuntimeManager.PlayOneShot(pickSound, this.gameObject.transform.position);
+            FMODUnity.RuntimeManager.PlayOneShot(pickSound, gameObject.transform.position);
         }
         else
         {
