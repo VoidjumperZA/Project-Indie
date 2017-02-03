@@ -48,6 +48,7 @@ public class PlayerInput : MonoBehaviour
     private float _holdingBallTime;
 
     private bool controlsDisabled = false;
+    private Animator _animator;
 
     private void Start()
     {
@@ -70,6 +71,7 @@ public class PlayerInput : MonoBehaviour
         _manaPoints = _playerProperties.GetStartingManaValue();
         _ballPosession = false;
         //Sending the right camera object and raycast position to _playerActions, so it doesn't need an instance of _playerInput
+        _animator = transform.FindChild("Character_animation_exp").GetComponent<Animator>();
     }
 
     private void Update()
@@ -101,6 +103,16 @@ public class PlayerInput : MonoBehaviour
         {
             //Send input to the PlayerMovement script
             _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
+            if(InputManager.Movement(_playerID).magnitude > 0.0f)
+            {
+                _animator.PlayInFixedTime("Running");
+                _animator.speed = 1.0f;
+            }
+            else
+            {
+                _animator.PlayInFixedTime("Idle");
+                _animator.speed = 1.0f;
+            }
             faceButtonCheck(InputManager.JumpButton(_playerID), ref jumpAxisLock, "Jump");
         }
         _playerMovement.ApplyVelocity();
@@ -121,6 +133,8 @@ public class PlayerInput : MonoBehaviour
                     if (_grounded == true)
                     {
                         _playerMovement.Jump(_playerProperties.GetJumpForce());
+                        _animator.PlayInFixedTime("Jump");
+                        _animator.speed = 1.0f;
                     }
                     break;
                 case "Flash":
