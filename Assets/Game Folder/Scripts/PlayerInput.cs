@@ -14,6 +14,7 @@ public class PlayerInput : MonoBehaviour
     private PlayerCamera _cameraScript;
     private PlayerProperties _playerProperties;
     private Ball _ballscript;
+    private ScoreAndTimerHandler scoreAndTime;
 
     //Vytautas's' FMOD implementation
     public string flashSound = "event:/Flash";
@@ -72,6 +73,7 @@ public class PlayerInput : MonoBehaviour
         _ballPosession = false;
         //Sending the right camera object and raycast position to _playerActions, so it doesn't need an instance of _playerInput
         _animator = transform.FindChild("Character_animation_exp").GetComponent<Animator>();
+        scoreAndTime = GameObject.Find("ScoreAndTimerPanel").GetComponent<ScoreAndTimerHandler>();
     }
 
     private void Update()
@@ -172,7 +174,7 @@ public class PlayerInput : MonoBehaviour
                     break;
             }
         }
-        if (pButtonPressed > 0 && pAxisLock == false)
+        if (pButtonPressed > 0 && pAxisLock == false && scoreAndTime.GetCoutingDown() == false)
         {
             lockAxis(ref pAxisLock, true);
 
