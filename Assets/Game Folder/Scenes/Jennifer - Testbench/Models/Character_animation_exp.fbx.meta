@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: a77ba2ce7ad0e6c4394120ed131417eb
-timeCreated: 1486039175
+guid: b4029d0b85c86e14096d64366af696d5
+timeCreated: 1486081489
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -160,8 +160,11 @@ ModelImporter:
     400150: Spine_5
     400152: transform1
     4300000: polySurface2
-    7400000: Run
+    7400000: Run_Final
+    7400002: Idle_Final
+    7400004: Jump_Final
     9500000: //RootNode
+    11100000: //RootNode
     13700000: polySurface2
   materials:
     importMaterials: 1
@@ -176,9 +179,11 @@ ModelImporter:
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar to
-      improve retargeting quality.\n\t'L_Lower_Arm' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'L_Clavicle1' is inbetween
-      humanoid transforms and has rotation animation that will be discarded.\n\t'R_Lower_Arm'
+      improve retargeting quality.\n\t'Spine_2' is inbetween humanoid transforms and
+      has rotation animation that will be discarded.\n\t'Spine_4' is inbetween humanoid
+      transforms and has rotation animation that will be discarded.\n\t'L_Lower_Arm'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'L_Clavicle1'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'R_Lower_Arm'
       is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'L_Foot'
       is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'R_Foot'
       is inbetween humanoid transforms and has rotation animation that will be discarded.\n"
@@ -192,19 +197,19 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Run
+      name: Run_Final
       takeName: Take 001
       firstFrame: 30
-      lastFrame: 78
+      lastFrame: 77
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
-      loop: 0
+      loop: 1
       hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
-      loopBlendOrientation: 0
+      loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
@@ -218,50 +223,50 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: F_Cape_1
-        weight: 0
-      - path: F_Cape_1/F_Cape_2
-        weight: 0
-      - path: F_Cape_1/F_Cape_2/F_Cape_3
-        weight: 0
-      - path: F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4
-        weight: 0
-      - path: F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5
-        weight: 0
-      - path: F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6
-        weight: 0
-      - path: F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7
-        weight: 0
-      - path: F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8
-        weight: 0
-      - path: F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8/F_Cape_9
-        weight: 0
-      - path: F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8/F_Cape_9/F_Cape_10
-        weight: 0
-      - path: joint1
-        weight: 0
-      - path: joint1/joint2
-        weight: 0
-      - path: joint1/joint2/joint3
-        weight: 0
-      - path: joint1/joint2/joint3/joint4
-        weight: 0
-      - path: joint1/joint2/joint3/joint4/joint5
-        weight: 0
-      - path: joint1/joint2/joint3/joint4/joint5/joint6
-        weight: 0
-      - path: joint1/joint2/joint3/joint4/joint5/joint6/joint7
-        weight: 0
-      - path: joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8
-        weight: 0
-      - path: joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9
-        weight: 0
-      - path: joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9/joint10
-        weight: 0
       - path: polySurface2
         weight: 0
       - path: Spine_1
         weight: 1
+      - path: Spine_1/F_Cape_1
+        weight: 0
+      - path: Spine_1/F_Cape_1/F_Cape_2
+        weight: 0
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3
+        weight: 0
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4
+        weight: 0
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5
+        weight: 0
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6
+        weight: 0
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7
+        weight: 0
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8
+        weight: 0
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8/F_Cape_9
+        weight: 0
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8/F_Cape_9/F_Cape_10
+        weight: 0
+      - path: Spine_1/joint1
+        weight: 0
+      - path: Spine_1/joint1/joint2
+        weight: 0
+      - path: Spine_1/joint1/joint2/joint3
+        weight: 0
+      - path: Spine_1/joint1/joint2/joint3/joint4
+        weight: 0
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5
+        weight: 0
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6
+        weight: 0
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7
+        weight: 0
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8
+        weight: 0
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9
+        weight: 0
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9/joint10
+        weight: 0
       - path: Spine_1/L_Upper_Leg
         weight: 1
       - path: Spine_1/L_Upper_Leg/L_Lower_Leg
@@ -356,6 +361,370 @@ ModelImporter:
         weight: 1
       - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/Neck/Head/Head_NUB
         weight: 0
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/Neck/Head/Jaw
+        weight: 1
+      - path: Spine_1/transform1
+        weight: 1
+      - path: Spine_1/transform1/R_Upper_Leg
+        weight: 1
+      - path: Spine_1/transform1/R_Upper_Leg/R_Lower_Leg
+        weight: 1
+      - path: Spine_1/transform1/R_Upper_Leg/R_Lower_Leg/R_Ankle
+        weight: 1
+      - path: Spine_1/transform1/R_Upper_Leg/R_Lower_Leg/R_Ankle/R_Foot
+        weight: 1
+      - path: Spine_1/transform1/R_Upper_Leg/R_Lower_Leg/R_Ankle/R_Foot/R_Toe
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Idle_Final
+      takeName: Take 001
+      firstFrame: 82
+      lastFrame: 122
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 1
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: polySurface2
+        weight: 1
+      - path: Spine_1
+        weight: 1
+      - path: Spine_1/F_Cape_1
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8/F_Cape_9
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8/F_Cape_9/F_Cape_10
+        weight: 1
+      - path: Spine_1/joint1
+        weight: 1
+      - path: Spine_1/joint1/joint2
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9/joint10
+        weight: 1
+      - path: Spine_1/L_Upper_Leg
+        weight: 1
+      - path: Spine_1/L_Upper_Leg/L_Lower_Leg
+        weight: 1
+      - path: Spine_1/L_Upper_Leg/L_Lower_Leg/L_Ankle
+        weight: 1
+      - path: Spine_1/L_Upper_Leg/L_Lower_Leg/L_Ankle/L_Foot
+        weight: 1
+      - path: Spine_1/L_Upper_Leg/L_Lower_Leg/L_Ankle/L_Foot/L_Toe
+        weight: 1
+      - path: Spine_1/Spine_2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_1/L_Glove_2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_1/L_Glove_2/L_Glove_3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_1/L_Glove_2/L_Glove_3/L_Glove_4
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_Thumb_1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_Thumb_1/L_Glove_Thumb_2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_Thumb_1/L_Glove_Thumb_2/L_Glove_Thumb_3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_Thumb_1/L_Glove_Thumb_2/L_Glove_Thumb_3/L_Glove_Thumb_4
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_MiddleFinger1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_MiddleFinger1/R_Hand_MiddleFinger2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_MiddleFinger1/R_Hand_MiddleFinger2/R_Hand_MiddleFinger3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Pinky1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Pinky1/R_Hand_Pinky2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Pinky1/R_Hand_Pinky2/R_Hand_Pinky3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_PointFinger1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_PointFinger1/R_Hand_PointFinger2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_PointFinger1/R_Hand_PointFinger2/R_Hand_PointFinger3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_RingFinger1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_RingFinger1/R_Hand_RingFinger2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_RingFinger1/R_Hand_RingFinger2/R_Hand_RingFinger3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Thumb1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Thumb1/R_Hand_Thumb2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Thumb1/R_Hand_Thumb2/R_Hand_Thumb3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/Neck
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/Neck/Head
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/Neck/Head/Head_NUB
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/Neck/Head/Jaw
+        weight: 1
+      - path: Spine_1/transform1
+        weight: 1
+      - path: Spine_1/transform1/R_Upper_Leg
+        weight: 1
+      - path: Spine_1/transform1/R_Upper_Leg/R_Lower_Leg
+        weight: 1
+      - path: Spine_1/transform1/R_Upper_Leg/R_Lower_Leg/R_Ankle
+        weight: 1
+      - path: Spine_1/transform1/R_Upper_Leg/R_Lower_Leg/R_Ankle/R_Foot
+        weight: 1
+      - path: Spine_1/transform1/R_Upper_Leg/R_Lower_Leg/R_Ankle/R_Foot/R_Toe
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Jump_Final
+      takeName: Take 001
+      firstFrame: 125
+      lastFrame: 165
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: polySurface2
+        weight: 1
+      - path: Spine_1
+        weight: 1
+      - path: Spine_1/F_Cape_1
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8/F_Cape_9
+        weight: 1
+      - path: Spine_1/F_Cape_1/F_Cape_2/F_Cape_3/F_Cape_4/F_Cape_5/F_Cape_6/F_Cape_7/F_Cape_8/F_Cape_9/F_Cape_10
+        weight: 1
+      - path: Spine_1/joint1
+        weight: 1
+      - path: Spine_1/joint1/joint2
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9
+        weight: 1
+      - path: Spine_1/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9/joint10
+        weight: 1
+      - path: Spine_1/L_Upper_Leg
+        weight: 1
+      - path: Spine_1/L_Upper_Leg/L_Lower_Leg
+        weight: 1
+      - path: Spine_1/L_Upper_Leg/L_Lower_Leg/L_Ankle
+        weight: 1
+      - path: Spine_1/L_Upper_Leg/L_Lower_Leg/L_Ankle/L_Foot
+        weight: 1
+      - path: Spine_1/L_Upper_Leg/L_Lower_Leg/L_Ankle/L_Foot/L_Toe
+        weight: 1
+      - path: Spine_1/Spine_2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_1/L_Glove_2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_1/L_Glove_2/L_Glove_3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_1/L_Glove_2/L_Glove_3/L_Glove_4
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_Thumb_1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_Thumb_1/L_Glove_Thumb_2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_Thumb_1/L_Glove_Thumb_2/L_Glove_Thumb_3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle/L_Clavicle_NUB/L_Upper_Arm/L_Elbow/L_Lower_Arm/L_Hand/L_Glove_Thumb_1/L_Glove_Thumb_2/L_Glove_Thumb_3/L_Glove_Thumb_4
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_MiddleFinger1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_MiddleFinger1/R_Hand_MiddleFinger2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_MiddleFinger1/R_Hand_MiddleFinger2/R_Hand_MiddleFinger3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Pinky1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Pinky1/R_Hand_Pinky2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Pinky1/R_Hand_Pinky2/R_Hand_Pinky3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_PointFinger1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_PointFinger1/R_Hand_PointFinger2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_PointFinger1/R_Hand_PointFinger2/R_Hand_PointFinger3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_RingFinger1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_RingFinger1/R_Hand_RingFinger2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_RingFinger1/R_Hand_RingFinger2/R_Hand_RingFinger3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Thumb1
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Thumb1/R_Hand_Thumb2
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/L_Clavicle1/L_Clavicle_NUB1/R_Upper_Arm/R_Elbow/R_Lower_Arm/R_Hand/R_Hand_Thumb1/R_Hand_Thumb2/R_Hand_Thumb3
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/Neck
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/Neck/Head
+        weight: 1
+      - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/Neck/Head/Head_NUB
+        weight: 1
       - path: Spine_1/Spine_2/Spine_3/Spine_4/Spine_5/Neck/Head/Jaw
         weight: 1
       - path: Spine_1/transform1
@@ -737,19 +1106,19 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: Char_Animation_Run_Test(Clone)
+    - name: Character_animation_exp(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: polySurface2
-      parentName: Char_Animation_Run_Test(Clone)
+      parentName: Character_animation_exp(Clone)
       position: {x: -0.0025165996, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Spine_1
-      parentName: Char_Animation_Run_Test(Clone)
-      position: {x: -0.022815922, y: 2.8652012, z: -0.23562735}
+      parentName: Character_animation_exp(Clone)
+      position: {x: -0.000000007450581, y: 2.865201, z: -0.23562735}
       rotation: {x: -0.4688451, y: 0.52932435, z: -0.4688451, w: 0.52932435}
       scale: {x: 1, y: 1, z: 1}
     - name: transform1
@@ -765,7 +1134,7 @@ ModelImporter:
     - name: R_Lower_Leg
       parentName: R_Upper_Leg
       position: {x: -1.4430102, y: 0.010060533, z: -0.021804357}
-      rotation: {x: 0.96900946, y: 0.2470236, z: 2.7562684e-14, w: -6.963194e-15}
+      rotation: {x: 0.96900946, y: 0.2470236, z: 3.325433e-14, w: -8.41413e-15}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Ankle
       parentName: R_Lower_Leg
@@ -775,7 +1144,7 @@ ModelImporter:
     - name: R_Foot
       parentName: R_Ankle
       position: {x: -0.6522176, y: -0.007175111, z: 4.2728408e-16}
-      rotation: {x: -4.3868412e-15, y: 6.9076066e-16, z: -0.15554547, w: 0.98782873}
+      rotation: {x: -2.1934206e-15, y: 3.4538033e-16, z: -0.15554547, w: 0.98782873}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Toe
       parentName: R_Foot
@@ -800,7 +1169,7 @@ ModelImporter:
     - name: Spine_5
       parentName: Spine_4
       position: {x: -0.23097593, y: -0.0033799156, z: -4.9915744e-17}
-      rotation: {x: 0.9429224, y: -0.33301246, z: -2.9129777e-17, w: -5.385959e-17}
+      rotation: {x: 0.9429223, y: -0.3330128, z: -2.9129794e-17, w: -5.3859576e-17}
       scale: {x: 1, y: 1, z: 1}
     - name: Neck
       parentName: Spine_5
@@ -825,7 +1194,7 @@ ModelImporter:
     - name: L_Clavicle
       parentName: Spine_5
       position: {x: -0.28688443, y: -0.35581642, z: -0.07673701}
-      rotation: {x: 0.3037404, y: -0.49724796, z: 0.25366697, w: 0.77210057}
+      rotation: {x: 0.30374053, y: -0.49724796, z: 0.25366694, w: 0.7721006}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Clavicle_NUB
       parentName: L_Clavicle
@@ -835,12 +1204,12 @@ ModelImporter:
     - name: L_Upper_Arm
       parentName: L_Clavicle_NUB
       position: {x: -0.061598115, y: -0.1277992, z: -0.06079031}
-      rotation: {x: 0.1796644, y: -0.044015486, z: 0.09481839, w: 0.97815794}
+      rotation: {x: 0.17966445, y: -0.044015218, z: 0.094818346, w: 0.97815794}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Elbow
       parentName: L_Upper_Arm
       position: {x: -0.58303535, y: 0.0076556206, z: -0.13556656}
-      rotation: {x: -0.0051194862, y: -0.110002786, z: -0.09603492, w: 0.98926765}
+      rotation: {x: -0.0051194853, y: -0.11000288, z: -0.096034765, w: 0.98926765}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Lower_Arm
       parentName: L_Elbow
@@ -855,17 +1224,17 @@ ModelImporter:
     - name: L_Glove_1
       parentName: L_Hand
       position: {x: -0.25061136, y: 2.7388548e-16, z: -1.4387896e-16}
-      rotation: {x: 0.005254097, y: 0.0058203847, z: 0.13608491, w: 0.99066615}
+      rotation: {x: 0.0052538817, y: 0.0058201114, z: 0.13608462, w: 0.9906663}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Glove_2
       parentName: L_Glove_1
       position: {x: -0.15683024, y: 1.3762164e-16, z: 5.7515886e-17}
-      rotation: {x: -0.010321644, y: -0.03511803, z: 0.02197386, w: 0.9990883}
+      rotation: {x: -0.010321587, y: -0.03511603, z: 0.021972768, w: 0.99908835}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Glove_3
       parentName: L_Glove_2
       position: {x: -0.116979815, y: -5.0697043e-17, z: 5.579991e-17}
-      rotation: {x: 0.0049940166, y: 0.004599733, z: 0.038305268, w: 0.9992431}
+      rotation: {x: 0.004994013, y: 0.0045986697, z: 0.03830862, w: 0.9992429}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Glove_4
       parentName: L_Glove_3
@@ -875,17 +1244,17 @@ ModelImporter:
     - name: L_Glove_Thumb_1
       parentName: L_Hand
       position: {x: -0.100390404, y: -0.055923723, z: 0.10814664}
-      rotation: {x: -0.09179268, y: 0.37896058, z: 0.10456485, w: 0.91489303}
+      rotation: {x: -0.091792785, y: 0.37896153, z: 0.10456401, w: 0.9148927}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Glove_Thumb_2
       parentName: L_Glove_Thumb_1
       position: {x: -0.0694944, y: 2.0814875e-16, z: 1.5625553e-16}
-      rotation: {x: -0.0010158118, y: 0.0358799, z: 0.0013628411, w: 0.9993547}
+      rotation: {x: -0.0010155807, y: 0.035876554, z: 0.00136353, w: 0.99935484}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Glove_Thumb_3
       parentName: L_Glove_Thumb_2
       position: {x: -0.07495069, y: 1.08904105e-16, z: -2.6861387e-16}
-      rotation: {x: -0.0011908831, y: 0.033286665, z: -0.024196042, w: 0.99915224}
+      rotation: {x: -0.0011908574, y: 0.03328836, z: -0.024196826, w: 0.9991521}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Glove_Thumb_4
       parentName: L_Glove_Thumb_3
@@ -905,12 +1274,12 @@ ModelImporter:
     - name: R_Upper_Arm
       parentName: L_Clavicle_NUB1
       position: {x: 0.061598, y: 0.12779999, z: 0.06079}
-      rotation: {x: -0.012932023, y: 0.9958488, z: 0.09007525, w: 0.0020979275}
+      rotation: {x: -0.012931958, y: 0.99584883, z: 0.09007524, w: 0.002097896}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Elbow
       parentName: R_Upper_Arm
       position: {x: -0.5986361, y: -2.4424907e-16, z: -5.3290704e-17}
-      rotation: {x: 0.057915293, y: 0.042851277, z: 0.087720186, w: 0.99353653}
+      rotation: {x: 0.057915177, y: 0.04285131, z: 0.087720275, w: 0.99353653}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Lower_Arm
       parentName: R_Elbow
@@ -930,7 +1299,7 @@ ModelImporter:
     - name: R_Hand_PointFinger2
       parentName: R_Hand_PointFinger1
       position: {x: -0.17465545, y: 3.011839e-16, z: -6.284703e-17}
-      rotation: {x: -0.03177459, y: 0.009168845, z: -0.026275314, w: 0.99910754}
+      rotation: {x: -0.03177412, y: 0.00916704, z: -0.026275257, w: 0.9991076}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Hand_PointFinger3
       parentName: R_Hand_PointFinger2
@@ -945,7 +1314,7 @@ ModelImporter:
     - name: R_Hand_MiddleFinger2
       parentName: R_Hand_MiddleFinger1
       position: {x: -0.18514986, y: 3.8832292e-16, z: -5.979461e-17}
-      rotation: {x: -0.017378313, y: 0.0069431346, z: -0.029826358, w: 0.99937993}
+      rotation: {x: -0.01737824, y: 0.006943014, z: -0.029826172, w: 0.99937993}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Hand_MiddleFinger3
       parentName: R_Hand_MiddleFinger2
@@ -955,12 +1324,12 @@ ModelImporter:
     - name: R_Hand_RingFinger1
       parentName: R_Hand
       position: {x: -0.39165106, y: 0.015314208, z: -0.20994006}
-      rotation: {x: -0.0033759787, y: -0.17731874, z: -0.055843316, w: 0.9825621}
+      rotation: {x: -0.0033758923, y: -0.17731895, z: -0.055843577, w: 0.98256207}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Hand_RingFinger2
       parentName: R_Hand_RingFinger1
       position: {x: -0.17369792, y: 3.2413518e-16, z: 1.0579352e-17}
-      rotation: {x: -0.02822441, y: 0.022223227, z: -0.025996817, w: 0.9990164}
+      rotation: {x: -0.028224442, y: 0.022223923, z: -0.025996657, w: 0.9990164}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Hand_RingFinger3
       parentName: R_Hand_RingFinger2
@@ -975,7 +1344,7 @@ ModelImporter:
     - name: R_Hand_Pinky2
       parentName: R_Hand_Pinky1
       position: {x: -0.13769878, y: 2.7760353e-16, z: 9.980167e-17}
-      rotation: {x: -0.014516033, y: 0.012139318, z: -0.031005412, w: 0.9993401}
+      rotation: {x: -0.014515898, y: 0.012137783, z: -0.03100588, w: 0.9993402}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Hand_Pinky3
       parentName: R_Hand_Pinky2
@@ -990,7 +1359,7 @@ ModelImporter:
     - name: R_Hand_Thumb2
       parentName: R_Hand_Thumb1
       position: {x: -0.14785737, y: 3.2344207e-16, z: 3.6614185e-16}
-      rotation: {x: 0.0016711513, y: 0.020722255, z: 0.030472433, w: 0.99931943}
+      rotation: {x: 0.0016711826, y: 0.020720622, z: 0.03047274, w: 0.9993194}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Hand_Thumb3
       parentName: R_Hand_Thumb2
@@ -1005,7 +1374,7 @@ ModelImporter:
     - name: L_Lower_Leg
       parentName: L_Upper_Leg
       position: {x: -1.4430102, y: 0.010060533, z: -0.021804357}
-      rotation: {x: 0.96900946, y: 0.2470236, z: -2.4192838e-17, w: 6.935798e-17}
+      rotation: {x: 0.96900946, y: 0.2470236, z: -6.351151e-17, w: 7.938125e-17}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Ankle
       parentName: L_Lower_Leg
@@ -1015,7 +1384,7 @@ ModelImporter:
     - name: L_Foot
       parentName: L_Ankle
       position: {x: -0.6522176, y: -0.007175111, z: 4.2728408e-16}
-      rotation: {x: 1.5353943e-15, y: -2.4176623e-16, z: -0.15554547, w: 0.98782873}
+      rotation: {x: 1.7547363e-15, y: -2.7630426e-16, z: -0.15554547, w: 0.98782873}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Toe
       parentName: L_Foot
@@ -1023,9 +1392,9 @@ ModelImporter:
       rotation: {x: -0.032042135, y: -0.7063804, z: -0.032042135, w: 0.7063804}
       scale: {x: 1, y: 1, z: 1}
     - name: joint1
-      parentName: Char_Animation_Run_Test(Clone)
-      position: {x: -0.022815922, y: 3.1255488, z: -0.45730242}
-      rotation: {x: 0.109059446, y: -0.109059446, z: 0.6986459, w: 0.6986459}
+      parentName: Spine_1
+      position: {x: -0.3373999, y: 0.37747908, z: 7.9936054e-17}
+      rotation: {x: 0.06660623, y: -0.7039628, z: 0.7039628, w: -0.06660623}
       scale: {x: 1, y: 1, z: 1}
     - name: joint2
       parentName: joint1
@@ -1073,9 +1442,9 @@ ModelImporter:
       rotation: {x: 0.4754702, y: 0.5233814, z: -0.4754702, w: 0.5233814}
       scale: {x: 1, y: 1, z: 1}
     - name: F_Cape_1
-      parentName: Char_Animation_Run_Test(Clone)
-      position: {x: -0.022815922, y: 2.7381139, z: 0.29730865}
-      rotation: {x: -0.471039, y: -0.52737296, z: 0.471039, w: 0.52737296}
+      parentName: Spine_1
+      position: {x: -0.26443624, y: -0.4676363, z: 1.0658141e-16}
+      rotation: {x: 0.0041523892, y: 0.9999914, z: -6.097756e-17, w: -6.148608e-17}
       scale: {x: 1, y: 1, z: 1}
     - name: F_Cape_2
       parentName: F_Cape_1
