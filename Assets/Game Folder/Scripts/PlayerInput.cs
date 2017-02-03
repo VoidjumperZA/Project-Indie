@@ -241,6 +241,7 @@ public class PlayerInput : MonoBehaviour
         if (pauseScreen.IsPauseScreenActive() == false)
         {
             SetControlsDisabled(true);
+            pauseScreen.SendFullScreenCommandToMatchInit(true);
             pauseScreen.DisplayPauseScreen(true, _playerID);
             pauseScreen.DisplayPauseScreenOwner();
             pauseScreen.ResetLightUpCounter();
@@ -249,6 +250,7 @@ public class PlayerInput : MonoBehaviour
         else if (pauseScreen.IsPauseScreenActive() == true && _playerID == pauseScreen.GetPauseScreenOwner())
         {
             SetControlsDisabled(false);
+            pauseScreen.SendFullScreenCommandToMatchInit(false);
             pauseScreen.HidePauseScreenOwner();
             pauseScreen.DisableActiveSubmenu();
             pauseScreen.DisplayPauseScreen(false, 0);

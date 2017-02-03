@@ -481,12 +481,14 @@ public class MatchInitialisation : MonoBehaviour
     /// <param name="pCam"></param>
     public void ToggleFullscreenCam(Camera pCam, bool pState)
     {
+       
         for (int i = 0; i < gameCameras.Length; i++)
         {
             gameCameras[i].enabled = !pState;
         }
         if (pState == true)
         {
+            Debug.Log("Toggling on");
             pCam.enabled = pState;
             pCam.rect = new Rect(0, 0, 1, 1);        
         }

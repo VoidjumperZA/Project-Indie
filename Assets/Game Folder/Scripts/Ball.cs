@@ -13,6 +13,7 @@ public class Ball : MonoBehaviour
     private PlayerInput currentOwnerID;
     private PlayerInput lastOwnerID;
     private PlayerInput lastOwnerOfOtherTeamID;
+    private EndMatchRoundup endMatchRoundUp;
     private Vector3 centrePosition;
 
     private bool inPossession;
@@ -51,7 +52,7 @@ public class Ball : MonoBehaviour
         //_particleSystemDust.startColor = _standardColour;
 
         _fancyBall = transform.FindChild("BallRing_1");
-
+        endMatchRoundUp = GameObject.Find("Manager").GetComponent<EndMatchRoundup>();
 
         _coolingOffBallCounter = 0.0f;
         _playerProperties = GameObject.Find("Manager").GetComponent<PlayerProperties>();
@@ -132,7 +133,26 @@ public class Ball : MonoBehaviour
                 Debug.Log("i is " + i);
                 GameObject.Find("Manager").GetComponent<ActivePlayers>().GetPlayerInMatch(i + 1).GetComponent<PlayerActions>().Respawn();
             }
-            StartCoroutine(scoreAndTime.CountDown());
+            //END
+
+            float teamOneLifeFire = MatchStatistics.GetLifeFireLeft(1);
+            float teamTwoLifeFire = MatchStatistics.GetLifeFireLeft(2);
+            Debug.Log("T1LifeFire is " + teamOneLifeFire + " T2LifeFire is " + teamTwoLifeFire);
+            if (teamOneLifeFire <= 0)
+            {
+                Debug.Log("In Ball, should call DisplayPodium");
+                endMatchRoundUp.DisplayPodium(1);
+            }
+            else if (teamTwoLifeFire <= 0)
+            {
+                Debug.Log("In Ball, should call DisplayPodium");
+                endMatchRoundUp.DisplayPodium(2);
+            }
+            else
+            {
+                StartCoroutine(scoreAndTime.CountDown());
+            }
+
         }
     }
 
