@@ -12,6 +12,10 @@ public class MainMenuControl : MonoBehaviour
     private Canvas[] MenuSections;
 
     [SerializeField]
+    private Camera[] StaticPositionedCameras;
+
+
+    [SerializeField]
     private GameObject pentagram;
 
     [SerializeField]
@@ -37,6 +41,11 @@ public class MainMenuControl : MonoBehaviour
         pentagramShouldRotate = false;
         pentagramAngleToReach = 360 / playMenuSubsections.Length;
         buttonSounds = GameObject.Find("Button Sounds Audio Source").GetComponents<AudioSource>();
+
+        for (int i = 1; i < StaticPositionedCameras.Length; i++)
+        {
+            StaticPositionedCameras[i].gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -121,6 +130,11 @@ public class MainMenuControl : MonoBehaviour
 
     public void MoveToNextSection(int pNextSection)
     {
+        /*StaticPositionedCameras[0].gameObject.transform.position = StaticPositionedCameras[pNextSection].gameObject.transform.position;
+        StaticPositionedCameras[0].gameObject.transform.rotation = StaticPositionedCameras[pNextSection].gameObject.transform.rotation;*/
+
+        StaticPositionedCameras[currentMenuSection].gameObject.SetActive(false);
+        StaticPositionedCameras[pNextSection].gameObject.SetActive(true);
         //if we go to custom game options
         if (pNextSection == 2)
         {
