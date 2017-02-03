@@ -26,19 +26,22 @@ public class ScoreAndTimerHandler : MonoBehaviour
     private Camera _playerCamera;
     private PlayerInput[] playerInputs;
     private ActivePlayers activePlayers;
+    private EndMatchRoundup endMatchRoundUp;
 
     private void Start()
     {
         _matchDuration = MatchStatistics.GetMatchTimeInMinutes() * 60;
         _counter = Time.time;
 
-        StartCoroutine(CountDown());
+        playerInputs = new PlayerInput[5];
         activePlayers = GameObject.Find("Manager").GetComponent<ActivePlayers>();
+        endMatchRoundUp = GameObject.Find("Manager").GetComponent<EndMatchRoundup>();
         _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
         for (int i = 0; i < activePlayers.GetPlayersInMatchArraySize(); i++)
         {
-            playerInputs[i] = activePlayers.GetPlayerInMatch(i).GetComponent<PlayerInput>();
+            playerInputs[i] = activePlayers.GetPlayerInMatch(i + 1).GetComponent<PlayerInput>();
         }
+        StartCoroutine(CountDown());
     }
 
     private void Update()
@@ -51,12 +54,25 @@ public class ScoreAndTimerHandler : MonoBehaviour
             _counter += Time.deltaTime;
         }
 
-        int timeInt = (_matchDuration - (int)(Time.time - _counter));
-        print("time: " + timeInt + ", matchDuration: " + _matchDuration + ", Time.time: " + Time.time + ", counter: " + _counter);
+        //int timeInt = (_matchDuration - (int)(Time.time - _counter));
+        //print("time: " + timeInt + ", matchDuration: " + _matchDuration + ", Time.time: " + Time.time + ", counter: " + _counter);
 
         if (_matchDuration - (int)(Time.time - _counter) <= 0)
         {
-
+            float teamOneLifeFire = MatchStatistics.GetLifeFireLeft(1);
+            float teamTwoLifeFire = MatchStatistics.GetLifeFireLeft(2);
+            if (teamOneLifeFire > teamTwoLifeFire)
+            {
+                endMatchRoundUp.DisplayPodium(1);
+            }
+            else if (teamOneLifeFire < teamTwoLifeFire)
+            {
+                endMatchRoundUp.DisplayPodium(2);
+            }
+            else
+            {
+                endMatchRoundUp.DisplayPodium(0);
+            }
         }
         _timerText.text = transform2Clock(_matchDuration - (int)(Time.time - _counter));
     }
@@ -86,13 +102,20 @@ public class ScoreAndTimerHandler : MonoBehaviour
         _countingDown = pState;
     }
 
+    public bool GetCoutingDown()
+    {
+        return _countingDown;
+    }
+
     public IEnumerator CountDown()
     {
         _countingDown = false;
         //Make everyone respawn command here maybe?
-        for (int i = 0; i < activePlayers.GetActivePlayersArraySize(); i++)
+        for (int i = 0; i < activePlayers.GetPlayersInMatchArraySize(); i++)
         {
+            print(playerInputs[i].gameObject.name + playerInputs[i].GetControlsDisabled());
             playerInputs[i].SetControlsDisabled(true);
+            print(playerInputs[i].gameObject.name + playerInputs[i].GetControlsDisabled());
         }
         //Start fading effect here maybe?
         for (int i = 0; i < _countDownImages.Length; i++)
@@ -102,7 +125,7 @@ public class ScoreAndTimerHandler : MonoBehaviour
             FMODUnity.RuntimeManager.PlayOneShot(ding, _cameraScript.gameObject.transform.position);
             _countDownImages[i].enabled = false;
         }
-        for (int i = 0; i < activePlayers.GetActivePlayersArraySize(); i++)
+        for (int i = 0; i < activePlayers.GetPlayersInMatchArraySize(); i++)
         {
             playerInputs[i].SetControlsDisabled(false);
         }

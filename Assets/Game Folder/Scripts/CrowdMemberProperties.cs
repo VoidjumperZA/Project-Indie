@@ -28,7 +28,6 @@ public class CrowdMemberProperties : MonoBehaviour {
     {
         if (col.gameObject.tag == "Bleacher")
         {
-            Debug.Log("Back to being grounded :(");
             grounded = true;
         }
     }

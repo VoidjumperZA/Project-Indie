@@ -92,15 +92,19 @@ public class PauseScreen : MonoBehaviour
             toggleHUD(false);
 
             //dismissPauseScreen();
-            matchInit.ToggleFullscreenCam(matchInit.GetGameCamera(0), true);
         }
         else
         {
             tileLightUpCounter = 9999;
             hideHexagonalArray();
             toggleHUD(true);
-            matchInit.ToggleFullscreenCam(matchInit.GetGameCamera(0), false);
+            
         }
+    }
+
+    public void SendFullScreenCommandToMatchInit(bool pState)
+    {
+        matchInit.ToggleFullscreenCam(matchInit.GetGameCamera(0), pState);
     }
 
     public void SetCrosshairs(Image[] pCrosshairs)
@@ -286,7 +290,7 @@ public class PauseScreen : MonoBehaviour
         return pauseScreenOwner;
     }
 
-    private void toggleHUD(bool pState)
+    public void toggleHUD(bool pState)
     {
         HUD.SetActive(pState);
         for (int i = 0; i < Crosshairs.Length; i++)

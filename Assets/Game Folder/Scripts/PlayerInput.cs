@@ -14,6 +14,7 @@ public class PlayerInput : MonoBehaviour
     private PlayerCamera _cameraScript;
     private PlayerProperties _playerProperties;
     private Ball _ballscript;
+    private ScoreAndTimerHandler scoreAndTime;
 
     //Vytautas's' FMOD implementation
     public string flashSound = "event:/Flash";
@@ -47,11 +48,11 @@ public class PlayerInput : MonoBehaviour
     private float _columnMovementTimeStamp;
     private float _holdingBallTime;
 
-    private bool controlsDisabled;
+    private bool controlsDisabled = false;
+    private Animator _animator;
 
     private void Start()
     {
-        controlsDisabled = false;
         //Getting class instances/components of objects. Need to be checked later for conventions
         _playerMovement = GetComponent<PlayerMovement>();
         _playerActions = GetComponent<PlayerActions>();
@@ -64,42 +65,59 @@ public class PlayerInput : MonoBehaviour
         _holdingBallTime = -_playerProperties.GetTimeAdditionOnPickUpBall();
         //Setting individual player values
         _cameraPolarity = 1;
-        _cameraSensitivity = 5;    
+        _cameraSensitivity = 5;
         _sensitivityConstant = 0.25f;
         _internalCameraSensitivity = _sensitivityConstant * _cameraSensitivity;
         _spawnHeight = transform.position.y;
         _manaPoints = _playerProperties.GetStartingManaValue();
         _ballPosession = false;
         //Sending the right camera object and raycast position to _playerActions, so it doesn't need an instance of _playerInput
+        _animator = transform.FindChild("Character_animation_exp").GetComponent<Animator>();
+        scoreAndTime = GameObject.Find("ScoreAndTimerPanel").GetComponent<ScoreAndTimerHandler>();
     }
 
     private void Update()
     {
-        //limit movement and camera controls to when the pause screen isn't on
-        if (GameObject.Find("Manager").GetComponent<PauseScreen>().IsPauseScreenActive() == false)
-        {
-            //Send input to the PlayerCamera script
-            _cameraScript.MoveCamera(InputManager.CameraHorizontal(_playerID) * _internalCameraSensitivity, (InputManager.CameraVertical(_playerID) * _internalCameraSensitivity) * _cameraPolarity);
-        }
+            //limit movement and camera controls to when the pause screen isn't on
+            if (GameObject.Find("Manager").GetComponent<PauseScreen>().IsPauseScreenActive() == false)
+            {
+                //Send input to the PlayerCamera script
+                _cameraScript.MoveCamera(InputManager.CameraHorizontal(_playerID) * _internalCameraSensitivity, (InputManager.CameraVertical(_playerID) * _internalCameraSensitivity) * _cameraPolarity);
+            }
 
+            //faceButtonCheck methods which basically acts as activate on button release
+            faceButtonCheck(InputManager.FlashButton(_playerID), ref flashAxisLock, "Flash");
+            faceButtonCheck(InputManager.ThrowButton(_playerID), ref throwAxisLock, "Throw");
+            faceButtonCheck(InputManager.InvertButton(_playerID), ref invertAxisLock, "Inverse");
+            faceButtonCheck(InputManager.PauseButton(_playerID), ref pauseAxisLock, "Pause");
+            faceButtonCheck(InputManager.RaiseColumn(_playerID), ref raiseAxisLock, "RaiseColumn");
+            faceButtonCheck(InputManager.LowerColumn(_playerID), ref lowerAxisLock, "LowerColumn");
 
-        //faceButtonCheck methods which basically acts as activate on button release
-        faceButtonCheck(InputManager.FlashButton(_playerID), ref flashAxisLock, "Flash");
-        faceButtonCheck(InputManager.ThrowButton(_playerID), ref throwAxisLock, "Throw");
-        faceButtonCheck(InputManager.InvertButton(_playerID), ref invertAxisLock, "Inverse");
-        faceButtonCheck(InputManager.PauseButton(_playerID), ref pauseAxisLock, "Pause");
-        faceButtonCheck(InputManager.RaiseColumn(_playerID), ref raiseAxisLock, "RaiseColumn");
-        faceButtonCheck(InputManager.LowerColumn(_playerID), ref lowerAxisLock, "LowerColumn");
-
-        forcedThrowHandler();
+            forcedThrowHandler();
     }
 
     private void FixedUpdate()
     {
-        //Send input to the PlayerMovement script
-        _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
+        if (controlsDisabled == false)
+        {
+            //Send input to the PlayerMovement script
+            _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
+            if (InputManager.Movement(_playerID).magnitude > 0.0f)
+            {
+                _animator.PlayInFixedTime("Running");
+                _animator.speed = 1.0f;
+            }
+            else
+            {
+                _animator.PlayInFixedTime("Idle");
+                _animator.speed = 1.0f;
+            }
+        }
         gravityHandler();
-        faceButtonCheck(InputManager.JumpButton(_playerID), ref jumpAxisLock, "Jump");
+        if (controlsDisabled == false)
+        {
+            faceButtonCheck(InputManager.JumpButton(_playerID), ref jumpAxisLock, "Jump");
+        }
         _playerMovement.ApplyVelocity();
     }
 
@@ -117,6 +135,8 @@ public class PlayerInput : MonoBehaviour
                     if (_grounded == true)
                     {
                         _playerMovement.Jump(_playerProperties.GetJumpForce());
+                        _animator.PlayInFixedTime("Jump");
+                        _animator.speed = 1.0f;
                     }
                     break;
                 case "Flash":
@@ -154,7 +174,7 @@ public class PlayerInput : MonoBehaviour
                     break;
             }
         }
-        if (pButtonPressed > 0 && pAxisLock == false)
+        if (pButtonPressed > 0 && pAxisLock == false && scoreAndTime.GetCoutingDown() == false)
         {
             lockAxis(ref pAxisLock, true);
 
@@ -220,21 +240,23 @@ public class PlayerInput : MonoBehaviour
     private void executePause()
     {
         PauseScreen pauseScreen = GameObject.Find("Manager").GetComponent<PauseScreen>();
-            if (pauseScreen.IsPauseScreenActive() == false)
-            {
-                SetControlsDisabled(true);
-                pauseScreen.DisplayPauseScreen(true, _playerID);
-                pauseScreen.DisplayPauseScreenOwner();
-                pauseScreen.ResetLightUpCounter();
-                StartCoroutine(pauseScreen.LightUpHexagonalArray(true));
-            }
-            else if (pauseScreen.IsPauseScreenActive() == true && _playerID == pauseScreen.GetPauseScreenOwner())
-            {
+        if (pauseScreen.IsPauseScreenActive() == false)
+        {
+            SetControlsDisabled(true);
+            pauseScreen.SendFullScreenCommandToMatchInit(true);
+            pauseScreen.DisplayPauseScreen(true, _playerID);
+            pauseScreen.DisplayPauseScreenOwner();
+            pauseScreen.ResetLightUpCounter();
+            StartCoroutine(pauseScreen.LightUpHexagonalArray(true));
+        }
+        else if (pauseScreen.IsPauseScreenActive() == true && _playerID == pauseScreen.GetPauseScreenOwner())
+        {
             SetControlsDisabled(false);
+            pauseScreen.SendFullScreenCommandToMatchInit(false);
             pauseScreen.HidePauseScreenOwner();
-                pauseScreen.DisableActiveSubmenu();
-                pauseScreen.DisplayPauseScreen(false, 0);
-            }       
+            pauseScreen.DisableActiveSubmenu();
+            pauseScreen.DisplayPauseScreen(false, 0);
+        }
     }
 
     private void lockAxis(ref bool pAxisToLock, bool pState)
