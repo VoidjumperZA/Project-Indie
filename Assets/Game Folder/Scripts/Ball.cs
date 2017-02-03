@@ -240,7 +240,7 @@ public class Ball : MonoBehaviour
         }
         catch
         {
-            Debug.Log("ball in the menu has no objects assigned.");
+            //Debug.Log("ball in the menu has no objects assigned.");
         }
 
     }

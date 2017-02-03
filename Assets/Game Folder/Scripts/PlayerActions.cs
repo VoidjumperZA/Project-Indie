@@ -69,6 +69,11 @@ public class PlayerActions : MonoBehaviour
                 _selectedColumn = raycastHit.collider.gameObject;
                 _columnProperties = _selectedColumn.GetComponent<ColumnProperties>();
 
+                if(_columnProperties == null)
+                {
+                    return;
+                }
+
                 if (_columnProperties.GetColumnType() == 0 && _columnProperties.GetColumnStatus() == 0)
                 {
                     selectionPentagram.TogglePentagram(true, gameObject.transform);

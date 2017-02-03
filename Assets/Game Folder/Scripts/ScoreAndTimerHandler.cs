@@ -32,13 +32,14 @@ public class ScoreAndTimerHandler : MonoBehaviour
         _matchDuration = MatchStatistics.GetMatchTimeInMinutes() * 60;
         _counter = Time.time;
 
-        StartCoroutine(CountDown());
+        playerInputs = new PlayerInput[5];
         activePlayers = GameObject.Find("Manager").GetComponent<ActivePlayers>();
         _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
         for (int i = 0; i < activePlayers.GetPlayersInMatchArraySize(); i++)
         {
-            playerInputs[i] = activePlayers.GetPlayerInMatch(i).GetComponent<PlayerInput>();
+            playerInputs[i] = activePlayers.GetPlayerInMatch(i + 1).GetComponent<PlayerInput>();
         }
+        StartCoroutine(CountDown());
     }
 
     private void Update()
@@ -51,8 +52,8 @@ public class ScoreAndTimerHandler : MonoBehaviour
             _counter += Time.deltaTime;
         }
 
-        int timeInt = (_matchDuration - (int)(Time.time - _counter));
-        print("time: " + timeInt + ", matchDuration: " + _matchDuration + ", Time.time: " + Time.time + ", counter: " + _counter);
+        //int timeInt = (_matchDuration - (int)(Time.time - _counter));
+        //print("time: " + timeInt + ", matchDuration: " + _matchDuration + ", Time.time: " + Time.time + ", counter: " + _counter);
 
         if (_matchDuration - (int)(Time.time - _counter) <= 0)
         {
@@ -90,9 +91,11 @@ public class ScoreAndTimerHandler : MonoBehaviour
     {
         _countingDown = false;
         //Make everyone respawn command here maybe?
-        for (int i = 0; i < activePlayers.GetActivePlayersArraySize(); i++)
+        for (int i = 0; i < activePlayers.GetPlayersInMatchArraySize(); i++)
         {
+            print(playerInputs[i].gameObject.name + playerInputs[i].GetControlsDisabled());
             playerInputs[i].SetControlsDisabled(true);
+            print(playerInputs[i].gameObject.name + playerInputs[i].GetControlsDisabled());
         }
         //Start fading effect here maybe?
         for (int i = 0; i < _countDownImages.Length; i++)
@@ -102,7 +105,7 @@ public class ScoreAndTimerHandler : MonoBehaviour
             FMODUnity.RuntimeManager.PlayOneShot(ding, _cameraScript.gameObject.transform.position);
             _countDownImages[i].enabled = false;
         }
-        for (int i = 0; i < activePlayers.GetActivePlayersArraySize(); i++)
+        for (int i = 0; i < activePlayers.GetPlayersInMatchArraySize(); i++)
         {
             playerInputs[i].SetControlsDisabled(false);
         }
