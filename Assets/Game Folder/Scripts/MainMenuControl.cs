@@ -42,6 +42,7 @@ public class MainMenuControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        listenForPressToBeginPrompt();
         if (pentagramShouldRotate == true)
         {
             animateWheel();
