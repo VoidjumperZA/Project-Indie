@@ -26,6 +26,7 @@ public class ScoreAndTimerHandler : MonoBehaviour
     private Camera _playerCamera;
     private PlayerInput[] playerInputs;
     private ActivePlayers activePlayers;
+    private EndMatchRoundup endMatchRoundUp;
 
     private void Start()
     {
@@ -34,6 +35,7 @@ public class ScoreAndTimerHandler : MonoBehaviour
 
         playerInputs = new PlayerInput[5];
         activePlayers = GameObject.Find("Manager").GetComponent<ActivePlayers>();
+        endMatchRoundUp = GameObject.Find("Manager").GetComponent<EndMatchRoundup>();
         _cameraScript = _playerCamera.GetComponent<PlayerCamera>();
         for (int i = 0; i < activePlayers.GetPlayersInMatchArraySize(); i++)
         {
@@ -57,7 +59,20 @@ public class ScoreAndTimerHandler : MonoBehaviour
 
         if (_matchDuration - (int)(Time.time - _counter) <= 0)
         {
-
+            float teamOneLifeFire = MatchStatistics.GetLifeFireLeft(1);
+            float teamTwoLifeFire = MatchStatistics.GetLifeFireLeft(2);
+            if (teamOneLifeFire > teamTwoLifeFire)
+            {
+                endMatchRoundUp.DisplayPodium(1);
+            }
+            else if (teamOneLifeFire < teamTwoLifeFire)
+            {
+                endMatchRoundUp.DisplayPodium(2);
+            }
+            else
+            {
+                endMatchRoundUp.DisplayPodium(0);
+            }
         }
         _timerText.text = transform2Clock(_matchDuration - (int)(Time.time - _counter));
     }
