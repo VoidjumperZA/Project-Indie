@@ -174,7 +174,7 @@ public class PlayerInput : MonoBehaviour
                     break;
             }
         }
-        if (pButtonPressed > 0 && pAxisLock == false && scoreAndTime.GetCoutingDown() == false)
+        if (pButtonPressed > 0 && pAxisLock == false /*&& scoreAndTime.GetCoutingDown() == false*/)
         {
             lockAxis(ref pAxisLock, true);
 
