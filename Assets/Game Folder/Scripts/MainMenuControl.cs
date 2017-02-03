@@ -140,11 +140,17 @@ public class MainMenuControl : MonoBehaviour
         {
             MenuSections[currentMenuSection].gameObject.SetActive(false);
             playMenuSubsections[currentSubsection].gameObject.SetActive(true);
+            previousMenuSection = currentMenuSection;
+            currentMenuSection = pNextSection;
         }
-        MenuSections[currentMenuSection].gameObject.SetActive(false);
-        MenuSections[pNextSection].gameObject.SetActive(true);
-        previousMenuSection = currentMenuSection;
-        currentMenuSection = pNextSection;
+        else
+        {
+            MenuSections[currentMenuSection].gameObject.SetActive(false);
+            MenuSections[pNextSection].gameObject.SetActive(true);
+            previousMenuSection = currentMenuSection;
+            currentMenuSection = pNextSection;
+        }
+        
     }
 
     public void ReturnToPreviousMenuSection()

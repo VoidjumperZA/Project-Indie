@@ -76,8 +76,6 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        if (controlsDisabled == false)
-        {
             //limit movement and camera controls to when the pause screen isn't on
             if (GameObject.Find("Manager").GetComponent<PauseScreen>().IsPauseScreenActive() == false)
             {
@@ -94,7 +92,6 @@ public class PlayerInput : MonoBehaviour
             faceButtonCheck(InputManager.LowerColumn(_playerID), ref lowerAxisLock, "LowerColumn");
 
             forcedThrowHandler();
-        }
     }
 
     private void FixedUpdate()
@@ -124,7 +121,7 @@ public class PlayerInput : MonoBehaviour
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
     {
-        if (pButtonPressed > 0 && pAxisLock == false)
+        if (pButtonPressed > 0 && pAxisLock == false && controlsDisabled == false)
         {
             lockAxis(ref pAxisLock, true);
 
