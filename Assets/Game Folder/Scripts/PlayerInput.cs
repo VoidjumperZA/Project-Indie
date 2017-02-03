@@ -103,7 +103,7 @@ public class PlayerInput : MonoBehaviour
         {
             //Send input to the PlayerMovement script
             _playerMovement.Move(InputManager.Movement(_playerID).normalized, _playerProperties.GetMovementSpeed());
-            if(InputManager.Movement(_playerID).magnitude > 0.0f)
+            if (InputManager.Movement(_playerID).magnitude > 0.0f)
             {
                 _animator.PlayInFixedTime("Running");
                 _animator.speed = 1.0f;
@@ -113,10 +113,13 @@ public class PlayerInput : MonoBehaviour
                 _animator.PlayInFixedTime("Idle");
                 _animator.speed = 1.0f;
             }
+        }
+        gravityHandler();
+        if (controlsDisabled == false)
+        {
             faceButtonCheck(InputManager.JumpButton(_playerID), ref jumpAxisLock, "Jump");
         }
         _playerMovement.ApplyVelocity();
-        gravityHandler();
     }
 
     private void faceButtonCheck(float pButtonPressed, ref bool pAxisLock, string pActionName)
