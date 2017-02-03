@@ -102,6 +102,11 @@ public class ScoreAndTimerHandler : MonoBehaviour
         _countingDown = pState;
     }
 
+    public bool GetCoutingDown()
+    {
+        return _countingDown;
+    }
+
     public IEnumerator CountDown()
     {
         _countingDown = false;
