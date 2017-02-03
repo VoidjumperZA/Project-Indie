@@ -24,4 +24,34 @@ public class EndMatchRoundup : MonoBehaviour
     {
 
     }
+
+    public void DisplayPodium(int pWinningTeam)
+    {
+        //
+        for (int i = 0; i < playerInputs.Length; i++)
+        {
+            playerInputs[i].SetControlsDisabled(true);
+        }
+
+        //
+        int numberOfPlayersToPosition;
+        if (pWinningTeam == 1)
+        {
+            numberOfPlayersToPosition = LobbySettings.GetTeam_1PlayerCount();
+        }
+        else
+        {
+            numberOfPlayersToPosition = LobbySettings.GetTeam_2PlayerCount();
+        }
+
+        //
+        for (int i = 0; i < activePlayers.GetPlayersInMatchArraySize(); i++)
+        {
+            if (MatchStatistics.GetTeamIDofPlayer(i) == pWinningTeam) 
+            {
+                activePlayers.GetPlayerInMatch(i).transform.position = winPositions[i].transform.position;
+                activePlayers.GetPlayerInMatch(i).transform.rotation = winPositions[i].transform.rotation;
+            }
+        }
+    }
 }
